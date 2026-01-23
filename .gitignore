@@ -4,3 +4,9 @@ minidev/
 IQ_config.json
 couchbase_iq_results/
 sqlLiteToJson/json_outputs/
+Scripts/try.py
+Scripts/comparingResults/sql_query_results/
+Scripts/comparingResults/comparison_results.csv
+Scripts/comparingResults/comparison_results.json
+
+Scripts/couchbase_iq_results/

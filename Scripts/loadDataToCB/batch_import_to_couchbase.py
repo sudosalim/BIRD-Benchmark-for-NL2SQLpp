@@ -105,7 +105,7 @@ def main():
     USERNAME = "Administrator"
     PASSWORD = "password"
 
-    JSON_DIRECTORY="/Users/aayush.fabwani/Documents/Projects/Benchmark/Work/mini_dev/Scripts/sqlLiteToJson/json_outputs"
+    JSON_DIRECTORY="/Users/aayush.fabwani/Documents/Projects/Benchmark/Work/mini_dev/Scripts/Nesting/nestedJson/v1"
 
     SCOPE_NAME = "bird"
     USE_SEPARATE_COLLECTIONS = True  # Create a collection per table

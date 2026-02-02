@@ -9,7 +9,7 @@ from datetime import datetime, timedelta
 
 SCRIPT_DIR = Path(__file__).parent
 CONFIG_FILE = SCRIPT_DIR.parent / "IQ_config.json"
-OUTPUT_DIR = SCRIPT_DIR / "couchbase_iq_results"
+OUTPUT_DIR = SCRIPT_DIR / "couchbase_iq_results" / "baseline1"
 OUTPUT_SQL_DIR = OUTPUT_DIR / "sql_outputs"
 OUTPUT_CSV_DIR = OUTPUT_DIR / "csv_outputs"
 JSON_OUTPUT_DIR = SCRIPT_DIR / "sqlLiteToJson" / "json_outputs"
@@ -32,7 +32,8 @@ DEFAULT_CONFIG = {
         "save_sql": True,
         "execute_sql": True,
         "delay_between_requests": 0.5,
-        "rerun_existing": False
+        "rerun_existing": False,
+        "skip_failed_last_run": False
     }
 }
 
@@ -44,14 +45,15 @@ class CouchbaseIqAPI:
         self.couchbase_user = couchbase_user
         self.couchbase_pass = couchbase_pass
 
-    def generate_sql(self, keyspaces: List[str], question: str, evidence: Optional[str] = None) -> tuple:
+    def generate_sql(self, keyspaces: List[str], question: str, evidence: Optional[str] = None, max_retries: int = 10) -> tuple:
         """
-        Generate SQL using Couchbase IQ.
+        Generate SQL using Couchbase IQ with retry logic for error code 19214.
         
         Args:
             keyspaces: List of keyspace/database names
             question: Natural language question
             evidence: Optional additional context/evidence
+            max_retries: Maximum number of attempts (default: 4)
             
         Returns:
             Tuple of (generated_sql, statement) where statement is the full request sent to IQ
@@ -62,13 +64,10 @@ class CouchbaseIqAPI:
             "execute": False
         }
 
-        # Add external_knowledge_context if evidence is provided
-        # if evidence:
-        #     with_params["evidence"] = evidence
-
         # Build the statement with the WITH clause
         with_clause_json = json.dumps(with_params)
-        statement = f"USING AI WITH {with_clause_json} /*{evidence}*/ {question}"
+        # statement = f"USING AI WITH {with_clause_json} /*{evidence}*/ \"{question}\""
+        statement = f"USING AI WITH {with_clause_json} /*{evidence}*/\"{question}\""
         
         print(f"SS:  Question: {question}")
         print(f"SS:  External Knowledge: {evidence}")
@@ -89,23 +88,63 @@ class CouchbaseIqAPI:
         print(f"SS:  Headers: {headers}")
         print(f"SS:  Query Endpoint: {self.query_endpoint}")
 
-        response = None
-        try:
-            print("SS:  Sending request to Couchbase IQ...")
-            response = requests.post(self.query_endpoint, json=payload, headers=headers)
-            response.raise_for_status()
-            print(f"SS: Response: {response}")
-            data = response.json()
-            print(f"SS: Data: {data}")
-            return (data.get("generated_statement", ""), statement)
-        except requests.exceptions.RequestException as e:
-            print(f"  ✗ Error generating SQL: {e}")
-            if response:
-                try:
-                    print(f"  Response: {response.json()}")
-                except:
-                    print(f"  Response text: {response.text}")
-            return ("", statement)
+        # Retry loop
+        for attempt in range(1, max_retries + 1):
+            response = None
+            try:
+                if attempt > 1:
+                    print(f"SS:  Retry attempt {attempt}/{max_retries}...")
+                else:
+                    print("SS:  Sending request to Couchbase IQ...")
+                    
+                response = requests.post(self.query_endpoint, json=payload, headers=headers)
+                response.raise_for_status()
+                print(f"SS: Response: {response}")
+                data = response.json()
+                print(f"SS: Data: {data}")
+                print(f"================================================= SS ================================================")
+                return (data.get("generated_statement", ""), statement)
+                
+            except requests.exceptions.RequestException as e:
+                if response is not None:
+                    try:
+                        error_data = response.json()
+                        # Extract error code if available
+                        if "errors" in error_data and len(error_data["errors"]) > 0:
+                            error_code = error_data["errors"][0].get("code")
+                            error_msg = error_data["errors"][0].get("msg", "")
+                            print(f"  ✗ Error generating SQL - Code: {error_code} (Attempt {attempt}/{max_retries})")
+                            print(f"     Message: {error_msg[:200]}...")  # First 200 chars
+                            
+                            # For error codes 19214 or 19212, extract SQL from between ``` markers instead of retrying
+                            if error_code in [19214, 19212]:
+                                print(f"  ⚡ Error {error_code} detected - extracting SQL from error message...")
+                                # Extract content between ``` markers
+                                sql_match = re.search(r'```\s*(.*?)\s*```', error_msg, re.DOTALL)
+                                if sql_match:
+                                    extracted_sql = sql_match.group(1).strip()
+                                    print(f"  ✓ Extracted SQL from error message ({len(extracted_sql)} chars)")
+                                    print(f"================================================= SS ================================================")
+                                    return (extracted_sql, statement)
+                                else:
+                                    print(f"  ✗ Could not extract SQL from error message")
+                                    if attempt < max_retries:
+                                        print(f"  ↻ Retrying request...")
+                                        time.sleep(1)
+                                        continue
+                        else:
+                            print(f"  ✗ Error generating SQL: {error_data}")
+                    except:
+                        print(f"  ✗ Error generating SQL: {response.text}")
+                else:
+                    print(f"  ✗ Error generating SQL: {e}")
+                
+                # If we reach here, don't retry (non-19214 error or max retries reached)
+                print(f"================================================= SS ================================================")
+                return ("", statement)
+
+
+
 
 def get_all_collections_in_scope(
     bucket_name: str,
@@ -153,7 +192,7 @@ def get_all_collections_in_scope(
         
         # Extract field names
         fields = []
-        if isinstance(table_data[0], dict):
+        if isinstance(table_data, list) and len(table_data) > 0 and isinstance(table_data[0], dict):
             fields = list(table_data[0].keys())
         
         collections_with_fields[table_name] = fields
@@ -280,39 +319,67 @@ def get_ist_timestamp():
 def log_failure_immediately(failed_file: Path, question_id: str, question: str, db_id: str, reason: str, statement: str = None):
     """Append a failed question to the log file immediately."""
     try:
-        failure_entry = {
-            'timestamp': get_ist_timestamp(),
-            'question_id': question_id,
-            'question': question,
-            'db_id': db_id,
-            'reason': reason
-        }
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         
-        # Add statement if provided
-        if statement:
-            failure_entry['statement'] = statement
-        
-        # Append to file (create if doesn't exist)
         with open(failed_file, 'a') as f:
-            f.write(json.dumps(failure_entry) + '\n')
+            f.write(f"[{timestamp}] Question ID: {question_id}\n")
+            f.write(f"Database: {db_id}\n")
+            f.write(f"Question: {question}\n")
+            f.write(f"Reason: {reason}\n")
+            if statement:
+                f.write(f"Statement: {statement}\n")
+            f.write("-" * 80 + "\n\n")
     except Exception as e:
         print(f"  Warning: Could not log failure to file: {e}")
 
 def write_run_header(failed_file: Path):
-    """Write a run header with IST timestamp to the failed questions log."""
+    """Write a run header with timestamp to the failed questions log."""
     try:
-        header = {
-            'type': 'RUN_START',
-            'timestamp': get_ist_timestamp(),
-            'message': 'New run started'
-        }
-        
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         with open(failed_file, 'a') as f:
-            f.write('\n' + '='*80 + '\n')
-            f.write(json.dumps(header) + '\n')
-            f.write('='*80 + '\n')
+            f.write("\n" + "=" * 80 + "\n")
+            f.write(f"Run started: {timestamp}\n")
+            f.write("=" * 80 + "\n\n")
     except Exception as e:
         print(f"  Warning: Could not write run header: {e}")
+
+def get_failed_questions_from_last_run(failed_file: Path) -> set:
+    """
+    Extract question IDs from the last run in the failure log.
+    
+    Args:
+        failed_file: Path to failed_questions.log
+        
+    Returns:
+        Set of question IDs that failed in the last run
+    """
+    if not failed_file.exists():
+        return set()
+    
+    try:
+        with open(failed_file, 'r') as f:
+            content = f.read()
+        
+        # Split by run headers (=== lines)
+        runs = content.split("=" * 80)
+        
+        # Get the last run (most recent)
+        if len(runs) < 3:  # Need at least 3 parts (before first run, run header, run content)
+            return set()
+        
+        last_run_content = runs[-1]  # Get the content after the last "====..." line
+        
+        # Extract question IDs from lines like "[timestamp] Question ID: 1481"
+        question_ids = set()
+        for line in last_run_content.split('\n'):
+            match = re.match(r'\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\] Question ID: (\d+)', line)
+            if match:
+                question_ids.add(int(match.group(1)))
+        
+        return question_ids
+    except Exception as e:
+        print(f"Warning: Failed to parse failed_questions.log: {e}")
+        return set()
 
 def loadQuestions():
     with open(
@@ -448,23 +515,19 @@ def get_keyspaces_for_db(db_id: str, qId: str, question: str, evidence: str) -> 
         evidence: Additional context/evidence
         
     Returns:
-        List of keyspace names (max 4)
+        List of all keyspace names from the database JSON file
     """
     # For BIRD mini-dev, we use bucket name as db_id with bird scope
     # Format: bucket.scope.collection
 
-    # Get collections with their fields
+    # Get all collections from the database JSON file
     collections_dict = get_all_collections_in_scope(
         bucket_name=db_id,
         scope_name="bird",
     )
     
-    # Select top 4 relevant collections based on question and schema
-    selected_collections = reduce_keyspace_via_collection(
-        [question, evidence], 
-        collections_dict,
-        max_keyspaces=4
-    )
+    # Use ALL collections without filtering
+    selected_collections = list(collections_dict.keys())
     
     # Format as keyspaces
     keyspaces = []
@@ -500,6 +563,7 @@ def process_question(
     evidence=item.get('evidence',None)
     db_id=item['db_id']
 
+    # Get all keyspaces for the database
     keyspaces=get_keyspaces_for_db(db_id,qId,question,evidence)
 
     print(f"  Generating SQL with Couchbase IQ...")
@@ -577,6 +641,7 @@ def main():
     execute_sql_flag = eval_config.get("execute_sql", True)
     delay = eval_config.get("delay_between_requests", 0.5)
     rerun_existing = eval_config.get("rerun_existing", False)
+    skip_failed_last_run = eval_config.get("skip_failed_last_run", False)
 
     OUTPUT_DIR.mkdir(exist_ok=True)
     OUTPUT_SQL_DIR.mkdir(exist_ok=True)
@@ -588,6 +653,19 @@ def main():
     
     # Initialize failed questions log with run header
     failed_file = OUTPUT_DIR / "failed_questions.log"
+    
+    # Get failed questions from last run if skip flag is enabled
+    failed_in_last_run = set()
+    if skip_failed_last_run:
+        print("Checking for previously failed questions...")
+        failed_in_last_run = get_failed_questions_from_last_run(failed_file)
+        if failed_in_last_run:
+            print(f"✓ Found {len(failed_in_last_run)} questions that failed in last run (will skip)")
+            print(f"  Question IDs: {sorted(list(failed_in_last_run))[:10]}{'...' if len(failed_in_last_run) > 10 else ''}")
+        else:
+            print("✓ No previously failed questions found")
+        print()
+    
     write_run_header(failed_file)
     print(f"✓ Failure log initialized: {failed_file}")
     print()
@@ -624,7 +702,8 @@ def main():
         'sql_saved': 0,
         'csv_saved': 0,
         'failed': 0,
-        'skipped': 0
+        'skipped': 0,
+        'skipped_failed_last_run': 0
     }
     
     for i,item in enumerate(questions,1):
@@ -633,10 +712,18 @@ def main():
         evidence=item.get('evidence',None)
         db_id=item['db_id']
 
+        stats['total'] += 1
+
+        # Check if question failed in last run
+        if skip_failed_last_run and qId in failed_in_last_run:
+            print(f"\n[{i}/{len(questions)}] {qId}")
+            print(f"  ⊗ Skipping (failed in last run)")
+            stats['skipped_failed_last_run'] += 1
+            continue
+
         print(f"\n[{i}/{len(questions)}] {qId}")
         print(f"  Question: {question[:80]}...")
         print(f"  Database: {db_id}")
-        stats['total'] += 1
 
         # Check if outputs already exist
         sql_file = OUTPUT_SQL_DIR / f"{qId}.sql"
@@ -698,6 +785,8 @@ def main():
     print("Summary:")
     print(f"  Total questions: {stats['total']}")
     print(f"  Skipped (already processed): {stats['skipped']}")
+    if skip_failed_last_run:
+        print(f"  Skipped (failed in last run): {stats['skipped_failed_last_run']}")
     print(f"  SQL generated: {stats['sql_generated']}")
     print(f"  SQL saved: {stats['sql_saved']}")
     print(f"  CSV saved: {stats['csv_saved']}")

@@ -10,3 +10,15 @@ Scripts/comparingResults/comparison_results.csv
 Scripts/comparingResults/comparison_results.json
 
 Scripts/couchbase_iq_results/
+DBwise/
+Scripts/Dbwise/
+Scripts/Nesting/
+Scripts/apply_nesting.py
+Scripts/find_missing_questions.py
+Scripts/manual_keyspaces.json
+Scripts/organize_dbwise.py
+Scripts/organize_dbwise_sqlpp.py
+Scripts/split_questions_by_db.py
+Scripts/testIQ_csv.py
+Scripts/testIQ_single.py
+Scripts/testIQ_single_db.py

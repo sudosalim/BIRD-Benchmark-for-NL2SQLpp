@@ -9,6 +9,7 @@ from datetime import datetime, timedelta
 
 SCRIPT_DIR = Path(__file__).parent
 CONFIG_FILE = SCRIPT_DIR.parent / "IQ_config.json"
+MANUAL_KEYSPACES_FILE = SCRIPT_DIR / "manual_keyspaces.json"
 OUTPUT_DIR = SCRIPT_DIR / "couchbase_iq_results"
 OUTPUT_SQL_DIR = OUTPUT_DIR / "sql_outputs"
 OUTPUT_CSV_DIR = OUTPUT_DIR / "csv_outputs"
@@ -72,7 +73,7 @@ class CouchbaseIqAPI:
 
         # Build the statement with the WITH clause
         with_clause_json = json.dumps(with_params)
-        statement = f"USING AI WITH {with_clause_json} /*{evidence}*/ {question}"
+        statement = f"USING AI WITH {with_clause_json} /*{evidence}*/ \"{question}\""
         
         print(f"SS:  Question: {question}")
         print(f"SS:  External Knowledge: {evidence}")
@@ -110,6 +111,28 @@ class CouchbaseIqAPI:
                 except:
                     print(f"  Response text: {response.text}")
             return ("", statement)
+
+def load_manual_keyspaces() -> Dict:
+    """
+    Load manual keyspace mappings from JSON file.
+    
+    Returns:
+        Dictionary mapping question_id (as string) to list of collection names
+    """
+    if not MANUAL_KEYSPACES_FILE.exists():
+        return {}
+    
+    try:
+        with open(MANUAL_KEYSPACES_FILE, 'r') as f:
+            data = json.load(f)
+        
+        # Remove special keys starting with underscore (comments/examples)
+        manual_mappings = {k: v for k, v in data.items() if not k.startswith('_')}
+        return manual_mappings
+    except Exception as e:
+        print(f"Warning: Failed to load manual keyspaces file: {e}")
+        return {}
+
 
 def get_all_collections_in_scope(
     bucket_name: str,
@@ -157,8 +180,7 @@ def get_all_collections_in_scope(
         
         # Extract field names
         fields = []
-        # isinstance(table_data, list) and len(table_data) > 0 and
-        if isinstance(table_data[0], dict):
+        if isinstance(table_data, list) and len(table_data) > 0 and isinstance(table_data[0], dict):
             fields = list(table_data[0].keys())
         
         collections_with_fields[table_name] = fields
@@ -484,6 +506,7 @@ def process_question(
     couchbase_user: str,
     couchbase_pass: str,
     query_endpoint: str,
+    manual_keyspaces_map: Dict = None,
     save_sql: bool = True,
     execute_sql: bool = True
 ) -> tuple:
@@ -493,6 +516,7 @@ def process_question(
         Args:
             item: Question item from spider2-lite.jsonl
             couchbase_iq: CouchbaseIQ API instance
+            manual_keyspaces_map: Manual keyspace mappings (question_id -> collection names)
             save_sql: Whether to save generated SQL
             execute_sql: Whether to execute SQL and save CSV
             
@@ -505,7 +529,13 @@ def process_question(
     evidence=item.get('evidence',None)
     db_id=item['db_id']
 
-    keyspaces=get_keyspaces_for_db(db_id,qId,question,evidence)
+    # Check manual keyspace mappings first
+    if manual_keyspaces_map and str(qId) in manual_keyspaces_map:
+        collection_names = manual_keyspaces_map[str(qId)]
+        keyspaces = [f"`{db_id}`.`bird`.`{col}`" for col in collection_names]
+        print(f"  Using manual keyspaces: {keyspaces}")
+    else:
+        keyspaces=get_keyspaces_for_db(db_id,qId,question,evidence)
 
     print(f"  Generating SQL with Couchbase IQ...")
     generated_sql, statement = couchbase_iq.generate_sql(
@@ -597,6 +627,14 @@ def main():
     print(f"✓ Failure log initialized: {failed_file}")
     print()
 
+    print("Loading manual keyspace mappings...")
+    manual_keyspaces_map = load_manual_keyspaces()
+    if manual_keyspaces_map:
+        print(f"✓ Loaded {len(manual_keyspaces_map)} manual keyspace mappings")
+    else:
+        print("✓ No manual keyspace mappings found (will use automatic detection)")
+    print()
+
     print("Initializing Couchbase IQ API...")
     couchbase_iq = CouchbaseIqAPI(
         query_endpoint=query_endpoint,
@@ -670,6 +708,7 @@ def main():
                 couchbase_user=couchbase_user,
                 couchbase_pass=couchbase_pass,
                 query_endpoint=query_endpoint,
+                manual_keyspaces_map=manual_keyspaces_map,
                 save_sql=save_sql,
                 execute_sql=execute_sql_flag
             )

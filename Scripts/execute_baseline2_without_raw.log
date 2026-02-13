@@ -1,0 +1,3060 @@
+
+================================================================================
+RUN STARTED: 2026-02-03 17:30:14
+================================================================================
+Found 499 SQL files to process
+Input directory: /Users/aayush.fabwani/Documents/Projects/Benchmark/Work/mini_dev/Scripts/couchbase_iq_results/baseline2/sql_outputs
+Output directory: /Users/aayush.fabwani/Documents/Projects/Benchmark/Work/mini_dev/Scripts/couchbase_iq_results/baseline2/csv_outputs2
+================================================================================
+
+[1/499] Processing query 100
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 100.csv
+  ✓ Success! (1 rows)
+
+[2/499] Processing query 1001
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1001.csv
+  ✓ Success! (0 rows)
+
+[3/499] Processing query 1002
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1002.csv
+  ✓ Success! (1 rows)
+
+[4/499] Processing query 1003
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 1003.csv
+  ✓ Success! (1 rows)
+
+[5/499] Processing query 1011
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1011.csv
+  ✓ Success! (1 rows)
+
+[6/499] Processing query 1014
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 1014.csv
+  ✓ Success! (0 rows)
+
+[7/499] Processing query 1025
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1025.csv
+  ✓ Success! (0 rows)
+
+[8/499] Processing query 1028
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1028.csv
+  ✓ Success! (0 rows)
+
+[9/499] Processing query 1029
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1029.csv
+  ✓ Success! (4 rows)
+
+[10/499] Processing query 1030
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1030.csv
+  ✓ Success! (0 rows)
+
+[11/499] Processing query 1031
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1031.csv
+  ✓ Success! (23 rows)
+
+[12/499] Processing query 1032
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1032.csv
+  ✓ Success! (1 rows)
+
+[13/499] Processing query 1035
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1035.csv
+  ✓ Success! (356 rows)
+
+[14/499] Processing query 1036
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1036.csv
+  ✓ Success! (0 rows)
+
+[15/499] Processing query 1037
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1037.csv
+  ✓ Success! (1 rows)
+
+[16/499] Processing query 1039
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1039.csv
+  ✓ Success! (1 rows)
+
+[17/499] Processing query 1040
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 1040.csv
+  ✓ Success! (10 rows)
+
+[18/499] Processing query 1042
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1042.csv
+  ✓ Success! (11 rows)
+
+[19/499] Processing query 1044
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 1044.csv
+  ✓ Success! (4 rows)
+
+[20/499] Processing query 1048
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1048.csv
+  ✓ Success! (1 rows)
+
+[21/499] Processing query 1057
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1057.csv
+  ✓ Success! (1 rows)
+
+[22/499] Processing query 1058
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1058.csv
+  ✓ Success! (1 rows)
+
+[23/499] Processing query 1068
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 1068.csv
+  ✓ Success! (1 rows)
+
+[24/499] Processing query 1076
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1076.csv
+  ✓ Success! (1 rows)
+
+[25/499] Processing query 1078
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1078.csv
+  ✓ Success! (0 rows)
+
+[26/499] Processing query 1079
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1079.csv
+  ✓ Success! (1 rows)
+
+[27/499] Processing query 1080
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 1080.csv
+  ✓ Success! (1 rows)
+
+[28/499] Processing query 1084
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1084.csv
+  ✓ Success! (1 rows)
+
+[29/499] Processing query 1088
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 1088.csv
+  ✓ Success! (1105 rows)
+
+[30/499] Processing query 1091
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1091.csv
+  ✓ Success! (1 rows)
+
+[31/499] Processing query 1092
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1092.csv
+  ✓ Success! (0 rows)
+
+[32/499] Processing query 1094
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1094.csv
+  ✓ Success! (0 rows)
+
+[33/499] Processing query 1096
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1096.csv
+  ✓ Success! (1 rows)
+
+[34/499] Processing query 1098
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 1098.csv
+  ✓ Success! (2 rows)
+
+[35/499] Processing query 11
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 11.csv
+  ✓ Success! (7806 rows)
+
+[36/499] Processing query 1102
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1102.csv
+  ✓ Success! (1 rows)
+
+[37/499] Processing query 1103
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1103.csv
+  ✓ Success! (0 rows)
+
+[38/499] Processing query 1105
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1105.csv
+  ✓ Success! (1 rows)
+
+[39/499] Processing query 1107
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1107.csv
+  ✓ Success! (0 rows)
+
+[40/499] Processing query 1110
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1110.csv
+  ✓ Success! (1 rows)
+
+[41/499] Processing query 1113
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1113.csv
+  ✓ Success! (1 rows)
+
+[42/499] Processing query 1114
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 1114.csv
+  ✓ Success! (1 rows)
+
+[43/499] Processing query 1115
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1115.csv
+  ✓ Success! (0 rows)
+
+[44/499] Processing query 1116
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 1116.csv
+  ✓ Success! (1 rows)
+
+[45/499] Processing query 112
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 112.csv
+  ✓ Success! (0 rows)
+
+[46/499] Processing query 1122
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1122.csv
+  ✓ Success! (0 rows)
+
+[47/499] Processing query 1124
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 1124.csv
+  ✓ Success! (3339 rows)
+
+[48/499] Processing query 1130
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 1130.csv
+  ✓ Success! (43 rows)
+
+[49/499] Processing query 1133
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 1133.csv
+  ✓ Success! (1 rows)
+
+[50/499] Processing query 1134
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1134.csv
+  ✓ Success! (0 rows)
+
+[51/499] Processing query 1135
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1135.csv
+  ✓ Success! (4 rows)
+
+[52/499] Processing query 1136
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 1136.csv
+  ✓ Success! (1 rows)
+
+[53/499] Processing query 1139
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1139.csv
+  ✓ Success! (0 rows)
+
+[54/499] Processing query 1141
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1141.csv
+  ✓ Success! (1 rows)
+
+[55/499] Processing query 1144
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1144.csv
+  ✓ Success! (0 rows)
+
+[56/499] Processing query 1145
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1145.csv
+  ✓ Success! (0 rows)
+
+[57/499] Processing query 1146
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1146.csv
+  ✓ Success! (0 rows)
+
+[58/499] Processing query 1147
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1147.csv
+  ✓ Success! (1 rows)
+
+[59/499] Processing query 1148
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 1148.csv
+  ✓ Success! (1 rows)
+
+[60/499] Processing query 1149
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1149.csv
+  ✓ Success! (1 rows)
+
+[61/499] Processing query 115
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 115.csv
+  ✓ Success! (1 rows)
+
+[62/499] Processing query 1150
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1150.csv
+  ✓ Success! (1 rows)
+
+[63/499] Processing query 1152
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1152.csv
+  ✓ Success! (1 rows)
+
+[64/499] Processing query 1153
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1153.csv
+  ✓ Success! (1 rows)
+
+[65/499] Processing query 1155
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 1155.csv
+  ✓ Success! (103 rows)
+
+[66/499] Processing query 1156
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1156.csv
+  ✓ Success! (7 rows)
+
+[67/499] Processing query 1157
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1157.csv
+  ✓ Success! (0 rows)
+
+[68/499] Processing query 1162
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 1162.csv
+  ✓ Success! (1 rows)
+
+[69/499] Processing query 1164
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1164.csv
+  ✓ Success! (1 rows)
+
+[70/499] Processing query 1166
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1166.csv
+  ✓ Success! (0 rows)
+
+[71/499] Processing query 1168
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1168.csv
+  ✓ Success! (1 rows)
+
+[72/499] Processing query 1169
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1169.csv
+  ✓ Success! (1 rows)
+
+[73/499] Processing query 117
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 117.csv
+  ✓ Success! (1 rows)
+
+[74/499] Processing query 1171
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 1171.csv
+  ✓ Success! (1 rows)
+
+[75/499] Processing query 1175
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1175.csv
+  ✓ Success! (1 rows)
+
+[76/499] Processing query 1179
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1179.csv
+  ✓ Success! (0 rows)
+
+[77/499] Processing query 118
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 118.csv
+  ✓ Success! (1 rows)
+
+[78/499] Processing query 1185
+  → Removed RAW keyword
+  → Executing query...
+  ✗ Error executing SQL: 500 Server Error: Internal Server Error for url: http://localhost:8093/query/service
+  ✗ Failed to execute query
+
+[79/499] Processing query 1187
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 1187.csv
+  ✓ Success! (63 rows)
+
+[80/499] Processing query 1189
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1189.csv
+  ✓ Success! (1 rows)
+
+[81/499] Processing query 119
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 119.csv
+  ✓ Success! (0 rows)
+
+[82/499] Processing query 1192
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1192.csv
+  ✓ Success! (0 rows)
+
+[83/499] Processing query 1195
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 1195.csv
+  ✓ Success! (1 rows)
+
+[84/499] Processing query 1198
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 1198.csv
+  ✓ Success! (1 rows)
+
+[85/499] Processing query 12
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 12.csv
+  ✓ Success! (1 rows)
+
+[86/499] Processing query 120
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 120.csv
+  ✓ Success! (364 rows)
+
+[87/499] Processing query 1201
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 1201.csv
+  ✓ Success! (1 rows)
+
+[88/499] Processing query 1205
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 1205.csv
+  ✓ Success! (45 rows)
+
+[89/499] Processing query 1208
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 1208.csv
+  ✓ Success! (24 rows)
+
+[90/499] Processing query 1209
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 1209.csv
+  ✓ Success! (38 rows)
+
+[91/499] Processing query 1220
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1220.csv
+  ✓ Success! (20 rows)
+
+[92/499] Processing query 1225
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 1225.csv
+  ✓ Success! (2 rows)
+
+[93/499] Processing query 1227
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 1227.csv
+  ✓ Success! (1 rows)
+
+[94/499] Processing query 1229
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1229.csv
+  ✓ Success! (1 rows)
+
+[95/499] Processing query 1231
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1231.csv
+  ✓ Success! (1 rows)
+
+[96/499] Processing query 1232
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 1232.csv
+  ✓ Success! (13 rows)
+
+[97/499] Processing query 1235
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1235.csv
+  ✓ Success! (759 rows)
+
+[98/499] Processing query 1238
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1238.csv
+  ✓ Success! (1 rows)
+
+[99/499] Processing query 1239
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1239.csv
+  ✓ Success! (0 rows)
+
+[100/499] Processing query 1241
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1241.csv
+  ✓ Success! (1 rows)
+
+[101/499] Processing query 1242
+  → Removed RAW keyword
+  → Executing query...
+  ✗ Error executing SQL: 400 Client Error: Bad Request for url: http://localhost:8093/query/service
+  ✗ Failed to execute query
+
+[102/499] Processing query 1243
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 1243.csv
+  ✓ Success! (1 rows)
+
+[103/499] Processing query 1247
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1247.csv
+  ✓ Success! (1 rows)
+
+[104/499] Processing query 125
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 125.csv
+  ✓ Success! (43 rows)
+
+[105/499] Processing query 1251
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 1251.csv
+  ✓ Success! (1 rows)
+
+[106/499] Processing query 1252
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 1252.csv
+  ✓ Success! (1 rows)
+
+[107/499] Processing query 1254
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 1254.csv
+  ✓ Success! (1 rows)
+
+[108/499] Processing query 1255
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1255.csv
+  ✓ Success! (0 rows)
+
+[109/499] Processing query 1256
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1256.csv
+  ✓ Success! (1 rows)
+
+[110/499] Processing query 1257
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1257.csv
+  ✓ Success! (1 rows)
+
+[111/499] Processing query 1265
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1265.csv
+  ✓ Success! (1 rows)
+
+[112/499] Processing query 1267
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 1267.csv
+  ✓ Success! (1 rows)
+
+[113/499] Processing query 1270
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1270.csv
+  ✓ Success! (1 rows)
+
+[114/499] Processing query 1275
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1275.csv
+  ✓ Success! (1 rows)
+
+[115/499] Processing query 128
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 128.csv
+  ✓ Success! (9 rows)
+
+[116/499] Processing query 1281
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1281.csv
+  ✓ Success! (1 rows)
+
+[117/499] Processing query 129
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 129.csv
+  ✓ Success! (10 rows)
+
+[118/499] Processing query 1302
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1302.csv
+  ✓ Success! (1 rows)
+
+[119/499] Processing query 1312
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1312.csv
+  ✓ Success! (1 rows)
+
+[120/499] Processing query 1317
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1317.csv
+  ✓ Success! (1 rows)
+
+[121/499] Processing query 1322
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1322.csv
+  ✓ Success! (1 rows)
+
+[122/499] Processing query 1323
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1323.csv
+  ✓ Success! (0 rows)
+
+[123/499] Processing query 1331
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1331.csv
+  ✓ Success! (1 rows)
+
+[124/499] Processing query 1334
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 1334.csv
+  ✓ Success! (3 rows)
+
+[125/499] Processing query 1338
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1338.csv
+  ✓ Success! (0 rows)
+
+[126/499] Processing query 1339
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 1339.csv
+  ✓ Success! (1 rows)
+
+[127/499] Processing query 1340
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1340.csv
+  ✓ Success! (1 rows)
+
+[128/499] Processing query 1344
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1344.csv
+  ✓ Success! (1 rows)
+
+[129/499] Processing query 1346
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1346.csv
+  ✓ Success! (1 rows)
+
+[130/499] Processing query 1350
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1350.csv
+  ✓ Success! (0 rows)
+
+[131/499] Processing query 1351
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1351.csv
+  ✓ Success! (1 rows)
+
+[132/499] Processing query 1352
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1352.csv
+  ✓ Success! (1 rows)
+
+[133/499] Processing query 1356
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 1356.csv
+  ✓ Success! (1 rows)
+
+[134/499] Processing query 1357
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1357.csv
+  ✓ Success! (0 rows)
+
+[135/499] Processing query 1359
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1359.csv
+  ✓ Success! (1 rows)
+
+[136/499] Processing query 136
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 136.csv
+  ✓ Success! (1 rows)
+
+[137/499] Processing query 1361
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 1361.csv
+  ✓ Success! (1 rows)
+
+[138/499] Processing query 1362
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 1362.csv
+  ✓ Success! (1 rows)
+
+[139/499] Processing query 1368
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1368.csv
+  ✓ Success! (1 rows)
+
+[140/499] Processing query 137
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 137.csv
+  ✓ Success! (1 rows)
+
+[141/499] Processing query 1371
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 1371.csv
+  ✓ Success! (1 rows)
+
+[142/499] Processing query 1375
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 1375.csv
+  ✓ Success! (5 rows)
+
+[143/499] Processing query 1376
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1376.csv
+  ✓ Success! (1 rows)
+
+[144/499] Processing query 1378
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 1378.csv
+  ✓ Success! (1 rows)
+
+[145/499] Processing query 138
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 138.csv
+  ✓ Success! (1 rows)
+
+[146/499] Processing query 1380
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 1380.csv
+  ✓ Success! (1 rows)
+
+[147/499] Processing query 1381
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1381.csv
+  ✓ Success! (0 rows)
+
+[148/499] Processing query 1387
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1387.csv
+  ✓ Success! (0 rows)
+
+[149/499] Processing query 1389
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1389.csv
+  ✓ Success! (0 rows)
+
+[150/499] Processing query 1390
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 1390.csv
+  ✓ Success! (1 rows)
+
+[151/499] Processing query 1392
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1392.csv
+  ✓ Success! (1 rows)
+
+[152/499] Processing query 1394
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1394.csv
+  ✓ Success! (1 rows)
+
+[153/499] Processing query 1398
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1398.csv
+  ✓ Success! (0 rows)
+
+[154/499] Processing query 1399
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1399.csv
+  ✓ Success! (1 rows)
+
+[155/499] Processing query 1401
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1401.csv
+  ✓ Success! (0 rows)
+
+[156/499] Processing query 1403
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1403.csv
+  ✓ Success! (1 rows)
+
+[157/499] Processing query 1404
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1404.csv
+  ✓ Success! (0 rows)
+
+[158/499] Processing query 1405
+  → Removed RAW keyword
+  → Executing query...
+  ✗ Error executing SQL: 500 Server Error: Internal Server Error for url: http://localhost:8093/query/service
+  ✗ Failed to execute query
+
+[159/499] Processing query 1409
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 1409.csv
+  ✓ Success! (1 rows)
+
+[160/499] Processing query 1410
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 1410.csv
+  ✓ Success! (1 rows)
+
+[161/499] Processing query 1411
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 1411.csv
+  ✓ Success! (7 rows)
+
+[162/499] Processing query 1422
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 1422.csv
+  ✓ Success! (3 rows)
+
+[163/499] Processing query 1426
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 1426.csv
+  ✓ Success! (2 rows)
+
+[164/499] Processing query 1427
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 1427.csv
+  ✓ Success! (4 rows)
+
+[165/499] Processing query 1432
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1432.csv
+  ✓ Success! (1 rows)
+
+[166/499] Processing query 1435
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 1435.csv
+  ✓ Success! (2 rows)
+
+[167/499] Processing query 145
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 145.csv
+  ✓ Success! (801 rows)
+
+[168/499] Processing query 1457
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 1457.csv
+  ✓ Success! (0 rows)
+
+[169/499] Processing query 1460
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1460.csv
+  ✓ Success! (1 rows)
+
+[170/499] Processing query 1464
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1464.csv
+  ✓ Success! (0 rows)
+
+[171/499] Processing query 1471
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1471.csv
+  ✓ Success! (1 rows)
+
+[172/499] Processing query 1472
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 1472.csv
+  ✓ Success! (1 rows)
+
+[173/499] Processing query 1473
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1473.csv
+  ✓ Success! (1 rows)
+
+[174/499] Processing query 1476
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 1476.csv
+  ✓ Success! (1 rows)
+
+[175/499] Processing query 1479
+  → No RAW keyword found
+  → Executing query...
+  ✗ Error executing SQL: 500 Server Error: Internal Server Error for url: http://localhost:8093/query/service
+  ✗ Failed to execute query
+
+[176/499] Processing query 1480
+  → Removed RAW keyword
+  → Executing query...
+  ✗ Error executing SQL: 500 Server Error: Internal Server Error for url: http://localhost:8093/query/service
+  ✗ Failed to execute query
+
+[177/499] Processing query 1481
+  → No RAW keyword found
+  → Executing query...
+  ✗ Error executing SQL: 400 Client Error: Bad Request for url: http://localhost:8093/query/service
+  ✗ Failed to execute query
+
+[178/499] Processing query 1482
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 1482.csv
+  ✓ Success! (3 rows)
+
+[179/499] Processing query 1483
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 1483.csv
+  ✓ Success! (1 rows)
+
+[180/499] Processing query 1484
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1484.csv
+  ✓ Success! (1 rows)
+
+[181/499] Processing query 1486
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 1486.csv
+  ✓ Success! (1 rows)
+
+[182/499] Processing query 149
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 149.csv
+  ✓ Success! (0 rows)
+
+[183/499] Processing query 1490
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 1490.csv
+  ✓ Success! (1 rows)
+
+[184/499] Processing query 1493
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 1493.csv
+  ✓ Success! (1 rows)
+
+[185/499] Processing query 1498
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 1498.csv
+  ✓ Success! (1 rows)
+
+[186/499] Processing query 1500
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 1500.csv
+  ✓ Success! (27 rows)
+
+[187/499] Processing query 1501
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 1501.csv
+  ✓ Success! (0 rows)
+
+[188/499] Processing query 1505
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1505.csv
+  ✓ Success! (1 rows)
+
+[189/499] Processing query 1506
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1506.csv
+  ✓ Success! (21 rows)
+
+[190/499] Processing query 1507
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 1507.csv
+  ✓ Success! (0 rows)
+
+[191/499] Processing query 1509
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1509.csv
+  ✓ Success! (1 rows)
+
+[192/499] Processing query 1514
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1514.csv
+  ✓ Success! (1 rows)
+
+[193/499] Processing query 1515
+  → Removed RAW keyword
+  → Executing query...
+  ✗ Error executing SQL: 400 Client Error: Bad Request for url: http://localhost:8093/query/service
+  ✗ Failed to execute query
+
+[194/499] Processing query 152
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 152.csv
+  ✓ Success! (1 rows)
+
+[195/499] Processing query 1521
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1521.csv
+  ✓ Success! (1 rows)
+
+[196/499] Processing query 1524
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1524.csv
+  ✓ Success! (0 rows)
+
+[197/499] Processing query 1525
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 1525.csv
+  ✓ Success! (1 rows)
+
+[198/499] Processing query 1526
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1526.csv
+  ✓ Success! (1 rows)
+
+[199/499] Processing query 1528
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 1528.csv
+  ✓ Success! (1 rows)
+
+[200/499] Processing query 1529
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 1529.csv
+  ✓ Success! (1 rows)
+
+[201/499] Processing query 1531
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 1531.csv
+  ✓ Success! (1 rows)
+
+[202/499] Processing query 1533
+  → No RAW keyword found
+  → Executing query...
+  ✗ Error executing SQL: 400 Client Error: Bad Request for url: http://localhost:8093/query/service
+  ✗ Failed to execute query
+
+[203/499] Processing query 159
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 159.csv
+  ✓ Success! (140 rows)
+
+[204/499] Processing query 168
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 168.csv
+  ✓ Success! (1 rows)
+
+[205/499] Processing query 169
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 169.csv
+  ✓ Success! (1 rows)
+
+[206/499] Processing query 17
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 17.csv
+  ✓ Success! (58 rows)
+
+[207/499] Processing query 173
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 173.csv
+  ✓ Success! (1 rows)
+
+[208/499] Processing query 186
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 186.csv
+  ✓ Success! (1 rows)
+
+[209/499] Processing query 189
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 189.csv
+  ✓ Success! (1 rows)
+
+[210/499] Processing query 192
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 192.csv
+  ✓ Success! (1 rows)
+
+[211/499] Processing query 194
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 194.csv
+  ✓ Success! (88 rows)
+
+[212/499] Processing query 195
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 195.csv
+  ✓ Success! (1 rows)
+
+[213/499] Processing query 197
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 197.csv
+  ✓ Success! (1 rows)
+
+[214/499] Processing query 198
+  → Removed RAW keyword
+  → Executing query...
+  ✗ Error executing SQL: 400 Client Error: Bad Request for url: http://localhost:8093/query/service
+  ✗ Failed to execute query
+
+[215/499] Processing query 200
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 200.csv
+  ✓ Success! (2 rows)
+
+[216/499] Processing query 201
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 201.csv
+  ✓ Success! (1 rows)
+
+[217/499] Processing query 206
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 206.csv
+  ✓ Success! (1 rows)
+
+[218/499] Processing query 207
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 207.csv
+  ✓ Success! (5 rows)
+
+[219/499] Processing query 208
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 208.csv
+  ✓ Success! (0 rows)
+
+[220/499] Processing query 212
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 212.csv
+  ✓ Success! (0 rows)
+
+[221/499] Processing query 213
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 213.csv
+  ✓ Success! (1 rows)
+
+[222/499] Processing query 215
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 215.csv
+  ✓ Success! (1 rows)
+
+[223/499] Processing query 218
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 218.csv
+  ✓ Success! (1 rows)
+
+[224/499] Processing query 219
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 219.csv
+  ✓ Success! (1 rows)
+
+[225/499] Processing query 220
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 220.csv
+  ✓ Success! (3 rows)
+
+[226/499] Processing query 226
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 226.csv
+  ✓ Success! (1 rows)
+
+[227/499] Processing query 227
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 227.csv
+  ✓ Success! (1 rows)
+
+[228/499] Processing query 228
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 228.csv
+  ✓ Success! (1 rows)
+
+[229/499] Processing query 23
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 23.csv
+  ✓ Success! (1239 rows)
+
+[230/499] Processing query 230
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 230.csv
+  ✓ Success! (1 rows)
+
+[231/499] Processing query 231
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 231.csv
+  ✓ Success! (1 rows)
+
+[232/499] Processing query 232
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 232.csv
+  ✓ Success! (3 rows)
+
+[233/499] Processing query 234
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 234.csv
+  ✓ Success! (1 rows)
+
+[234/499] Processing query 236
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 236.csv
+  ✓ Success! (2 rows)
+
+[235/499] Processing query 239
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 239.csv
+  ✓ Success! (1 rows)
+
+[236/499] Processing query 24
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 24.csv
+  ✓ Success! (1084 rows)
+
+[237/499] Processing query 240
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 240.csv
+  ✓ Success! (6 rows)
+
+[238/499] Processing query 242
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 242.csv
+  ✓ Success! (75 rows)
+
+[239/499] Processing query 243
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 243.csv
+  ✓ Success! (0 rows)
+
+[240/499] Processing query 244
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 244.csv
+  ✓ Success! (0 rows)
+
+[241/499] Processing query 245
+  → Removed RAW keyword
+  → Executing query...
+  ✗ Error executing SQL: 400 Client Error: Bad Request for url: http://localhost:8093/query/service
+  ✗ Failed to execute query
+
+[242/499] Processing query 247
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 247.csv
+  ✓ Success! (18 rows)
+
+[243/499] Processing query 248
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 248.csv
+  ✓ Success! (4 rows)
+
+[244/499] Processing query 249
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 249.csv
+  ✓ Success! (0 rows)
+
+[245/499] Processing query 25
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 25.csv
+  ✓ Success! (8 rows)
+
+[246/499] Processing query 253
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 253.csv
+  ✓ Success! (6 rows)
+
+[247/499] Processing query 255
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 255.csv
+  ✓ Success! (1 rows)
+
+[248/499] Processing query 26
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 26.csv
+  ✓ Success! (0 rows)
+
+[249/499] Processing query 260
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 260.csv
+  ✓ Success! (1 rows)
+
+[250/499] Processing query 263
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 263.csv
+  ✓ Success! (1 rows)
+
+[251/499] Processing query 268
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 268.csv
+  ✓ Success! (2 rows)
+
+[252/499] Processing query 27
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 27.csv
+  ✓ Success! (832 rows)
+
+[253/499] Processing query 273
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 273.csv
+  ✓ Success! (1 rows)
+
+[254/499] Processing query 28
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 28.csv
+  ✓ Success! (0 rows)
+
+[255/499] Processing query 281
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 281.csv
+  ✓ Success! (9 rows)
+
+[256/499] Processing query 282
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 282.csv
+  ✓ Success! (1 rows)
+
+[257/499] Processing query 31
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 31.csv
+  ✓ Success! (1 rows)
+
+[258/499] Processing query 32
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 32.csv
+  ✓ Success! (5 rows)
+
+[259/499] Processing query 327
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 327.csv
+  ✓ Success! (0 rows)
+
+[260/499] Processing query 340
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 340.csv
+  ✓ Success! (25061 rows)
+
+[261/499] Processing query 341
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 341.csv
+  ✓ Success! (72 rows)
+
+[262/499] Processing query 344
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 344.csv
+  ✓ Success! (2 rows)
+
+[263/499] Processing query 345
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 345.csv
+  ✓ Success! (3810 rows)
+
+[264/499] Processing query 346
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 346.csv
+  ✓ Success! (29936 rows)
+
+[265/499] Processing query 347
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 347.csv
+  ✓ Success! (0 rows)
+
+[266/499] Processing query 349
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 349.csv
+  ✓ Success! (0 rows)
+
+[267/499] Processing query 352
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 352.csv
+  ✓ Success! (1 rows)
+
+[268/499] Processing query 356
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 356.csv
+  ✓ Success! (1 rows)
+
+[269/499] Processing query 358
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 358.csv
+  ✓ Success! (4 rows)
+
+[270/499] Processing query 36
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 36.csv
+  ✓ Success! (1 rows)
+
+[271/499] Processing query 366
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 366.csv
+  ✓ Success! (32 rows)
+
+[272/499] Processing query 368
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 368.csv
+  ✓ Success! (1 rows)
+
+[273/499] Processing query 37
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 37.csv
+  ✓ Success! (1 rows)
+
+[274/499] Processing query 371
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 371.csv
+  ✓ Success! (1 rows)
+
+[275/499] Processing query 377
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 377.csv
+  ✓ Success! (1 rows)
+
+[276/499] Processing query 379
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 379.csv
+  ✓ Success! (804 rows)
+
+[277/499] Processing query 383
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 383.csv
+  ✓ Success! (1 rows)
+
+[278/499] Processing query 39
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 39.csv
+  ✓ Success! (1 rows)
+
+[279/499] Processing query 391
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 391.csv
+  ✓ Success! (69 rows)
+
+[280/499] Processing query 397
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 397.csv
+  ✓ Success! (548 rows)
+
+[281/499] Processing query 40
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 40.csv
+  ✓ Success! (0 rows)
+
+[282/499] Processing query 402
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 402.csv
+  ✓ Success! (1 rows)
+
+[283/499] Processing query 405
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 405.csv
+  ✓ Success! (1 rows)
+
+[284/499] Processing query 407
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 407.csv
+  ✓ Success! (381 rows)
+
+[285/499] Processing query 408
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 408.csv
+  ✓ Success! (1 rows)
+
+[286/499] Processing query 409
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 409.csv
+  ✓ Success! (1 rows)
+
+[287/499] Processing query 41
+  → Removed RAW keyword
+  → Executing query...
+  ✗ Error executing SQL: 500 Server Error: Internal Server Error for url: http://localhost:8093/query/service
+  ✗ Failed to execute query
+
+[288/499] Processing query 412
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 412.csv
+  ✓ Success! (0 rows)
+
+[289/499] Processing query 414
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 414.csv
+  ✓ Success! (0 rows)
+
+[290/499] Processing query 415
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 415.csv
+  ✓ Success! (1 rows)
+
+[291/499] Processing query 416
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 416.csv
+  ✓ Success! (1 rows)
+
+[292/499] Processing query 422
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 422.csv
+  ✓ Success! (1 rows)
+
+[293/499] Processing query 424
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 424.csv
+  ✓ Success! (1 rows)
+
+[294/499] Processing query 427
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 427.csv
+  ✓ Success! (10 rows)
+
+[295/499] Processing query 440
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 440.csv
+  ✓ Success! (1 rows)
+
+[296/499] Processing query 45
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 45.csv
+  ✓ Success! (1 rows)
+
+[297/499] Processing query 459
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 459.csv
+  ✓ Success! (1 rows)
+
+[298/499] Processing query 46
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 46.csv
+  ✓ Success! (1 rows)
+
+[299/499] Processing query 462
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 462.csv
+  ✓ Success! (0 rows)
+
+[300/499] Processing query 465
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 465.csv
+  ✓ Success! (0 rows)
+
+[301/499] Processing query 466
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 466.csv
+  ✓ Success! (1 rows)
+
+[302/499] Processing query 468
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 468.csv
+  ✓ Success! (1 rows)
+
+[303/499] Processing query 469
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 469.csv
+  ✓ Success! (2 rows)
+
+[304/499] Processing query 47
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 47.csv
+  ✓ Success! (1 rows)
+
+[305/499] Processing query 472
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 472.csv
+  ✓ Success! (1 rows)
+
+[306/499] Processing query 473
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 473.csv
+  ✓ Success! (0 rows)
+
+[307/499] Processing query 474
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 474.csv
+  ✓ Success! (1 rows)
+
+[308/499] Processing query 477
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 477.csv
+  ✓ Success! (2 rows)
+
+[309/499] Processing query 479
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 479.csv
+  ✓ Success! (1 rows)
+
+[310/499] Processing query 48
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 48.csv
+  ✓ Success! (1 rows)
+
+[311/499] Processing query 480
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 480.csv
+  ✓ Success! (0 rows)
+
+[312/499] Processing query 483
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 483.csv
+  ✓ Success! (0 rows)
+
+[313/499] Processing query 484
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 484.csv
+  ✓ Success! (0 rows)
+
+[314/499] Processing query 486
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 486.csv
+  ✓ Success! (1 rows)
+
+[315/499] Processing query 487
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 487.csv
+  ✓ Success! (1 rows)
+
+[316/499] Processing query 5
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 5.csv
+  ✓ Success! (1 rows)
+
+[317/499] Processing query 50
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 50.csv
+  ✓ Success! (1 rows)
+
+[318/499] Processing query 518
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 518.csv
+  ✓ Success! (1 rows)
+
+[319/499] Processing query 522
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 522.csv
+  ✓ Success! (2 rows)
+
+[320/499] Processing query 528
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 528.csv
+  ✓ Success! (199 rows)
+
+[321/499] Processing query 529
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 529.csv
+  ✓ Success! (0 rows)
+
+[322/499] Processing query 530
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 530.csv
+  ✓ Success! (5 rows)
+
+[323/499] Processing query 531
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 531.csv
+  ✓ Success! (1 rows)
+
+[324/499] Processing query 532
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 532.csv
+  ✓ Success! (4135 rows)
+
+[325/499] Processing query 533
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 533.csv
+  ✓ Success! (1 rows)
+
+[326/499] Processing query 537
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 537.csv
+  ✓ Success! (1 rows)
+
+[327/499] Processing query 539
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 539.csv
+  ✓ Success! (1 rows)
+
+[328/499] Processing query 544
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 544.csv
+  ✓ Success! (1 rows)
+
+[329/499] Processing query 547
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 547.csv
+  ✓ Success! (1 rows)
+
+[330/499] Processing query 549
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 549.csv
+  ✓ Success! (0 rows)
+
+[331/499] Processing query 555
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 555.csv
+  ✓ Success! (1 rows)
+
+[332/499] Processing query 557
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 557.csv
+  ✓ Success! (1 rows)
+
+[333/499] Processing query 563
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 563.csv
+  ✓ Success! (0 rows)
+
+[334/499] Processing query 565
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 565.csv
+  ✓ Success! (1 rows)
+
+[335/499] Processing query 567
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 567.csv
+  ✓ Success! (1 rows)
+
+[336/499] Processing query 568
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 568.csv
+  ✓ Success! (1 rows)
+
+[337/499] Processing query 571
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 571.csv
+  ✓ Success! (1 rows)
+
+[338/499] Processing query 572
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 572.csv
+  ✓ Success! (1 rows)
+
+[339/499] Processing query 573
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 573.csv
+  ✓ Success! (5 rows)
+
+[340/499] Processing query 576
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 576.csv
+  ✓ Success! (1 rows)
+
+[341/499] Processing query 578
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 578.csv
+  ✓ Success! (1 rows)
+
+[342/499] Processing query 581
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 581.csv
+  ✓ Success! (0 rows)
+
+[343/499] Processing query 584
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 584.csv
+  ✓ Success! (0 rows)
+
+[344/499] Processing query 586
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 586.csv
+  ✓ Success! (2 rows)
+
+[345/499] Processing query 587
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 587.csv
+  ✓ Success! (0 rows)
+
+[346/499] Processing query 592
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 592.csv
+  ✓ Success! (2875 rows)
+
+[347/499] Processing query 595
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 595.csv
+  ✓ Success! (0 rows)
+
+[348/499] Processing query 598
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 598.csv
+  ✓ Success! (1 rows)
+
+[349/499] Processing query 604
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 604.csv
+  ✓ Success! (1 rows)
+
+[350/499] Processing query 62
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 62.csv
+  ✓ Success! (1 rows)
+
+[351/499] Processing query 629
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 629.csv
+  ✓ Success! (1 rows)
+
+[352/499] Processing query 633
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 633.csv
+  ✓ Success! (0 rows)
+
+[353/499] Processing query 634
+  → No RAW keyword found
+  → Executing query...
+  ✗ Error executing SQL: 404 Client Error: Not Found for url: http://localhost:8093/query/service
+  ✗ Failed to execute query
+
+[354/499] Processing query 637
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 637.csv
+  ✓ Success! (0 rows)
+
+[355/499] Processing query 639
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 639.csv
+  ✓ Success! (1 rows)
+
+[356/499] Processing query 640
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 640.csv
+  ✓ Success! (1 rows)
+
+[357/499] Processing query 665
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 665.csv
+  ✓ Success! (0 rows)
+
+[358/499] Processing query 669
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 669.csv
+  ✓ Success! (1 rows)
+
+[359/499] Processing query 671
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 671.csv
+  ✓ Success! (1 rows)
+
+[360/499] Processing query 672
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 672.csv
+  ✓ Success! (1 rows)
+
+[361/499] Processing query 678
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 678.csv
+  ✓ Success! (0 rows)
+
+[362/499] Processing query 682
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 682.csv
+  ✓ Success! (1 rows)
+
+[363/499] Processing query 683
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 683.csv
+  ✓ Success! (1 rows)
+
+[364/499] Processing query 685
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 685.csv
+  ✓ Success! (0 rows)
+
+[365/499] Processing query 687
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 687.csv
+  ✓ Success! (1 rows)
+
+[366/499] Processing query 694
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 694.csv
+  ✓ Success! (10 rows)
+
+[367/499] Processing query 701
+  → Removed RAW keyword
+  → Executing query...
+  ✗ Error executing SQL: 500 Server Error: Internal Server Error for url: http://localhost:8093/query/service
+  ✗ Failed to execute query
+
+[368/499] Processing query 704
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 704.csv
+  ✓ Success! (1 rows)
+
+[369/499] Processing query 705
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 705.csv
+  ✓ Success! (1 rows)
+
+[370/499] Processing query 707
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 707.csv
+  ✓ Success! (0 rows)
+
+[371/499] Processing query 710
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 710.csv
+  ✓ Success! (1 rows)
+
+[372/499] Processing query 716
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 716.csv
+  ✓ Success! (1 rows)
+
+[373/499] Processing query 717
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 717.csv
+  ✓ Success! (4 rows)
+
+[374/499] Processing query 719
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 719.csv
+  ✓ Success! (1 rows)
+
+[375/499] Processing query 72
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 72.csv
+  ✓ Success! (1 rows)
+
+[376/499] Processing query 723
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 723.csv
+  ✓ Success! (1 rows)
+
+[377/499] Processing query 724
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 724.csv
+  ✓ Success! (90 rows)
+
+[378/499] Processing query 726
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 726.csv
+  ✓ Success! (366 rows)
+
+[379/499] Processing query 728
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 728.csv
+  ✓ Success! (19 rows)
+
+[380/499] Processing query 730
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 730.csv
+  ✓ Success! (200 rows)
+
+[381/499] Processing query 732
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 732.csv
+  ✓ Success! (0 rows)
+
+[382/499] Processing query 733
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 733.csv
+  ✓ Success! (1 rows)
+
+[383/499] Processing query 736
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 736.csv
+  ✓ Success! (1 rows)
+
+[384/499] Processing query 737
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 737.csv
+  ✓ Success! (1 rows)
+
+[385/499] Processing query 738
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 738.csv
+  ✓ Success! (368 rows)
+
+[386/499] Processing query 739
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 739.csv
+  ✓ Success! (7 rows)
+
+[387/499] Processing query 740
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 740.csv
+  ✓ Success! (1 rows)
+
+[388/499] Processing query 743
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 743.csv
+  ✓ Success! (1 rows)
+
+[389/499] Processing query 744
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 744.csv
+  ✓ Success! (1 rows)
+
+[390/499] Processing query 745
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 745.csv
+  ✓ Success! (1 rows)
+
+[391/499] Processing query 747
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 747.csv
+  ✓ Success! (1 rows)
+
+[392/499] Processing query 750
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 750.csv
+  ✓ Success! (1 rows)
+
+[393/499] Processing query 751
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 751.csv
+  ✓ Success! (5 rows)
+
+[394/499] Processing query 753
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 753.csv
+  ✓ Success! (0 rows)
+
+[395/499] Processing query 758
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 758.csv
+  ✓ Success! (0 rows)
+
+[396/499] Processing query 760
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 760.csv
+  ✓ Success! (1 rows)
+
+[397/499] Processing query 761
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 761.csv
+  ✓ Success! (0 rows)
+
+[398/499] Processing query 764
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 764.csv
+  ✓ Success! (4 rows)
+
+[399/499] Processing query 765
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 765.csv
+  ✓ Success! (1 rows)
+
+[400/499] Processing query 766
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 766.csv
+  ✓ Success! (0 rows)
+
+[401/499] Processing query 769
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 769.csv
+  ✓ Success! (0 rows)
+
+[402/499] Processing query 77
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 77.csv
+  ✓ Success! (0 rows)
+
+[403/499] Processing query 772
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 772.csv
+  ✓ Success! (5 rows)
+
+[404/499] Processing query 773
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 773.csv
+  ✓ Success! (157 rows)
+
+[405/499] Processing query 775
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 775.csv
+  ✓ Success! (1 rows)
+
+[406/499] Processing query 779
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 779.csv
+  ✓ Success! (1 rows)
+
+[407/499] Processing query 781
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 781.csv
+  ✓ Success! (3 rows)
+
+[408/499] Processing query 782
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 782.csv
+  ✓ Success! (11 rows)
+
+[409/499] Processing query 785
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 785.csv
+  ✓ Success! (28 rows)
+
+[410/499] Processing query 786
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 786.csv
+  ✓ Success! (1 rows)
+
+[411/499] Processing query 788
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 788.csv
+  ✓ Success! (1 rows)
+
+[412/499] Processing query 79
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 79.csv
+  ✓ Success! (1 rows)
+
+[413/499] Processing query 790
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 790.csv
+  ✓ Success! (1 rows)
+
+[414/499] Processing query 791
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 791.csv
+  ✓ Success! (1 rows)
+
+[415/499] Processing query 792
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 792.csv
+  ✓ Success! (8 rows)
+
+[416/499] Processing query 794
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 794.csv
+  ✓ Success! (1 rows)
+
+[417/499] Processing query 796
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 796.csv
+  ✓ Success! (6 rows)
+
+[418/499] Processing query 797
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 797.csv
+  ✓ Success! (21 rows)
+
+[419/499] Processing query 798
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 798.csv
+  ✓ Success! (3 rows)
+
+[420/499] Processing query 800
+  → Removed RAW keyword
+  → Executing query...
+  ✗ Error executing SQL: 500 Server Error: Internal Server Error for url: http://localhost:8093/query/service
+  ✗ Failed to execute query
+
+[421/499] Processing query 801
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 801.csv
+  ✓ Success! (1 rows)
+
+[422/499] Processing query 806
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 806.csv
+  ✓ Success! (1 rows)
+
+[423/499] Processing query 819
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 819.csv
+  ✓ Success! (1 rows)
+
+[424/499] Processing query 82
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 82.csv
+  ✓ Success! (1 rows)
+
+[425/499] Processing query 822
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 822.csv
+  ✓ Success! (1 rows)
+
+[426/499] Processing query 824
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 824.csv
+  ✓ Success! (3 rows)
+
+[427/499] Processing query 825
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 825.csv
+  ✓ Success! (0 rows)
+
+[428/499] Processing query 829
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 829.csv
+  ✓ Success! (1 rows)
+
+[429/499] Processing query 83
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 83.csv
+  ✓ Success! (1 rows)
+
+[430/499] Processing query 846
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 846.csv
+  ✓ Success! (5 rows)
+
+[431/499] Processing query 847
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 847.csv
+  ✓ Success! (1 rows)
+
+[432/499] Processing query 85
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 85.csv
+  ✓ Success! (0 rows)
+
+[433/499] Processing query 850
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 850.csv
+  ✓ Success! (3 rows)
+
+[434/499] Processing query 854
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 854.csv
+  ✓ Success! (11 rows)
+
+[435/499] Processing query 857
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 857.csv
+  ✓ Success! (9 rows)
+
+[436/499] Processing query 859
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 859.csv
+  ✓ Success! (1 rows)
+
+[437/499] Processing query 861
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 861.csv
+  ✓ Success! (0 rows)
+
+[438/499] Processing query 862
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 862.csv
+  ✓ Success! (1 rows)
+
+[439/499] Processing query 865
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 865.csv
+  ✓ Success! (0 rows)
+
+[440/499] Processing query 866
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 866.csv
+  ✓ Success! (0 rows)
+
+[441/499] Processing query 868
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 868.csv
+  ✓ Success! (19 rows)
+
+[442/499] Processing query 869
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 869.csv
+  ✓ Success! (0 rows)
+
+[443/499] Processing query 87
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 87.csv
+  ✓ Success! (3 rows)
+
+[444/499] Processing query 872
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 872.csv
+  ✓ Success! (0 rows)
+
+[445/499] Processing query 875
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 875.csv
+  ✓ Success! (0 rows)
+
+[446/499] Processing query 877
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 877.csv
+  ✓ Success! (1 rows)
+
+[447/499] Processing query 879
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 879.csv
+  ✓ Success! (0 rows)
+
+[448/499] Processing query 880
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 880.csv
+  ✓ Success! (1 rows)
+
+[449/499] Processing query 881
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 881.csv
+  ✓ Success! (1 rows)
+
+[450/499] Processing query 884
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 884.csv
+  ✓ Success! (0 rows)
+
+[451/499] Processing query 89
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 89.csv
+  ✓ Success! (1 rows)
+
+[452/499] Processing query 892
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 892.csv
+  ✓ Success! (0 rows)
+
+[453/499] Processing query 894
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 894.csv
+  ✓ Success! (1 rows)
+
+[454/499] Processing query 895
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 895.csv
+  ✓ Success! (1 rows)
+
+[455/499] Processing query 896
+  → Removed RAW keyword
+  → Executing query...
+  ✗ Error executing SQL: 500 Server Error: Internal Server Error for url: http://localhost:8093/query/service
+  ✗ Failed to execute query
+
+[456/499] Processing query 897
+  → Removed RAW keyword
+  → Executing query...
+  ✗ Error executing SQL: 400 Client Error: Bad Request for url: http://localhost:8093/query/service
+  ✗ Failed to execute query
+
+[457/499] Processing query 898
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 898.csv
+  ✓ Success! (1 rows)
+
+[458/499] Processing query 901
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 901.csv
+  ✓ Success! (3 rows)
+
+[459/499] Processing query 902
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 902.csv
+  ✓ Success! (5 rows)
+
+[460/499] Processing query 904
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 904.csv
+  ✓ Success! (1 rows)
+
+[461/499] Processing query 906
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 906.csv
+  ✓ Success! (0 rows)
+
+[462/499] Processing query 909
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 909.csv
+  ✓ Success! (1 rows)
+
+[463/499] Processing query 910
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 910.csv
+  ✓ Success! (1 rows)
+
+[464/499] Processing query 912
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 912.csv
+  ✓ Success! (1 rows)
+
+[465/499] Processing query 915
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 915.csv
+  ✓ Success! (1 rows)
+
+[466/499] Processing query 92
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 92.csv
+  ✓ Success! (1 rows)
+
+[467/499] Processing query 928
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 928.csv
+  ✓ Success! (1 rows)
+
+[468/499] Processing query 93
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 93.csv
+  ✓ Success! (1 rows)
+
+[469/499] Processing query 930
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 930.csv
+  ✓ Success! (1 rows)
+
+[470/499] Processing query 931
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 931.csv
+  ✓ Success! (1 rows)
+
+[471/499] Processing query 933
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 933.csv
+  ✓ Success! (1 rows)
+
+[472/499] Processing query 937
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 937.csv
+  ✓ Success! (1 rows)
+
+[473/499] Processing query 94
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 94.csv
+  ✓ Success! (1 rows)
+
+[474/499] Processing query 940
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 940.csv
+  ✓ Success! (1 rows)
+
+[475/499] Processing query 944
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 944.csv
+  ✓ Success! (1 rows)
+
+[476/499] Processing query 945
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 945.csv
+  ✓ Success! (1 rows)
+
+[477/499] Processing query 948
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 948.csv
+  ✓ Success! (1 rows)
+
+[478/499] Processing query 95
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 95.csv
+  ✓ Success! (0 rows)
+
+[479/499] Processing query 950
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 950.csv
+  ✓ Success! (0 rows)
+
+[480/499] Processing query 951
+  → No RAW keyword found
+  → Executing query...
+  ✗ Error executing SQL: 400 Client Error: Bad Request for url: http://localhost:8093/query/service
+  ✗ Failed to execute query
+
+[481/499] Processing query 954
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 954.csv
+  ✓ Success! (1 rows)
+
+[482/499] Processing query 955
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 955.csv
+  ✓ Success! (25 rows)
+
+[483/499] Processing query 959
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 959.csv
+  ✓ Success! (1 rows)
+
+[484/499] Processing query 960
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 960.csv
+  ✓ Success! (1 rows)
+
+[485/499] Processing query 962
+  → Removed RAW keyword
+  → Executing query...
+  ✗ Error executing SQL: 400 Client Error: Bad Request for url: http://localhost:8093/query/service
+  ✗ Failed to execute query
+
+[486/499] Processing query 963
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 963.csv
+  ✓ Success! (1 rows)
+
+[487/499] Processing query 964
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 964.csv
+  ✓ Success! (2 rows)
+
+[488/499] Processing query 967
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 967.csv
+  ✓ Success! (1 rows)
+
+[489/499] Processing query 971
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 971.csv
+  ✓ Success! (1 rows)
+
+[490/499] Processing query 972
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 972.csv
+  ✓ Success! (4 rows)
+
+[491/499] Processing query 977
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 977.csv
+  ✓ Success! (1 rows)
+
+[492/499] Processing query 978
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 978.csv
+  ✓ Success! (3 rows)
+
+[493/499] Processing query 98
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 98.csv
+  ✓ Success! (0 rows)
+
+[494/499] Processing query 981
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 981.csv
+  ✓ Success! (1 rows)
+
+[495/499] Processing query 988
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 988.csv
+  ✓ Success! (3 rows)
+
+[496/499] Processing query 989
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 989.csv
+  ✓ Success! (1 rows)
+
+[497/499] Processing query 99
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 99.csv
+  ✓ Success! (1 rows)
+
+[498/499] Processing query 990
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 990.csv
+  ✓ Success! (1 rows)
+
+[499/499] Processing query 994
+  → No RAW keyword found
+  → Executing query...
+  ✗ Error executing SQL: 400 Client Error: Bad Request for url: http://localhost:8093/query/service
+  ✗ Failed to execute query
+
+================================================================================
+SUMMARY
+================================================================================
+Total queries: 499
+Successful: 480
+Failed: 19
+Success rate: 96.19%
+
+Output saved to: /Users/aayush.fabwani/Documents/Projects/Benchmark/Work/mini_dev/Scripts/couchbase_iq_results/baseline2/csv_outputs2
+Log saved to: /Users/aayush.fabwani/Documents/Projects/Benchmark/Work/mini_dev/Scripts/execute_baseline2_without_raw.log
+
+RUN COMPLETED: 2026-02-03 17:48:44
+================================================================================
+
+================================================================================
+RUN STARTED: 2026-02-03 17:48:57
+================================================================================
+Found 499 SQL files to process
+Input directory: /Users/aayush.fabwani/Documents/Projects/Benchmark/Work/mini_dev/Scripts/couchbase_iq_results/baseline2/sql_outputs
+Output directory: /Users/aayush.fabwani/Documents/Projects/Benchmark/Work/mini_dev/Scripts/couchbase_iq_results/baseline2/csv_outputs2
+================================================================================
+
+[1/499] Processing query 100
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 100.csv
+  ✓ Success! (1 rows)
+
+[2/499] Processing query 1001
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1001.csv
+  ✓ Success! (0 rows)
+
+[3/499] Processing query 1002
+  → Removed RAW keyword
+  → Executing query...
+  → Saving results to 1002.csv
+  ✓ Success! (1 rows)
+
+[4/499] Processing query 1003
+  → No RAW keyword found
+  → Executing query...
+  → Saving results to 1003.csv
+  ✓ Success! (1 rows)
+
+[5/499] Processing query 1011
+  → Removed RAW keyword
+  → Executing query...
+
+================================================================================
+RUN STARTED: 2026-02-04 11:08:40
+================================================================================
+No SQL files found in /Users/aayush.fabwani/Documents/Projects/Benchmark/Work/mini_dev/Scripts/couchbase_iq_results/baseline2/sql_outputs
+
+RUN COMPLETED: 2026-02-04 11:08:40
+================================================================================

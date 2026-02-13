@@ -9,7 +9,7 @@ from datetime import datetime, timedelta
 
 SCRIPT_DIR = Path(__file__).parent
 CONFIG_FILE = SCRIPT_DIR.parent / "IQ_config.json"
-OUTPUT_DIR = SCRIPT_DIR / "couchbase_iq_results" / "baseline1"
+OUTPUT_DIR = SCRIPT_DIR / "couchbase_iq_results" / "baseline5"
 OUTPUT_SQL_DIR = OUTPUT_DIR / "sql_outputs"
 OUTPUT_CSV_DIR = OUTPUT_DIR / "csv_outputs"
 JSON_OUTPUT_DIR = SCRIPT_DIR / "sqlLiteToJson" / "json_outputs"
@@ -45,7 +45,7 @@ class CouchbaseIqAPI:
         self.couchbase_user = couchbase_user
         self.couchbase_pass = couchbase_pass
 
-    def generate_sql(self, keyspaces: List[str], question: str, evidence: Optional[str] = None, max_retries: int = 10) -> tuple:
+    def generate_sql(self, keyspaces: List[str], question: str, evidence: Optional[str] = None, max_retries: int = 5) -> tuple:
         """
         Generate SQL using Couchbase IQ with retry logic for error code 19214.
         
@@ -67,8 +67,7 @@ class CouchbaseIqAPI:
         # Build the statement with the WITH clause
         with_clause_json = json.dumps(with_params)
         # statement = f"USING AI WITH {with_clause_json} /*{evidence}*/ \"{question}\""
-        statement = f"USING AI WITH {with_clause_json} /*{evidence}*/\"{question}\""
-        
+        statement = f"USING AI WITH {with_clause_json}. Generate a syntactically correct query under these mandatory constraints: use only provided keyspaces and existing fields; never use *;Main SELECT must NOT use RAW and must return standard field expressions only; RAW is allowed only inside SELECT subqueries.; subquery value access must use IN (SELECT RAW ...) or =(SELECT RAW ...)[0]; When calculating percentages, for any SELECT RAW used in the denominator, the subquery MUST be immediately followed by [0]; NO correlated subqueries (use JOIN); do not repeat aliases and alias must not equal bucket name; no DIVIDE or SUBTRACT; use DISTINCT and handle NULL when needed; do not add ':' after FROM; return only what is asked. Q:{question} Hint:{evidence}"
         print(f"SS:  Question: {question}")
         print(f"SS:  External Knowledge: {evidence}")
         print(f"SS:  Statement: {statement}")
@@ -116,22 +115,30 @@ class CouchbaseIqAPI:
                             print(f"  ✗ Error generating SQL - Code: {error_code} (Attempt {attempt}/{max_retries})")
                             print(f"     Message: {error_msg[:200]}...")  # First 200 chars
                             
-                            # For error codes 19214 or 19212, extract SQL from between ``` markers instead of retrying
+                            # For error codes 19214 or 19212, retry up to max_retries times first
                             if error_code in [19214, 19212]:
-                                print(f"  ⚡ Error {error_code} detected - extracting SQL from error message...")
-                                # Extract content between ``` markers
-                                sql_match = re.search(r'```\s*(.*?)\s*```', error_msg, re.DOTALL)
-                                if sql_match:
-                                    extracted_sql = sql_match.group(1).strip()
-                                    print(f"  ✓ Extracted SQL from error message ({len(extracted_sql)} chars)")
-                                    print(f"================================================= SS ================================================")
-                                    return (extracted_sql, statement)
+                                if attempt < max_retries:
+                                    print(f"  ↻ Error {error_code} detected - retrying ({attempt}/{max_retries})...")
+                                    time.sleep(1)
+                                    continue
                                 else:
-                                    print(f"  ✗ Could not extract SQL from error message")
-                                    if attempt < max_retries:
-                                        print(f"  ↻ Retrying request...")
-                                        time.sleep(1)
-                                        continue
+                                    # After max_retries attempts, try to extract SQL from error message
+                                    print(f"  ⚡ Max retries reached - attempting to extract SQL from error message...")
+                                    # Extract content between ``` markers
+                                    sql_match = re.search(r'```\s*(.*?)\s*```', error_msg, re.DOTALL)
+                                    if sql_match:
+                                        extracted_sql = sql_match.group(1).strip()
+                                        print(f"  ✓ Extracted SQL from error message ({len(extracted_sql)} chars)")
+                                        print(f"================================================= SS ================================================")
+                                        return (extracted_sql, statement)
+                                    else:
+                                        print(f"  ✗ Could not extract SQL from error message")
+                            else:
+                                # For other error codes, retry if attempts remain
+                                if attempt < max_retries:
+                                    print(f"  ↻ Retrying request...")
+                                    time.sleep(2)
+                                    continue
                         else:
                             print(f"  ✗ Error generating SQL: {error_data}")
                     except:
@@ -139,7 +146,13 @@ class CouchbaseIqAPI:
                 else:
                     print(f"  ✗ Error generating SQL: {e}")
                 
-                # If we reach here, don't retry (non-19214 error or max retries reached)
+                # If we reach here and have attempts left, retry
+                if attempt < max_retries:
+                    print(f"  ↻ Retrying request...")
+                    time.sleep(1)
+                    continue
+                
+                # Max retries reached, return failure
                 print(f"================================================= SS ================================================")
                 return ("", statement)
 
@@ -257,8 +270,9 @@ def json_to_csv(json_results: List[Dict], output_file: Path) -> bool:
         return True
     
     try:
-        # Get all unique keys from all results
-        all_keys = set()
+        # Get all unique keys from all results while preserving order
+        # Use dict to maintain insertion order (Python 3.7+)
+        all_keys = {}
         for result in json_results:
             # Handle nested dictionaries (Couchbase results might be nested)
             if isinstance(result, dict):
@@ -266,9 +280,9 @@ def json_to_csv(json_results: List[Dict], output_file: Path) -> bool:
                     if isinstance(value, dict):
                         # Flatten nested dict
                         for nested_key in value.keys():
-                            all_keys.add(f"{key}.{nested_key}")
+                            all_keys[f"{key}.{nested_key}"] = None
                     else:
-                        all_keys.add(key)
+                        all_keys[key] = None
         
         if not all_keys:
             # No keys found - empty result
@@ -276,7 +290,7 @@ def json_to_csv(json_results: List[Dict], output_file: Path) -> bool:
                 f.write('')
             return True
         
-        fieldnames = sorted(all_keys)
+        fieldnames = list(all_keys.keys())  # Preserves original query order
         
         with open(output_file, 'w', newline='') as f:
             writer = csv.DictWriter(f, fieldnames=fieldnames)

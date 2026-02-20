@@ -1,0 +1,273 @@
+
+================================================================================
+RUN STARTED: 2026-02-20 15:24:24 IST
+================================================================================
+Total questions in dataset: 500
+Found 497 test result files
+Missing/Failed: 3
+Comparing with gold results from /Users/aayush.fabwani/Documents/Projects/Benchmark/Work/mini_dev/Scripts/comparingResults/2sql_query_results
+================================================================================
+Note: Test file for query 1001 is empty
+Query 1001: FAILED - Missing: 0 rows, Extra: 0 rows | Mapping: 0 fuzzy + 0 positional
+Query 1002: FAILED - Missing: 1 rows, Extra: 1 rows | Mapping: 3 fuzzy + 0 positional
+Query 1011: FAILED - Missing: 20 rows, Extra: 1 rows | Mapping: 2 fuzzy + 0 positional
+Query 1014: FAILED - Missing: 1 rows, Extra: 3 rows | Mapping: 0 fuzzy + 1 positional
+Note: Test file for query 1030 is empty
+Query 1030: FAILED - Missing: 0 rows, Extra: 0 rows | Mapping: 0 fuzzy + 0 positional
+Query 1032: FAILED - Missing: 3 rows, Extra: 1 rows | Mapping: 0 fuzzy + 1 positional
+Query 1039: FAILED - Missing: 1 rows, Extra: 1 rows | Mapping: 0 fuzzy + 1 positional
+Query 1040: FAILED - Missing: 1 rows, Extra: 1 rows | Mapping: 1 fuzzy + 0 positional
+Note: Test file for query 1058 is empty
+Query 1058: FAILED - Missing: 0 rows, Extra: 0 rows | Mapping: 0 fuzzy + 0 positional
+Note: Test file for query 1078 is empty
+Query 1078: FAILED - Missing: 0 rows, Extra: 0 rows | Mapping: 0 fuzzy + 0 positional
+Note: Test file for query 1079 is empty
+Query 1079: FAILED - Missing: 0 rows, Extra: 0 rows | Mapping: 0 fuzzy + 0 positional
+Query 1080: FAILED - Missing: 1 rows, Extra: 1 rows | Mapping: 0 fuzzy + 1 positional
+Query 1107: FAILED - Missing: 1 rows, Extra: 3 rows | Mapping: 1 fuzzy + 0 positional
+Note: Test file for query 1115 is empty
+Query 1115: FAILED - Missing: 0 rows, Extra: 0 rows | Mapping: 0 fuzzy + 0 positional
+Note: Test file for query 1116 is empty
+Query 1116: FAILED - Missing: 0 rows, Extra: 0 rows | Mapping: 0 fuzzy + 0 positional
+Query 1135: FAILED - Missing: 2 rows, Extra: 1 rows | Mapping: 1 fuzzy + 0 positional
+Query 1136: FAILED - Missing: 1 rows, Extra: 1 rows | Mapping: 0 fuzzy + 1 positional
+Query 1144: FAILED - Missing: 0 rows, Extra: 7 rows | Mapping: 2 fuzzy + 0 positional
+Query 1148: FAILED - Missing: 1 rows, Extra: 1 rows | Mapping: 1 fuzzy + 0 positional
+Query 1149: FAILED - Missing: 1 rows, Extra: 1 rows | Mapping: 0 fuzzy + 1 positional
+Note: Test file for query 115 is empty
+Query 115: FAILED - Missing: 0 rows, Extra: 0 rows | Mapping: 0 fuzzy + 0 positional
+Query 1150: FAILED - Missing: 1 rows, Extra: 1 rows | Mapping: 0 fuzzy + 1 positional
+Query 1156: FAILED - Missing: 7 rows, Extra: 7 rows | Mapping: 1 fuzzy + 1 positional
+Note: Test file for query 116 is empty
+Query 116: FAILED - Missing: 0 rows, Extra: 0 rows | Mapping: 0 fuzzy + 0 positional
+Note: Test file for query 1166 is empty
+Query 1166: FAILED - Missing: 0 rows, Extra: 0 rows | Mapping: 0 fuzzy + 0 positional
+Query 1168: FAILED - Missing: 1 rows, Extra: 1 rows | Mapping: 1 fuzzy + 1 positional
+Query 1175: FAILED - Missing: 1 rows, Extra: 1 rows | Mapping: 1 fuzzy + 1 positional
+Query 1185: FAILED - Missing: 1 rows, Extra: 1 rows | Mapping: 0 fuzzy + 1 positional
+Query 1189: FAILED - Missing: 1 rows, Extra: 1 rows | Mapping: 0 fuzzy + 1 positional
+Query 1201: FAILED - Missing: 1 rows, Extra: 1 rows | Mapping: 0 fuzzy + 1 positional
+Query 1229: FAILED - Missing: 1 rows, Extra: 1 rows | Mapping: 1 fuzzy + 0 positional
+Note: Test file for query 1242 is empty
+Query 1242: FAILED - Missing: 0 rows, Extra: 0 rows | Mapping: 0 fuzzy + 0 positional
+Query 1243: FAILED - Missing: 1 rows, Extra: 1 rows | Mapping: 0 fuzzy + 1 positional
+Query 1247: FAILED - Missing: 1 rows, Extra: 1 rows | Mapping: 0 fuzzy + 1 positional
+Query 1251: FAILED - Missing: 1 rows, Extra: 136 rows | Mapping: 1 fuzzy + 0 positional
+Query 1252: FAILED - Missing: 1 rows, Extra: 1 rows | Mapping: 0 fuzzy + 1 positional
+Query 1256: FAILED - Missing: 1 rows, Extra: 1 rows | Mapping: 1 fuzzy + 0 positional
+Query 1267: FAILED - Missing: 1 rows, Extra: 1 rows | Mapping: 1 fuzzy + 0 positional
+Query 128: FAILED - Missing: 9 rows, Extra: 9 rows | Mapping: 0 fuzzy + 2 positional
+Query 1302: FAILED - Missing: 1 rows, Extra: 1 rows | Mapping: 1 fuzzy + 0 positional
+Query 1322: FAILED - Missing: 1 rows, Extra: 4 rows | Mapping: 0 fuzzy + 1 positional
+Query 1323: FAILED - Missing: 0 rows, Extra: 1 rows | Mapping: 1 fuzzy + 0 positional
+Note: Test file for query 1338 is empty
+Query 1338: FAILED - Missing: 0 rows, Extra: 0 rows | Mapping: 0 fuzzy + 0 positional
+Query 1339: FAILED - Missing: 1 rows, Extra: 1 rows | Mapping: 0 fuzzy + 1 positional
+Note: Test file for query 1356 is empty
+Query 1356: FAILED - Missing: 0 rows, Extra: 0 rows | Mapping: 0 fuzzy + 0 positional
+Query 1375: FAILED - Missing: 5 rows, Extra: 5 rows | Mapping: 1 fuzzy + 0 positional
+Query 138: FAILED - Missing: 1 rows, Extra: 1 rows | Mapping: 0 fuzzy + 1 positional
+Note: Test file for query 1387 is empty
+Query 1387: FAILED - Missing: 0 rows, Extra: 0 rows | Mapping: 0 fuzzy + 0 positional
+Note: Test file for query 1389 is empty
+Query 1389: FAILED - Missing: 0 rows, Extra: 0 rows | Mapping: 0 fuzzy + 0 positional
+Query 1390: FAILED - Missing: 1 rows, Extra: 1 rows | Mapping: 0 fuzzy + 1 positional
+Note: Test file for query 1401 is empty
+Query 1401: FAILED - Missing: 0 rows, Extra: 0 rows | Mapping: 0 fuzzy + 0 positional
+Note: Test file for query 1404 is empty
+Query 1404: FAILED - Missing: 0 rows, Extra: 0 rows | Mapping: 0 fuzzy + 0 positional
+Note: Test file for query 1422 is empty
+Query 1422: FAILED - Missing: 0 rows, Extra: 0 rows | Mapping: 0 fuzzy + 0 positional
+Query 145: FAILED - Missing: 25 rows, Extra: 693 rows | Mapping: 0 fuzzy + 1 positional
+Query 1460: FAILED - Missing: 1 rows, Extra: 1 rows | Mapping: 2 fuzzy + 0 positional
+Query 1472: FAILED - Missing: 1 rows, Extra: 1 rows | Mapping: 1 fuzzy + 0 positional
+Query 1473: FAILED - Missing: 1 rows, Extra: 1 rows | Mapping: 0 fuzzy + 1 positional
+Query 1476: FAILED - Missing: 1 rows, Extra: 1 rows | Mapping: 0 fuzzy + 1 positional
+Note: Test file for query 1479 is empty
+Query 1479: FAILED - Missing: 0 rows, Extra: 0 rows | Mapping: 0 fuzzy + 0 positional
+Note: Test file for query 1481 is empty
+Query 1481: FAILED - Missing: 0 rows, Extra: 0 rows | Mapping: 0 fuzzy + 0 positional
+Query 1482: FAILED - Missing: 1 rows, Extra: 3 rows | Mapping: 0 fuzzy + 1 positional
+Query 1490: FAILED - Missing: 1 rows, Extra: 1 rows | Mapping: 0 fuzzy + 1 positional
+Query 1498: FAILED - Missing: 1 rows, Extra: 1 rows | Mapping: 0 fuzzy + 1 positional
+Query 1525: FAILED - Missing: 1 rows, Extra: 1 rows | Mapping: 0 fuzzy + 1 positional
+Note: Test file for query 1526 is empty
+Query 1526: FAILED - Missing: 0 rows, Extra: 0 rows | Mapping: 0 fuzzy + 0 positional
+Query 1529: FAILED - Missing: 1 rows, Extra: 1 rows | Mapping: 0 fuzzy + 2 positional
+Query 1531: FAILED - Missing: 1 rows, Extra: 1 rows | Mapping: 2 fuzzy + 1 positional
+Query 168: FAILED - Missing: 1 rows, Extra: 1 rows | Mapping: 0 fuzzy + 1 positional
+Query 186: FAILED - Missing: 1 rows, Extra: 1 rows | Mapping: 0 fuzzy + 1 positional
+Note: Test file for query 189 is empty
+Query 189: FAILED - Missing: 0 rows, Extra: 0 rows | Mapping: 0 fuzzy + 0 positional
+Query 201: FAILED - Missing: 1 rows, Extra: 1 rows | Mapping: 0 fuzzy + 1 positional
+Query 207: FAILED - Missing: 8 rows, Extra: 0 rows | Mapping: 1 fuzzy + 0 positional
+Query 212: FAILED - Missing: 0 rows, Extra: 0 rows | Mapping: 0 fuzzy + 0 positional
+Query 215: FAILED - Missing: 1 rows, Extra: 1 rows | Mapping: 0 fuzzy + 1 positional
+Query 219: FAILED - Missing: 1 rows, Extra: 1 rows | Mapping: 0 fuzzy + 1 positional
+Query 23: FAILED - Missing: 1239 rows, Extra: 1215 rows | Mapping: 1 fuzzy + 1 positional
+Note: Test file for query 24 is empty
+Query 24: FAILED - Missing: 0 rows, Extra: 0 rows | Mapping: 0 fuzzy + 0 positional
+Query 244: FAILED - Missing: 1 rows, Extra: 1 rows | Mapping: 1 fuzzy + 0 positional
+Query 247: FAILED - Missing: 0 rows, Extra: 2 rows | Mapping: 1 fuzzy + 0 positional
+Note: Test file for query 25 is empty
+Query 25: FAILED - Missing: 0 rows, Extra: 0 rows | Mapping: 0 fuzzy + 0 positional
+Query 273: FAILED - Missing: 1 rows, Extra: 1 rows | Mapping: 0 fuzzy + 1 positional
+Note: Test file for query 28 is empty
+Query 28: FAILED - Missing: 0 rows, Extra: 0 rows | Mapping: 0 fuzzy + 0 positional
+Note: Test file for query 31 is empty
+Query 31: FAILED - Missing: 0 rows, Extra: 0 rows | Mapping: 0 fuzzy + 0 positional
+Note: Test file for query 32 is empty
+Query 32: FAILED - Missing: 0 rows, Extra: 0 rows | Mapping: 0 fuzzy + 0 positional
+Query 344: FAILED - Missing: 0 rows, Extra: 0 rows | Mapping: 0 fuzzy + 0 positional
+Query 346: FAILED - Missing: 0 rows, Extra: 29935 rows | Mapping: 0 fuzzy + 1 positional
+Query 349: FAILED - Missing: 1 rows, Extra: 1 rows | Mapping: 3 fuzzy + 0 positional
+Query 352: FAILED - Missing: 1 rows, Extra: 1 rows | Mapping: 0 fuzzy + 1 positional
+Query 36: FAILED - Missing: 1 rows, Extra: 1 rows | Mapping: 0 fuzzy + 3 positional
+Note: Test file for query 37 is empty
+Query 37: FAILED - Missing: 0 rows, Extra: 0 rows | Mapping: 0 fuzzy + 0 positional
+Query 371: FAILED - Missing: 1 rows, Extra: 1 rows | Mapping: 0 fuzzy + 1 positional
+Missing gold file for query 397
+Query 40: FAILED - Missing: 1 rows, Extra: 1 rows | Mapping: 1 fuzzy + 0 positional
+Query 409: FAILED - Missing: 1 rows, Extra: 1 rows | Mapping: 0 fuzzy + 1 positional
+Note: Test file for query 41 is empty
+Query 41: FAILED - Missing: 0 rows, Extra: 0 rows | Mapping: 0 fuzzy + 0 positional
+Query 415: FAILED - Missing: 1 rows, Extra: 1 rows | Mapping: 0 fuzzy + 1 positional
+Query 416: FAILED - Missing: 1 rows, Extra: 1 rows | Mapping: 0 fuzzy + 1 positional
+Query 424: FAILED - Missing: 1 rows, Extra: 1 rows | Mapping: 0 fuzzy + 1 positional
+Note: Test file for query 46 is empty
+Query 46: FAILED - Missing: 0 rows, Extra: 0 rows | Mapping: 0 fuzzy + 0 positional
+Query 466: FAILED - Missing: 1 rows, Extra: 1 rows | Mapping: 1 fuzzy + 0 positional
+Query 473: FAILED - Missing: 1 rows, Extra: 1 rows | Mapping: 0 fuzzy + 1 positional
+Query 48: FAILED - Missing: 1 rows, Extra: 1 rows | Mapping: 0 fuzzy + 1 positional
+Query 483: FAILED - Missing: 149 rows, Extra: 124 rows | Mapping: 1 fuzzy + 0 positional
+Query 50: FAILED - Missing: 0 rows, Extra: 6 rows | Mapping: 1 fuzzy + 1 positional
+Query 518: FAILED - Missing: 102 rows, Extra: 1 rows | Mapping: 1 fuzzy + 1 positional
+Note: Test file for query 529 is empty
+Query 529: FAILED - Missing: 0 rows, Extra: 0 rows | Mapping: 0 fuzzy + 0 positional
+Query 557: FAILED - Missing: 1 rows, Extra: 1 rows | Mapping: 0 fuzzy + 1 positional
+Query 584: FAILED - Missing: 1 rows, Extra: 0 rows | Mapping: 1 fuzzy + 0 positional
+Query 586: FAILED - Missing: 1 rows, Extra: 0 rows | Mapping: 1 fuzzy + 0 positional
+Note: Test file for query 587 is empty
+Query 587: FAILED - Missing: 0 rows, Extra: 0 rows | Mapping: 0 fuzzy + 0 positional
+Query 592: FAILED - Missing: 1 rows, Extra: 1 rows | Mapping: 0 fuzzy + 1 positional
+Note: Test file for query 595 is empty
+Query 595: FAILED - Missing: 0 rows, Extra: 0 rows | Mapping: 0 fuzzy + 0 positional
+Query 604: FAILED - Missing: 1 rows, Extra: 1 rows | Mapping: 0 fuzzy + 2 positional
+Note: Test file for query 634 is empty
+Query 634: FAILED - Missing: 0 rows, Extra: 0 rows | Mapping: 0 fuzzy + 0 positional
+Note: Test file for query 637 is empty
+Query 637: FAILED - Missing: 0 rows, Extra: 0 rows | Mapping: 0 fuzzy + 0 positional
+Note: Test file for query 639 is empty
+Query 639: FAILED - Missing: 0 rows, Extra: 0 rows | Mapping: 0 fuzzy + 0 positional
+Query 671: FAILED - Missing: 0 rows, Extra: 11 rows | Mapping: 1 fuzzy + 0 positional
+Query 683: FAILED - Missing: 1 rows, Extra: 1 rows | Mapping: 0 fuzzy + 1 positional
+Query 694: FAILED - Missing: 5 rows, Extra: 5 rows | Mapping: 2 fuzzy + 0 positional
+Query 701: FAILED - Missing: 1 rows, Extra: 1 rows | Mapping: 0 fuzzy + 1 positional
+Query 716: FAILED - Missing: 1 rows, Extra: 1 rows | Mapping: 1 fuzzy + 0 positional
+Query 736: FAILED - Missing: 0 rows, Extra: 120 rows | Mapping: 1 fuzzy + 0 positional
+Note: Test file for query 737 is empty
+Query 737: FAILED - Missing: 0 rows, Extra: 0 rows | Mapping: 0 fuzzy + 0 positional
+Query 743: FAILED - Missing: 1 rows, Extra: 1 rows | Mapping: 0 fuzzy + 2 positional
+Query 751: FAILED - Missing: 0 rows, Extra: 157 rows | Mapping: 1 fuzzy + 0 positional
+Note: Test file for query 758 is empty
+Query 758: FAILED - Missing: 0 rows, Extra: 0 rows | Mapping: 0 fuzzy + 0 positional
+Query 766: FAILED - Missing: 0 rows, Extra: 43 rows | Mapping: 1 fuzzy + 0 positional
+Note: Test file for query 77 is empty
+Query 77: FAILED - Missing: 0 rows, Extra: 0 rows | Mapping: 0 fuzzy + 0 positional
+Query 791: FAILED - Missing: 1 rows, Extra: 1 rows | Mapping: 0 fuzzy + 1 positional
+Note: Test file for query 796 is empty
+Query 796: FAILED - Missing: 0 rows, Extra: 0 rows | Mapping: 0 fuzzy + 0 positional
+Query 800: FAILED - Missing: 1 rows, Extra: 1 rows | Mapping: 0 fuzzy + 1 positional
+Query 801: FAILED - Missing: 1 rows, Extra: 1 rows | Mapping: 0 fuzzy + 1 positional
+Note: Test file for query 806 is empty
+Query 806: FAILED - Missing: 0 rows, Extra: 0 rows | Mapping: 0 fuzzy + 0 positional
+Query 82: FAILED - Missing: 0 rows, Extra: 1 rows | Mapping: 1 fuzzy + 0 positional
+Note: Test file for query 825 is empty
+Query 825: FAILED - Missing: 0 rows, Extra: 0 rows | Mapping: 0 fuzzy + 0 positional
+Query 846: FAILED - Missing: 4 rows, Extra: 4 rows | Mapping: 1 fuzzy + 0 positional
+Note: Test file for query 85 is empty
+Query 85: FAILED - Missing: 0 rows, Extra: 0 rows | Mapping: 0 fuzzy + 0 positional
+Note: Test file for query 861 is empty
+Query 861: FAILED - Missing: 0 rows, Extra: 0 rows | Mapping: 0 fuzzy + 0 positional
+Query 866: FAILED - Missing: 8 rows, Extra: 0 rows | Mapping: 1 fuzzy + 0 positional
+Query 87: FAILED - Missing: 0 rows, Extra: 3 rows | Mapping: 2 fuzzy + 0 positional
+Note: Test file for query 872 is empty
+Query 872: FAILED - Missing: 0 rows, Extra: 0 rows | Mapping: 0 fuzzy + 0 positional
+Note: Test file for query 881 is empty
+Query 881: FAILED - Missing: 0 rows, Extra: 0 rows | Mapping: 0 fuzzy + 0 positional
+Query 896: FAILED - Missing: 1 rows, Extra: 1 rows | Mapping: 0 fuzzy + 1 positional
+Query 897: FAILED - Missing: 0 rows, Extra: 1 rows | Mapping: 2 fuzzy + 1 positional
+Query 902: FAILED - Missing: 4 rows, Extra: 1 rows | Mapping: 1 fuzzy + 0 positional
+Query 906: FAILED - Missing: 1 rows, Extra: 1 rows | Mapping: 1 fuzzy + 0 positional
+Query 930: FAILED - Missing: 14 rows, Extra: 0 rows | Mapping: 1 fuzzy + 0 positional
+Note: Test file for query 94 is empty
+Query 94: FAILED - Missing: 0 rows, Extra: 0 rows | Mapping: 0 fuzzy + 0 positional
+Note: Test file for query 940 is empty
+Query 940: FAILED - Missing: 0 rows, Extra: 0 rows | Mapping: 0 fuzzy + 0 positional
+Note: Test file for query 944 is empty
+Query 944: FAILED - Missing: 0 rows, Extra: 0 rows | Mapping: 0 fuzzy + 0 positional
+Note: Test file for query 95 is empty
+Query 95: FAILED - Missing: 0 rows, Extra: 0 rows | Mapping: 0 fuzzy + 0 positional
+Query 950: FAILED - Missing: 0 rows, Extra: 5 rows | Mapping: 1 fuzzy + 0 positional
+Note: Test file for query 951 is empty
+Query 951: FAILED - Missing: 0 rows, Extra: 0 rows | Mapping: 0 fuzzy + 0 positional
+Query 955: FAILED - Missing: 25 rows, Extra: 25 rows | Mapping: 2 fuzzy + 0 positional
+Query 959: FAILED - Missing: 0 rows, Extra: 0 rows | Mapping: 0 fuzzy + 0 positional
+Query 962: FAILED - Missing: 1 rows, Extra: 1 rows | Mapping: 0 fuzzy + 1 positional
+Query 963: FAILED - Missing: 1 rows, Extra: 1 rows | Mapping: 0 fuzzy + 1 positional
+Query 964: FAILED - Missing: 0 rows, Extra: 1 rows | Mapping: 1 fuzzy + 0 positional
+Query 967: FAILED - Missing: 1 rows, Extra: 3 rows | Mapping: 0 fuzzy + 1 positional
+Query 971: FAILED - Missing: 1 rows, Extra: 1 rows | Mapping: 1 fuzzy + 0 positional
+Note: Test file for query 98 is empty
+Query 98: FAILED - Missing: 0 rows, Extra: 0 rows | Mapping: 0 fuzzy + 0 positional
+Note: Test file for query 981 is empty
+Query 981: FAILED - Missing: 0 rows, Extra: 0 rows | Mapping: 0 fuzzy + 0 positional
+Note: Test file for query 990 is empty
+Query 990: FAILED - Missing: 0 rows, Extra: 0 rows | Mapping: 0 fuzzy + 0 positional
+Query 994: FAILED - Missing: 1 rows, Extra: 1 rows | Mapping: 2 fuzzy + 1 positional
+
+================================================================================
+SUMMARY
+================================================================================
+Total questions: 500
+Files generated (successful): 497
+Failed to generate: 3
+Total comparisons made: 496
+
+RESULTS (STRICT ROW MATCHING - no extra rows allowed):
+  Total successes: 333
+  Exact matches (same rows, same columns): 305
+  Column-flexible matches (same rows, extra columns): 28
+  Failures: 163
+    - Failures due to extra rows only: 14
+  Missing gold files: 1
+  Empty test CSV files: 54
+
+RATES:
+  Overall accuracy: 66.60%
+  Generation rate: 99.40%
+  Success rate (among generated): 67.00%
+  Exact match rate: 61.49%
+
+Exact Match Queries (305):
+5, 11, 12, 26, 27, 39, 45, 47, 62, 72, 79, 83, 89, 92, 93, 100, 112, 117, 118, 119, 120, 125, 129, 136, 137, 149, 152, 159, 169, 173, 192, 194, 197, 198, 206, 213, 218, 220, 226, 227, 228, 230, 232, 234, 236, 239, 240, 245, 248, 249, 253, 255, 260, 263, 268, 281, 282, 340, 341, 347, 356, 358, 366, 368, 377, 379, 383, 402, 405, 407, 408, 412, 414, 422, 427, 440, 462, 465, 468, 469, 472, 474, 477, 479, 480, 486, 487, 522, 528, 530, 532, 533, 537, 539, 544, 547, 549, 555, 563, 565, 567, 568, 571, 572, 573, 576, 578, 581, 598, 629, 633, 640, 665, 669, 672, 678, 682, 685, 687, 704, 705, 707, 710, 717, 719, 723, 724, 726, 728, 730, 732, 733, 738, 739, 740, 744, 745, 747, 750, 753, 760, 761, 764, 765, 769, 772, 773, 775, 779, 781, 782, 785, 786, 788, 790, 792, 794, 797, 798, 819, 822, 824, 829, 847, 850, 854, 857, 859, 862, 865, 869, 875, 879, 880, 884, 892, 894, 895, 898, 901, 904, 909, 910, 912, 915, 928, 931, 933, 937, 945, 948, 954, 960, 972, 977, 978, 1003, 1025, 1028, 1035, 1036, 1037, 1042, 1048, 1057, 1068, 1076, 1084, 1088, 1091, 1092, 1096, 1098, 1102, 1103, 1105, 1110, 1113, 1114, 1122, 1124, 1130, 1133, 1134, 1139, 1141, 1146, 1147, 1152, 1153, 1155, 1157, 1162, 1164, 1169, 1171, 1179, 1187, 1195, 1198, 1205, 1208, 1209, 1220, 1225, 1227, 1231, 1232, 1235, 1238, 1239, 1241, 1254, 1257, 1265, 1270, 1275, 1281, 1312, 1317, 1331, 1334, 1340, 1344, 1346, 1350, 1351, 1352, 1357, 1359, 1361, 1362, 1371, 1378, 1380, 1381, 1392, 1394, 1398, 1399, 1403, 1405, 1409, 1410, 1411, 1426, 1435, 1457, 1464, 1471, 1483, 1484, 1493, 1500, 1501, 1505, 1506, 1507, 1509, 1514, 1515, 1521, 1524, 1528, 1533
+
+Column-Flexible Match Queries (28):
+17, 99, 195, 200, 208, 231, 242, 243, 327, 345, 391, 459, 484, 531, 868, 877, 988, 989, 1029, 1031, 1044, 1145, 1192, 1255, 1368, 1376, 1427, 1480
+
+Failed Queries (163):
+23, 24, 25, 28, 31, 32, 36, 37, 40, 41, 46, 48, 50, 77, 82, 85, 87, 94, 95, 98, 115, 116, 128, 138, 145, 168, 186, 189, 201, 207, 212, 215, 219, 244, 247, 273, 344, 346, 349, 352, 371, 409, 415, 416, 424, 466, 473, 483, 518, 529, 557, 584, 586, 587, 592, 595, 604, 634, 637, 639, 671, 683, 694, 701, 716, 736, 737, 743, 751, 758, 766, 791, 796, 800, 801, 806, 825, 846, 861, 866, 872, 881, 896, 897, 902, 906, 930, 940, 944, 950, 951, 955, 959, 962, 963, 964, 967, 971, 981, 990, 994, 1001, 1002, 1011, 1014, 1030, 1032, 1039, 1040, 1058, 1078, 1079, 1080, 1107, 1115, 1116, 1135, 1136, 1144, 1148, 1149, 1150, 1156, 1166, 1168, 1175, 1185, 1189, 1201, 1229, 1242, 1243, 1247, 1251, 1252, 1256, 1267, 1302, 1322, 1323, 1338, 1339, 1356, 1375, 1387, 1389, 1390, 1401, 1404, 1422, 1460, 1472, 1473, 1476, 1479, 1481, 1482, 1490, 1498, 1525, 1526, 1529, 1531
+
+Queries Failed Due to Extra Rows Only (14):
+50, 82, 87, 247, 346, 671, 736, 751, 766, 897, 950, 964, 1144, 1323
+
+Empty Test CSV Queries (54):
+24, 25, 28, 31, 32, 37, 41, 46, 77, 85, 94, 95, 98, 115, 116, 189, 529, 587, 595, 634, 637, 639, 737, 758, 796, 806, 825, 861, 872, 881, 940, 944, 951, 981, 990, 1001, 1030, 1058, 1078, 1079, 1115, 1116, 1166, 1242, 1338, 1356, 1387, 1389, 1401, 1404, 1422, 1479, 1481, 1526
+
+Detailed results saved to: /Users/aayush.fabwani/Documents/Projects/Benchmark/Work/mini_dev/Scripts/comparingResults/comparison_results.json
+CSV report saved to: /Users/aayush.fabwani/Documents/Projects/Benchmark/Work/mini_dev/Scripts/comparingResults/comparison_results.csv
+Log saved to: /Users/aayush.fabwani/Documents/Projects/Benchmark/Work/mini_dev/Scripts/comparingResults/comparison_results.log
+Detailed failure logs saved to: /Users/aayush.fabwani/Documents/Projects/Benchmark/Work/mini_dev/Scripts/comparingResults/detailed_logs
+
+RUN COMPLETED: 2026-02-20 15:24:29 IST
+================================================================================

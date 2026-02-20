@@ -9,7 +9,7 @@ from datetime import datetime, timedelta
 
 SCRIPT_DIR = Path(__file__).parent
 CONFIG_FILE = SCRIPT_DIR.parent / "IQ_config.json"
-OUTPUT_DIR = SCRIPT_DIR / "couchbase_iq_results" / "baseline5"
+OUTPUT_DIR = SCRIPT_DIR / "couchbase_iq_results" / "baseline8"
 OUTPUT_SQL_DIR = OUTPUT_DIR / "sql_outputs"
 OUTPUT_CSV_DIR = OUTPUT_DIR / "csv_outputs"
 JSON_OUTPUT_DIR = SCRIPT_DIR / "sqlLiteToJson" / "json_outputs"
@@ -44,6 +44,13 @@ class CouchbaseIqAPI:
         self.natural_orgid = natural_orgid
         self.couchbase_user = couchbase_user
         self.couchbase_pass = couchbase_pass
+        
+        # Error code -> additional statement text mapping
+        # Add text to append to statement when specific error codes are encountered
+        self.error_code_statement_additions = {
+            19212: "I know that the required information exists in the provided keyspaces and fields. Please try harder and generate a correct SQL++ query using only the provided keyspaces and fields. Remember to follow all the constraints mentioned earlier and return only what is asked in the question.",
+            19214 : "Don't use Corelated subqueries. All subqueries must be non-correlated. A subquery must not reference outer query aliases or columns. Each query block must use only its own locally defined aliases."
+        }
 
     def generate_sql(self, keyspaces: List[str], question: str, evidence: Optional[str] = None, max_retries: int = 5) -> tuple:
         """
@@ -87,6 +94,9 @@ class CouchbaseIqAPI:
         print(f"SS:  Headers: {headers}")
         print(f"SS:  Query Endpoint: {self.query_endpoint}")
 
+        # Track which error codes have been handled (to allow multiple different error codes to add text)
+        handled_error_codes = set()
+        
         # Retry loop
         for attempt in range(1, max_retries + 1):
             response = None
@@ -115,30 +125,110 @@ class CouchbaseIqAPI:
                             print(f"  ✗ Error generating SQL - Code: {error_code} (Attempt {attempt}/{max_retries})")
                             print(f"     Message: {error_msg[:200]}...")  # First 200 chars
                             
-                            # For error codes 19214 or 19212, retry up to max_retries times first
-                            if error_code in [19214, 19212]:
-                                if attempt < max_retries:
-                                    print(f"  ↻ Error {error_code} detected - retrying ({attempt}/{max_retries})...")
-                                    time.sleep(1)
-                                    continue
-                                else:
-                                    # After max_retries attempts, try to extract SQL from error message
-                                    print(f"  ⚡ Max retries reached - attempting to extract SQL from error message...")
-                                    # Extract content between ``` markers
+                            # Check if this error code has a statement modification and hasn't been handled yet
+                            if error_code in self.error_code_statement_additions and error_code not in handled_error_codes:
+                                additional_text = self.error_code_statement_additions[error_code]
+                                statement = statement + additional_text
+                                payload["statement"] = statement
+                                handled_error_codes.add(error_code)
+                                print(f"  ⚡ Error {error_code} detected - modifying statement with additional instructions")
+                                print(f"  Added text: {additional_text}")
+                                print(f"  ↻ Retrying with modified statement...")
+                                time.sleep(1)
+                                continue
+                            
+                            # Special handling for error 19214 - ADVISE logic
+                            if error_code == 19214 and error_code in handled_error_codes and f"{error_code}_ADVISE_ATTEMPTED" not in handled_error_codes:
+                                # If we've already tried the prompt addition, try ADVISE approach
+                                print(f"  ⚡ Error 19214 persists - attempting ADVISE approach...")
+                                
+                                # Extract SQL from between ``` markers
+                                # Try multiple patterns
+                                sql_match = None
+                                extracted_sql = None
+                                
+                                try:
+                                    # Pattern 1: Standard markdown code block
                                     sql_match = re.search(r'```\s*(.*?)\s*```', error_msg, re.DOTALL)
                                     if sql_match:
                                         extracted_sql = sql_match.group(1).strip()
-                                        print(f"  ✓ Extracted SQL from error message ({len(extracted_sql)} chars)")
-                                        print(f"================================================= SS ================================================")
-                                        return (extracted_sql, statement)
+                                    
+                                    # Pattern 2: Code block without closing backticks
+                                    if not extracted_sql:
+                                        sql_match = re.search(r'```\s*\n?(.*?)$', error_msg, re.DOTALL)
+                                        if sql_match:
+                                            extracted_sql = sql_match.group(1).strip()
+                                    
+                                    # Pattern 3: After "statement- ```"
+                                    if not extracted_sql:
+                                        sql_match = re.search(r'statement-\s*```\s*\n?(.*?)(?:\n```|$)', error_msg, re.DOTALL)
+                                        if sql_match:
+                                            extracted_sql = sql_match.group(1).strip()
+                                except Exception as pattern_error:
+                                    print(f"  ✗ Error during pattern matching: {pattern_error}")
+                                
+                                if extracted_sql:
+                                    print(f"  ✓ Extracted SQL from error message ({len(extracted_sql)} chars)")
+                                    
+                                    # Run ADVISE query
+                                    advise_sql = f"ADVISE {extracted_sql}"
+                                    print(f"  🔍 Running ADVISE query...")
+                                    
+                                    advise_results = self._execute_query(advise_sql)
+                                
+                                    if advise_results and "results" in advise_results and advise_results["results"]:
+                                        advice_data = advise_results["results"][0]
+                                        if "advice" in advice_data:
+                                            # Execute recommended CREATE INDEX statements and track created indexes
+                                            index_success, created_indexes = self._execute_index_recommendations(advice_data["advice"])
+                                            if index_success:
+                                                # Try the original query again
+                                                print(f"  🔄 Retrying original query after index creation...")
+                                                final_results = self._execute_query(extracted_sql)
+                                                
+                                                # Cleanup: Delete the created indexes
+                                                self._delete_indexes(created_indexes)
+                                                
+                                                if final_results and final_results.get("status") == "success":
+                                                    print(f"  ✅ Query succeeded after index optimization!")
+                                                    print(f"================================================= SS ================================================")
+                                                    return (extracted_sql, statement)
+                                                else:
+                                                    print(f"  ⚠️ Query still failed after index optimization")
+                                            else:
+                                                print(f"  ⚠️ No indexes were created successfully")
+                                        else:
+                                            print(f"  ⚠️ No advice found in ADVISE results")
                                     else:
-                                        print(f"  ✗ Could not extract SQL from error message")
-                            else:
-                                # For other error codes, retry if attempts remain
-                                if attempt < max_retries:
-                                    print(f"  ↻ Retrying request...")
-                                    time.sleep(2)
-                                    continue
+                                        print(f"  ⚠️ ADVISE query failed or returned no results")
+                                else:
+                                    print(f"  ✗ Could not extract SQL from error message")
+                                
+                                # Mark that ADVISE was attempted to avoid infinite loops
+                                handled_error_codes.add(f"{error_code}_ADVISE_ATTEMPTED")
+                                
+                                # Continue with normal retry logic
+                            
+                            # For error codes 19214 or 19212, extract SQL from between ``` markers as fallback
+                            # Only attempt extraction after 5 attempts
+                            if error_code in [19214, 19212] and attempt >= 5:
+                                print(f"  ⚡ Error {error_code} detected (attempt {attempt}) - extracting SQL from error message...")
+                                # Extract content between ``` markers
+                                sql_match = re.search(r'```\s*(.*?)\s*```', error_msg, re.DOTALL)
+                                if sql_match:
+                                    extracted_sql = sql_match.group(1).strip()
+                                    print(f"  ✓ Extracted SQL from error message ({len(extracted_sql)} chars)")
+                                    print(f"  Extracted SQL: {extracted_sql}")
+                                    print(f"================================================= SS ================================================")
+                                    return (extracted_sql, statement)
+                                else:
+                                    print(f"  ✗ Could not extract SQL from error message")
+                            
+                            # Continue retrying if we haven't reached max attempts
+                            if attempt < max_retries:
+                                print(f"  ↻ Retrying request...")
+                                time.sleep(1)
+                                continue
                         else:
                             print(f"  ✗ Error generating SQL: {error_data}")
                     except:
@@ -155,6 +245,145 @@ class CouchbaseIqAPI:
                 # Max retries reached, return failure
                 print(f"================================================= SS ================================================")
                 return ("", statement)
+    
+    def _execute_query(self, sql_query: str) -> Optional[Dict]:
+        """
+        Execute a SQL query using the same endpoint and credentials.
+        
+        Args:
+            sql_query: SQL query to execute
+            
+        Returns:
+            Query response as dictionary, or None if error
+        """
+        payload = {
+            "statement": sql_query,
+            "timeout": "300s"
+        }
+        
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": requests.auth._basic_auth_str(self.couchbase_user, self.couchbase_pass)
+        }
+        
+        try:
+            response = requests.post(self.query_endpoint, json=payload, headers=headers)
+            # Don't raise for status immediately, first check the response
+            if response.status_code != 200:
+                print(f"  ⚠️ Server returned {response.status_code}: {response.text[:500]}...")
+                return None
+            
+            data = response.json()
+            # Check if the response contains errors
+            if data.get("status") == "fatal" or "errors" in data:
+                print(f"  ⚠️ Query failed with errors: {data}")
+                return None
+                
+            return data
+            
+        except requests.exceptions.RequestException as e:
+            print(f"  ✗ Error executing query (RequestException): {e}")
+            return None
+        except Exception as e:
+            print(f"  ✗ Error executing query (General): {e}")
+            return None
+    
+    def _execute_index_recommendations(self, advice_data: Dict) -> tuple:
+        """
+        Execute CREATE INDEX statements from ADVISE recommendations.
+        
+        Args:
+            advice_data: The advice section from ADVISE query results
+            
+        Returns:
+            Tuple of (success: bool, created_index_names: list)
+        """
+        if not advice_data or "adviseinfo" not in advice_data:
+            print(f" No advise info found")
+            return (False, [])
+        
+        advise_info = advice_data["adviseinfo"]
+        if "recommended_indexes" not in advise_info:
+            print(f" No recommended indexes found")
+            return (False, [])
+        
+        recommended = advise_info["recommended_indexes"]
+        created_indexes = []  # List of (index_name, keyspace) tuples
+        
+        # Try covering indexes first
+        if "covering_indexes" in recommended:
+            print(f" Creating {len(recommended['covering_indexes'])} covering indexes...")
+            for idx in recommended["covering_indexes"]:
+                if "index_statement" in idx:
+                    print(f"  🔨 Creating: {idx['index_statement']}")
+                    result = self._execute_query(idx["index_statement"])
+                    if result and result.get("status") == "success":
+                        print(f" Index created successfully")
+                        # Extract index name and keyspace from CREATE INDEX statement
+                        index_info = self._extract_index_name(idx["index_statement"])
+                        if index_info:
+                            created_indexes.append(index_info)
+                    else:
+                        print(f" Index creation failed or already exists")
+        
+        # Try regular indexes
+        if "indexes" in recommended:
+            print(f" Creating {len(recommended['indexes'])} regular indexes...")
+            for idx in recommended["indexes"]:
+                if "index_statement" in idx:
+                    print(f"  🔨 Creating: {idx['index_statement']}")
+                    result = self._execute_query(idx["index_statement"])
+                    if result and result.get("status") == "success":
+                        print(f" Index created successfully")
+                        # Extract index name and keyspace from CREATE INDEX statement
+                        index_info = self._extract_index_name(idx["index_statement"])
+                        if index_info:
+                            created_indexes.append(index_info)
+                    else:
+                        print(f" Index creation failed or already exists")
+        
+        print(f" Successfully created {len(created_indexes)} indexes")
+        return (len(created_indexes) > 0, created_indexes)
+    
+    def _extract_index_name(self, create_statement: str) -> Optional[tuple]:
+        """
+        Extract index name and keyspace from CREATE INDEX statement.
+        
+        Args:
+            create_statement: CREATE INDEX SQL statement
+            
+        Returns:
+            Tuple of (index_name, keyspace) or None if not found
+        """
+        # Pattern: CREATE INDEX index_name ON keyspace(...)
+        # Keyspace can be: `default`:`bucket`.`scope`.`collection` or `bucket`.`scope`.`collection`
+        match = re.search(r'CREATE\s+INDEX\s+(`?[\w]+`?)\s+ON\s+(`[^`]+`(?::`[^`]+`)*(?:\.`[^`]+`)*)\s*\(', create_statement, re.IGNORECASE)
+        if match:
+            index_name = match.group(1).strip('`')
+            keyspace = match.group(2)  # Keep backticks in keyspace
+            return (index_name, keyspace)
+        return None
+    
+    def _delete_indexes(self, index_info_list: List[tuple]) -> None:
+        """
+        Delete a list of indexes.
+        
+        Args:
+            index_info_list: List of (index_name, keyspace) tuples
+        """
+        if not index_info_list:
+            return
+        
+        print(f"  🧹 Cleaning up {len(index_info_list)} created indexes...")
+        for index_name, keyspace in index_info_list:
+            # keyspace already has backticks, index_name needs them
+            drop_statement = f"DROP INDEX `{index_name}` ON {keyspace}"
+            print(f"  🗑️  Dropping: {drop_statement}")
+            result = self._execute_query(drop_statement)
+            if result and result.get("status") == "success":
+                print(f"  ✓ Index dropped successfully")
+            else:
+                print(f"  ⚠️ Index drop failed (may not exist)")
 
 
 

@@ -6,8 +6,10 @@ couchbase_iq_results/
 sqlLiteToJson/json_outputs/
 Scripts/try.py
 Scripts/comparingResults/sql_query_results/
+Scripts/comparingResults/2sql_query_results/
 Scripts/comparingResults/comparison_results.csv
 Scripts/comparingResults/comparison_results.json
+Scripts/comparingResults/detailed_logs/
 
 Scripts/couchbase_iq_results/
 DBwise/

@@ -9,7 +9,7 @@ from difflib import SequenceMatcher
 import hashlib
 
 # Define paths
-SQLPP_RESULTS_DIR = Path(__file__).parent.parent / "couchbase_iq_results" / "baseline8" / "csv_outputs"
+SQLPP_RESULTS_DIR = Path(__file__).parent.parent / "couchbase_iq_results" / "baseline9_retry" / "csv_outputs"
 SQLITE_RESULTS_DIR = Path(__file__).parent / "2sql_query_results"
 LOG_FILE = Path(__file__).parent / "comparison_results.log"
 DETAILED_LOG_DIR = Path(__file__).parent / "detailed_logs"

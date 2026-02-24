@@ -1,5 +1,8 @@
 .DS_Store
 minidev/
+mini_dev_data/dev_databases
+mini_dev_data/mini_dev_mysql.json
+mini_dev_data/mini_dev_postgresql.json
 IQ_config.json
 couchbase_iq_results/
 sqlLiteToJson/json_outputs/

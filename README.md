@@ -66,4 +66,4 @@ Success Classification: A comparison is marked as "success" if the test has exac
 ## Pipeline
 
 Then we also take a multipass approach to this. In `Scripts/pipeline.py`, we first execute the logic from `testIQ.py` then carry out the compariosn logic from `compare_results.py` and from this we stores the queires that failed in this initial run. We then try to generate sql++ just for these failed queires and again carry out comparison. We then take number of successfully generated queires from both of these runs as our final number of successful queires. 
-Therefore, the pipeline implements a two pass implmentation. 
+Therefore, the pipeline implements a two pass implementation. 

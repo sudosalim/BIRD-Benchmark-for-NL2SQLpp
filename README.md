@@ -170,30 +170,37 @@ A comparison succeeds when test has exactly the same rows as gold (no missing, n
 **Output Reports:**
 The script generates multiple outputs: console and log file summaries with statistics (overall accuracy, generation rate, success rate), a JSON report with detailed per-query results and mapping information, a CSV report for spreadsheet analysis, and individual detailed failure logs (JSON files per failed query) with sample mismatched rows, full column mapping breakdown, and debugging metrics.
 
-## Submitting Results to the Benchmark
+## Benchmark Results
 
-#### Initial Run (First Pass)
+This section documents the performance of Couchbase iQ on the BIRD mini_dev dataset using the two-pass pipeline approach.
 
-NL Questions: 500
+### Evaluation Metrics
 
-Successes: 335
+**Pass 1: Initial Generation**
+- Total Questions: 500
+- Successful Queries: 335
+- Failed Queries: 165
+- Success Rate: 67.0%
 
-Failures: 165
+**Pass 2: Retry with Enhanced Prompt**
+- Questions Retried: 165 (all failures from Pass 1)
+- Additional Successes: 49
+- Still Failing: 116
+- Retry Success Rate: 29.7%
 
+### Final Results
 
-#### Final Run (Seconed Pass)
+| Metric | Value |
+|--------|-------|
+| Total Questions | 500 |
+| Successful Queries | 384 |
+| Failed Queries | 116 |
+| **Overall Accuracy** | **76.80%** |
 
-NL Questions: 165
+**Breakdown:**
+- 335 queries succeeded on first attempt (67.0%)
+- 49 queries succeeded on retry after initial failure (9.8%)
+- 116 queries failed both attempts (23.2%)
 
-Successes: 49
-
-Failures: 116
-
-
-#### Overall 
-
-Total NL Questions: 500
-Total Successes: 384
-Total Failures: 116
-Accuracy: 76.80 %
+The two-pass approach improved accuracy by 9.8 percentage points compared to a single-pass strategy, demonstrating the value of adaptive prompting for challenging queries
 

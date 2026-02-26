@@ -15,10 +15,23 @@ The command returns a JSON object containing the `generated_statement`, which is
 
 ## Setup
 
+### Dataset
+
+All natural language questions with evidence statements and gold queries are stored in `mini_dev_data/mini_dev_sqlite.json`. This file is included in the repository and is **recommended for use** when comparing against our outputs, as it has been formatted to include all information sent to the LLM in the prompt.
+
+**Optional**: If you need database descriptor files or want to explore the full raw dataset, you can download the complete mini_bird dataset from:
+[https://drive.google.com/file/d/13VLWIwpw5E3d5DUkMvzw7hvHE67a4XkG/view](https://drive.google.com/file/d/13VLWIwpw5E3d5DUkMvzw7hvHE67a4XkG/view)
+
 ### Prerequisites
 The evaluation compares CSV outputs from two sources:
 - **Test CSV**: Results from executing iQ-generated SQL++ queries
 - **Gold CSV**: Results from executing the original SQL queries from BIRD benchmark
+
+**Important**: Before running any scripts, verify and update file paths in the scripts according to your local directory structure. Key paths to check include:
+- Database file locations in `run_sql_gold_queries.py`, `transform_sqlite_to_json.py`
+- Output directories in all scripts (`testIQ.py`, `compare_results.py`, `pipeline.py`)
+- JSON data file paths in `batch_import_to_couchbase.py` and other scripts
+- Configuration file paths (`IQ_config.json`)
 
 ### Data Pipeline
 
@@ -34,9 +47,13 @@ python Scripts/loadDataToCB/batch_import_to_couchbase.py
 ```
 This batch imports all JSON files into a locally running Couchbase server, creating buckets, scopes, and collections automatically.
 
-**Step 3: Configuration** 
+**Step 3: Generate Gold Standard Results**
+```bash
+python Scripts/comparingResults/run_sql_gold_queries.py
+```
+This executes all original SQL queries from the BIRD benchmark against the SQLite databases and saves the results as CSV files in `Scripts/comparingResults/2sql_query_results/`. These gold standard CSV files are used as the ground truth for comparison when validating iQ-generated SQL++ queries.
 
-**Step 3: Configuration**
+**Step 4: Configuration**
 
 Create an `IQ_config.json` file in the root directory with the following structure:
 
@@ -70,13 +87,6 @@ Create an `IQ_config.json` file in the root directory with the following structu
 - `max_questions`: Set to a number (e.g., 2) for testing, or `null` to process all 547 questions
 - `rerun_existing`: `true` to re-run already processed questions, `false` to skip them
 - `skip_failed_last_run`: `true` to skip questions that failed in the previous run
-
-### Dataset
-
-All natural language questions with evidence statements and gold queries are stored in `mini_dev_data/mini_dev_sqlite.json`. This file has been formatted to include all information sent to the LLM in the prompt.
-
-**Download Full Dataset**: The complete mini_bird dataset and database descriptor files are available at:
-[https://drive.google.com/file/d/13VLWIwpw5E3d5DUkMvzw7hvHE67a4XkG/view](https://drive.google.com/file/d/13VLWIwpw5E3d5DUkMvzw7hvHE67a4XkG/view)
 
 ## Core Scripts
 
@@ -142,7 +152,7 @@ The pipeline implements a two-pass strategy to maximize successful SQL++ generat
 1. Runs `testIQ.py` logic again, but only for failed queries from Pass 1
 2. Uses a modified retry prompt with additional constraints and guidance
 3. Executes newly generated queries and saves results to `baseline8_retry/` directory
-4. Runs `compare_results.py` logic on retry results
+4. Runs `cmpare_results.py` logic on retry results
 
 **Final Results:**
 The pipeline combines successful queries from both passes:
@@ -157,4 +167,25 @@ This multi-pass approach improves overall accuracy by giving the model a second 
 - Detailed error handling with visibility into retry logic and ADVISE mechanism
 - Separate tracking of generation statistics (success/failed/skipped) and comparison results (files compared/passed/failed)
 - Final summary combining both passes for complete accuracy metrics
- 
+
+## Submitting Results to the Benchmark
+
+#### Initial Run (First Pass)
+
+NL Questions: 500
+Successes: 335
+Failures: 165
+
+#### Final Run (Seconed Pass)
+
+NL Questions: 165
+Successes: 49
+Failures: 116
+
+#### Overall 
+
+Total NL Questions: 500
+Total Successes: 384
+Total Failures: 116
+Accuracy: 76.80 %
+

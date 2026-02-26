@@ -173,14 +173,20 @@ This multi-pass approach improves overall accuracy by giving the model a second 
 #### Initial Run (First Pass)
 
 NL Questions: 500
+
 Successes: 335
+
 Failures: 165
+
 
 #### Final Run (Seconed Pass)
 
 NL Questions: 165
+
 Successes: 49
+
 Failures: 116
+
 
 #### Overall 
 

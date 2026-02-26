@@ -4,7 +4,7 @@ This repository adapts mini_bird (a subset of the BIRD benchmark for Natural Lan
 
 ## Overview
 
-This project benchmarks Couchbase iQ's performance on the BIRD dataset by converting natural language questions into SQL++ queries and validating their correctness. Each natural language question, along with its evidence statement, is sent to iQ through cbq using the `USING AI` command, which internally calls OpenAI's GPT-4o model to generate SQL++ statements.
+This project benchmarks Couchbase iQ's performance on the BIRD dataset by converting natural language questions into SQL++ queries and validating their correctness. Each natural language question, along with its evidence statement, is sent to iQ through cbq using the `USING AI` command, which internally calls OpenAI's GPT-4o model (at this point in time) to generate SQL++ statements.
 
 ### Command Structure
 ```
@@ -84,8 +84,8 @@ Create an `IQ_config.json` file in the root directory with the following structu
 ```
 
 **Configuration Options:**
-- `max_questions`: Set to a number (e.g., 2) for testing, or `null` to process all 547 questions
-- `rerun_existing`: `true` to re-run already processed questions, `false` to skip them
+- `max_questions`: Set to a number (e.g., 2) for testing, or `null` to process all questions
+- `rerun_existing`: `true` to re-run already processed questions, `false` to skip them (this just checks if output for a particular query already exists in the output folder)
 - `skip_failed_last_run`: `true` to skip questions that failed in the previous run
 
 ## Core Scripts

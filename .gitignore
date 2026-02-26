@@ -25,7 +25,6 @@ Scripts/organize_dbwise.py
 Scripts/organize_dbwise_sqlpp.py
 Scripts/split_questions_by_db.py
 Scripts/testIQ_csv.py
-Scripts/testIQ_single.py
 Scripts/testIQ_single_db.py
 
 Scripts/sqlLiteToJson/json_outputs/

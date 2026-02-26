@@ -262,7 +262,9 @@ class CouchbaseIqAPI:
         print(f"  ✗ All {max_retries} attempts failed")
         print(f"================================================= SS ================================================")
         return ("", statement)
-    
+
+
+    # redundant right now (initially used to extract SQL++ from error messages produced to error code 19214, but now we take the approach of running ADVISE and creating the indexes)
     def _extract_sql_from_error(self, error_msg: str) -> Optional[str]:
         """Extract SQL from error message."""
         try:
@@ -400,7 +402,7 @@ def get_keyspaces_for_db(db_id: str) -> List[str]:
     """Get keyspace names for a given database."""
     collections_dict = get_all_collections_in_scope(
         bucket_name=db_id,
-        scope_name="bird",
+        scope_name="bird", #redundant
     )
     
     selected_collections = list(collections_dict.keys())
@@ -727,7 +729,7 @@ def compare_dataframes(gold_df, test_df):
     test_renamed = test_normalized[mapped_test_cols].copy()
     test_renamed.columns = [column_mapping[col] for col in mapped_test_cols]
     
-    # Keep only common columns
+    # Keep only common columns (keeping as a double check against mapping logic)
     common_columns = [col for col in test_renamed.columns if col in gold_columns]
     
     if not common_columns:

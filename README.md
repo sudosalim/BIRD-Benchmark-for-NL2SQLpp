@@ -88,6 +88,40 @@ Create an `IQ_config.json` file in the root directory with the following structu
 - `rerun_existing`: `true` to re-run already processed questions, `false` to skip them (this just checks if output for a particular query already exists in the output folder)
 - `skip_failed_last_run`: `true` to skip questions that failed in the previous run
 
+## Pipeline: Two-Pass Approach
+
+### `Scripts/pipeline.py`
+
+The pipeline implements a two-pass strategy to maximize successful SQL++ generation. This is the **main script** you should run - it combines the functionality of individual components (SQL generation and result comparison) into a complete workflow.
+
+**Pass 1: Initial Generation**
+1. Runs `testIQ.py` logic to generate SQL++ for all questions using an initial prompt
+2. Executes generated queries and saves results to `baseline8/` directory
+3. Runs `compare_results.py` logic to identify which queries failed validation
+4. Collects failed query IDs for retry
+
+**Pass 2: Retry with Enhanced Prompt**
+1. Runs `testIQ.py` logic again, but only for failed queries from Pass 1
+2. Uses a modified retry prompt with additional constraints and guidance
+3. Executes newly generated queries and saves results to `baseline8_retry/` directory
+4. Runs `cmpare_results.py` logic on retry results
+
+**Final Results:**
+The pipeline combines successful queries from both passes:
+- Initial successes (queries that passed in Pass 1)
+- Retry successes (queries that failed in Pass 1 but passed in Pass 2)
+
+This multi-pass approach improves overall accuracy by giving the model a second chance with refined prompting for queries it initially struggled with.
+
+**Features:**
+- Skips already-processed questions (checks for existing `.sql` and `.csv` files)
+- Comprehensive logging of all IQ API calls with request/response details
+- Detailed error handling with visibility into retry logic and ADVISE mechanism
+- Separate tracking of generation statistics (success/failed/skipped) and comparison results (files compared/passed/failed)
+- Final summary combining both passes for complete accuracy metrics
+
+> **Note:** Individual components (`testIQ.py` and `compare_results.py`) are explained in detail in the [Core Scripts](#core-scripts) section below and are available if you need to run them separately for debugging or custom workflows.
+
 ## Core Scripts
 
 ### SQL Generation: `Scripts/testIQ.py`
@@ -135,38 +169,6 @@ A comparison succeeds when test has exactly the same rows as gold (no missing, n
 
 **Output Reports:**
 The script generates multiple outputs: console and log file summaries with statistics (overall accuracy, generation rate, success rate), a JSON report with detailed per-query results and mapping information, a CSV report for spreadsheet analysis, and individual detailed failure logs (JSON files per failed query) with sample mismatched rows, full column mapping breakdown, and debugging metrics.
-
-## Pipeline: Two-Pass Approach
-
-### `Scripts/pipeline.py`
-
-The pipeline implements a two-pass strategy to maximize successful SQL++ generation:
-
-**Pass 1: Initial Generation**
-1. Runs `testIQ.py` logic to generate SQL++ for all questions using an initial prompt
-2. Executes generated queries and saves results to `baseline8/` directory
-3. Runs `compare_results.py` logic to identify which queries failed validation
-4. Collects failed query IDs for retry
-
-**Pass 2: Retry with Enhanced Prompt**
-1. Runs `testIQ.py` logic again, but only for failed queries from Pass 1
-2. Uses a modified retry prompt with additional constraints and guidance
-3. Executes newly generated queries and saves results to `baseline8_retry/` directory
-4. Runs `cmpare_results.py` logic on retry results
-
-**Final Results:**
-The pipeline combines successful queries from both passes:
-- Initial successes (queries that passed in Pass 1)
-- Retry successes (queries that failed in Pass 1 but passed in Pass 2)
-
-This multi-pass approach improves overall accuracy by giving the model a second chance with refined prompting for queries it initially struggled with.
-
-**Features:**
-- Skips already-processed questions (checks for existing `.sql` and `.csv` files)
-- Comprehensive logging of all IQ API calls with request/response details
-- Detailed error handling with visibility into retry logic and ADVISE mechanism
-- Separate tracking of generation statistics (success/failed/skipped) and comparison results (files compared/passed/failed)
-- Final summary combining both passes for complete accuracy metrics
 
 ## Submitting Results to the Benchmark
 

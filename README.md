@@ -202,5 +202,3 @@ This section documents the performance of Couchbase iQ on the BIRD mini_dev data
 - 49 queries succeeded on retry after initial failure (9.8%)
 - 116 queries failed both attempts (23.2%)
 
-The two-pass approach improved accuracy by 9.8 percentage points compared to a single-pass strategy, demonstrating the value of adaptive prompting for challenging queries
-

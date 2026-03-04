@@ -176,12 +176,6 @@ Error 19212: Missing keyspaces/fields → Prompt enhancement → Retry
 Error 19214: Missing indexes → ADVISE mechanism → Index creation → Retry
 ```
 
-**5. Logging**
-- **Request/Response Tracking:** Full API call logs with timestamps
-- **Error Classification:** Categorizes errors by type (network, parsing, execution, etc.)
-- **Recovery Attempts:** Logs all recovery mechanisms attempted
-- **Success/Failure Metrics:** Detailed statistics on error recovery effectiveness
-
 ### Result Comparison: `Scripts/comparingResults/compare_results.py`
 
 This script validates the correctness of iQ-generated queries by comparing test CSV files (from SQL++ execution) against gold CSV files (from original SQL queries). The comparison uses intelligent column mapping and strict row validation.

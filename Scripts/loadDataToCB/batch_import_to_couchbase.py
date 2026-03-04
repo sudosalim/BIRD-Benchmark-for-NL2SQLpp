@@ -105,7 +105,8 @@ def main():
     USERNAME = "Administrator"
     PASSWORD = "password"
 
-    JSON_DIRECTORY="/Users/aayush.fabwani/Documents/Projects/Benchmark/Work/mini_dev/Scripts/Nesting/nestedJson/v1"
+    #add path to the folder where you have stored the json files (after converting from sqlite) that you want to import to couchbase
+    JSON_DIRECTORY=""
 
     SCOPE_NAME = "bird"
     USE_SEPARATE_COLLECTIONS = True  # Create a collection per table

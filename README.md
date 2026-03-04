@@ -17,10 +17,16 @@ The command returns a JSON object containing the `generated_statement`, which is
 
 ### Dataset
 
-All natural language questions with evidence statements and gold queries are stored in `mini_dev_data/mini_dev_sqlite.json`. This file is included in the repository and is **recommended for use** when comparing against our outputs, as it has been formatted to include all information sent to the LLM in the prompt.
+All natural language questions with evidence statements and gold queries are stored in `mini_dev_data/mini_dev_sqlite.json`. This file is included in the repository and **must be used** for all questions and evidence statements, as we have corrected several inconsistencies found in the original dataset and ensured that all necessary information for the LLM is properly formatted and included in the prompt.
 
-**Optional**: If you need database descriptor files or want to explore the full raw dataset, you can download the complete mini_bird dataset from:
-[https://drive.google.com/file/d/13VLWIwpw5E3d5DUkMvzw7hvHE67a4XkG/view](https://drive.google.com/file/d/13VLWIwpw5E3d5DUkMvzw7hvHE67a4XkG/view)
+**Required**: You must download the complete mini_bird dataset from the following link because the SQL database files are essential for:
+1. Converting SQLite databases to JSON format for Couchbase loading
+2. Generating gold standard CSV results for validation
+3. Completing the full data pipeline
+
+Download link: [https://drive.google.com/file/d/13VLWIwpw5E3d5DUkMvzw7hvHE67a4XkG/view](https://drive.google.com/file/d/13VLWIwpw5E3d5DUkMvzw7hvHE67a4XkG/view)
+
+**Important**: While the dataset download is mandatory for the database files, always use the questions and evidence from our `mini_dev_data/mini_dev_sqlite.json` file in this repository rather than the original dataset files. Our version contains corrections and ensures all contextual information needed by the LLM is properly included in the prompts.
 
 ### Prerequisites
 The evaluation compares CSV outputs from two sources:
@@ -193,9 +199,9 @@ This section documents the performance of Couchbase iQ on the BIRD mini_dev data
 | Metric | Value |
 |--------|-------|
 | Total Questions | 500 |
-| Successful Queries | 384 |
-| Failed Queries | 116 |
-| **Overall Accuracy** | **76.80%** |
+| Successful Queries | 389 |
+| Failed Queries | 111 |
+| **Overall Accuracy** | **77.80%** |
 
 **Breakdown:**
 - 335 queries succeeded on first attempt (67.0%)

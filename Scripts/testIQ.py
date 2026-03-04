@@ -626,7 +626,7 @@ def get_failed_questions_from_last_run(failed_file: Path) -> set:
 
 def loadQuestions():
     with open(
-        "/Users/aayush.fabwani/Documents/Projects/Benchmark/Work/mini_dev/mini_dev_data/mini_dev_sqlite.json",
+        "../mini_dev_data/mini_dev_sqlite.json",
         "r"
     ) as f:
         dataset = json.load(f)

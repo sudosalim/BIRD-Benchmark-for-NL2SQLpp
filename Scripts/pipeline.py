@@ -40,11 +40,11 @@ CONFIG_FILE = SCRIPT_DIR.parent / "IQ_config.json"
 JSON_OUTPUT_DIR = SCRIPT_DIR / "sqlLiteToJson" / "json_outputs"
 
 # Specify path for the gold results to compare against (in csv format)
-SQLITE_RESULTS_DIR = SCRIPT_DIR / "comparingResults" / "2sql_query_results"
+SQLITE_RESULTS_DIR = SCRIPT_DIR / "comparingResults" / "sql_query_results"
 
 # Specify path where results of the pipeline will be stored (SQL files, CSV outputs, logs)
-INITIAL_RUN_BASELINE = "baseline11"
-RETRY_RUN_BASELINE = "baseline11_retry"
+INITIAL_RUN_BASELINE = "baseline"
+RETRY_RUN_BASELINE = "baseline_retry"
 
 PIPELINE_LOG = SCRIPT_DIR / "pipeline_results.log"
 

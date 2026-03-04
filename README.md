@@ -75,7 +75,7 @@ Create an `IQ_config.json` file in the root directory with the following structu
   "couchbase_iq": {
     "_comment": "Get these credentials from your Capella account",
     "natural_orgid": "<your_org_id>",
-    "natural_cred": "<your_credentials>"
+    "natural_cred": "<your_capella_email>:<capella_password>"
   },
   "evaluation": {
     "_comment": "Configuration for test execution",
@@ -147,6 +147,40 @@ This script handles the SQL++ generation process:
 - Includes retry logic with error handling
 - Implements ADVISE mechanism for query optimization when certain errors occur
 - Logs detailed execution information for debugging
+
+#### Error Handling & Recovery Mechanisms
+
+The pipeline implements error handling system designed to maximize query success rates:
+
+**1. Retry Logic**
+- **Configurable Retries:** Up to 5 retry attempts per query with exponential backoff
+- **Error Code Recognition:** Specific handling for known error patterns (19212, 19214, etc.)
+
+**2. Adaptive Prompt Modification**
+The system automatically modifies prompts based on specific error codes:
+- **Error 19212:** Adds guidance text about using only provided keyspaces and fields
+- **Error 19214:** Adds constraints about avoiding correlated subqueries
+- **Statement Enhancement:** Dynamically appends error-specific instructions to improve success rates
+
+**3. ADVISE-Based Query Optimization**
+For persistent Error 19214 (missing indexes), the system implements automatic index creation:
+- **ADVISE Query Execution:** Runs `ADVISE <extracted_sql>` to get index recommendations
+- **Dynamic Index Creation:** Creates covering indexes and secondary indexes as recommended
+- **Query Retry:** Re-executes the original query with optimized indexes
+- **Cleanup:** Automatically removes created indexes after query completion
+- **SQL Extraction:** Automatically extracts generated SQL from error messages using regex patterns
+
+**4. Error Code Handling Matrix**
+```
+Error 19212: Missing keyspaces/fields → Prompt enhancement → Retry
+Error 19214: Missing indexes → ADVISE mechanism → Index creation → Retry
+```
+
+**5. Logging**
+- **Request/Response Tracking:** Full API call logs with timestamps
+- **Error Classification:** Categorizes errors by type (network, parsing, execution, etc.)
+- **Recovery Attempts:** Logs all recovery mechanisms attempted
+- **Success/Failure Metrics:** Detailed statistics on error recovery effectiveness
 
 ### Result Comparison: `Scripts/comparingResults/compare_results.py`
 

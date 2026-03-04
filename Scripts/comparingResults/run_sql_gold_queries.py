@@ -12,7 +12,7 @@ with open(DATA_DIR / "mini_dev_sqlite.json", 'r') as f:
     questions = json.load(f)
 
 # Create output directory for results
-output_dir = '2sql_query_results'
+output_dir = 'sql_query_results'
 os.makedirs(output_dir, exist_ok=True)
 
 # Process each question

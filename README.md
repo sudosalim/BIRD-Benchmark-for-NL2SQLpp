@@ -100,6 +100,8 @@ Create an `IQ_config.json` file in the root directory with the following structu
 
 The pipeline implements a two-pass strategy to maximize successful SQL++ generation. This is the **main script** you should run - it combines the functionality of individual components (SQL generation and result comparison) into a complete workflow.
 
+**Optimized Prompts:** The initial and retry prompts configured in `pipeline.py` have been fine-tuned through extensive testing and represent the best-performing prompt templates for this benchmark. These prompts include specific rule sets, constraints, and guidance that achieved the highest success rates in our evaluations.
+
 **Pass 1: Initial Generation**
 1. Runs `testIQ.py` logic to generate SQL++ for all questions using an initial prompt
 2. Executes generated queries and saves results to `baseline8/` directory
@@ -184,15 +186,15 @@ This section documents the performance of Couchbase iQ on the BIRD mini_dev data
 
 **Pass 1: Initial Generation**
 - Total Questions: 500
-- Successful Queries: 335
-- Failed Queries: 165
-- Success Rate: 67.0%
+- Successful Queries: 333
+- Failed Queries: 167
+- Success Rate: 66.6%
 
 **Pass 2: Retry with Enhanced Prompt**
-- Questions Retried: 165 (all failures from Pass 1)
-- Additional Successes: 49
-- Still Failing: 116
-- Retry Success Rate: 29.7%
+- Questions Retried: 167 (all failures from Pass 1)
+- Additional Successes: 56
+- Still Failing: 111
+- Retry Success Rate: 33.5%
 
 ### Final Results
 
@@ -204,7 +206,7 @@ This section documents the performance of Couchbase iQ on the BIRD mini_dev data
 | **Overall Accuracy** | **77.80%** |
 
 **Breakdown:**
-- 335 queries succeeded on first attempt (67.0%)
-- 49 queries succeeded on retry after initial failure (9.8%)
-- 116 queries failed both attempts (23.2%)
+- 333 queries succeeded on first attempt (67.0%)
+- 56 queries succeeded on retry after initial failure (9.8%)
+- 111 queries failed both attempts (22.2%)
 

@@ -27,7 +27,7 @@ from difflib import SequenceMatcher
 INITIAL_PROMPT = "Generate a syntactically correct query under these mandatory constraints: use only provided keyspaces and existing fields; never use *;Main SELECT must NOT use RAW and must return standard field expressions only; RAW is allowed only inside SELECT subqueries.; subquery value access must use IN (SELECT RAW ...) or =(SELECT RAW ...)[0]; When calculating percentages, for any SELECT RAW used in the denominator, the subquery MUST be immediately followed by [0]; NO correlated subqueries (use JOIN); do not repeat aliases and alias must not equal bucket name; no DIVIDE or SUBTRACT; use DISTINCT and handle NULL when needed; do not add ':' after FROM; return only what is asked. Q:{question} Hint:{evidence}"
 
 # Retry run prompt - used for failed queries
-RETRY_PROMPT = "Generate a syntactically correct query that MUST follow ALL rules: Use only existing fields in the collections, DO NOT Hallucinate and refer to fields that do not exist; Only use functions supported by CouchBase N1QL; do not add ':' after FROM; PERCENTAGE RULE (MANDATORY): numerator and denominator MUST be computed from the SAME row set; computing the denominator using a separate subquery is FORBIDDEN; define a single base set (via FROM/JOIN/WHERE) representing the full population, compute the denominator from this base set, and derive the numerator ONLY by adding conditions inside aggregate expressions (e.g., CASE WHEN); GROUP BY should not be used when only one keyspace is involved; Q: {question} Hint: {evidence}"
+RETRY_PROMPT = "Generate a syntactically correct query that MUST follow ALL rules: Only use functions supported by CouchBase N1QL; do not add ':' after FROM; PERCENTAGE RULE (MANDATORY): numerator and denominator MUST be computed from the SAME row set; computing the denominator using a separate subquery is FORBIDDEN; define a single base set (via FROM/JOIN/WHERE) representing the full population, compute the denominator from this base set, and derive the numerator ONLY by adding conditions inside aggregate expressions (e.g., CASE WHEN); GROUP BY should not be used when only one keyspace is involved; Use only existing fields in the collections, DO NOT Hallucinate and refer to fields that do not exist; Make sure to use fields from the Correct Collections; Q: {question} Hint: {evidence}"
 
 # ============================================================================
 # PIPELINE CONFIGURATION
@@ -35,12 +35,16 @@ RETRY_PROMPT = "Generate a syntactically correct query that MUST follow ALL rule
 
 SCRIPT_DIR = Path(__file__).parent
 CONFIG_FILE = SCRIPT_DIR.parent / "IQ_config.json"
+
+# Specify the path for the file where the json format of the sqlite databases is stored after conversion (used to get the keyspace and field info for the prompt)
 JSON_OUTPUT_DIR = SCRIPT_DIR / "sqlLiteToJson" / "json_outputs"
+
+# Specify path for the gold results to compare against (in csv format)
 SQLITE_RESULTS_DIR = SCRIPT_DIR / "comparingResults" / "2sql_query_results"
 
-# Baseline directories
-INITIAL_RUN_BASELINE = "baseline9"
-RETRY_RUN_BASELINE = "baseline9_retry"
+# Specify path where results of the pipeline will be stored (SQL files, CSV outputs, logs)
+INITIAL_RUN_BASELINE = "baseline11"
+RETRY_RUN_BASELINE = "baseline11_retry"
 
 PIPELINE_LOG = SCRIPT_DIR / "pipeline_results.log"
 
@@ -955,7 +959,7 @@ def main():
         log_print(f"\nFINAL SUCCESS RATE: {csv_files_compared}/{csv_files_compared} = {final_success_percentage:.2f}%")
         return
     
-    log_print(f"\nFailed query IDs (sample): {sorted(list(failed_ids))[:20]}")
+    log_print(f"\nFailed query IDs: {sorted(list(failed_ids))}")
     
     # ========================================================================
     # STAGE 3: Retry failed queries with RETRY_PROMPT
@@ -1022,7 +1026,7 @@ def main():
     log_print(f"{'='*80}")
     
     if still_failed_ids:
-        log_print(f"\nStill-failed query IDs (sample): {sorted(list(still_failed_ids))[:20]}")
+        log_print(f"\nStill-failed query IDs: {sorted(list(still_failed_ids))}")
     else:
         log_print("\n🎉 All previously failed queries now pass!")
     

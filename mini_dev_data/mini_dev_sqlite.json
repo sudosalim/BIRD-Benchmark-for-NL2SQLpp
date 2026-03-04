@@ -19,7 +19,7 @@
     "question_id": 1473,
     "db_id": "debit_card_specializing",
     "question": "What was the average monthly consumption of customers in SME for the year 2013?",
-    "evidence": "Average Monthly consumption = AVG(Consumption) / 12; Year 2013 can be presented as Between 201301 And 201312; The first 4 strings of the Date values in the yearmonth table can represent year.",
+    "evidence": "Average Monthly consumption = AVG(Consumption) / 12; Year 2013 can be presented as Date Between 201301 And 201312; The first 4 strings of the Date values in the yearmonth table can represent year.",
     "SQL": "SELECT AVG(T2.Consumption) / 12 FROM customers AS T1 INNER JOIN yearmonth AS T2 ON T1.CustomerID = T2.CustomerID WHERE SUBSTR(T2.Date, 1, 4) = '2013' AND T1.Segment = 'SME'",
     "difficulty": "moderate"
   },
@@ -43,7 +43,7 @@
     "question_id": 1480,
     "db_id": "debit_card_specializing",
     "question": "What was the gas consumption peak month for SME customers in 2013?",
-    "evidence": "The first 4 strings of the Date values in the yearmonth table can represent year; The 4th and 5th string of the date can refer to Month. String Indexing in SQL++ is 0-based",
+    "evidence": "The 4th and 5th string of the Date values in the yearmonth table can refer to Month. String Indexing in SQL++ is 0-based",
     "SQL": "SELECT SUBSTR(T2.Date, 5, 2) FROM customers AS T1 INNER JOIN yearmonth AS T2 ON T1.CustomerID = T2.CustomerID WHERE SUBSTR(T2.Date, 1, 4) = '2013' AND T1.Segment = 'SME' GROUP BY SUBSTR(T2.Date, 5, 2) ORDER BY SUM(T2.Consumption) DESC LIMIT 1",
     "difficulty": "moderate"
   },
@@ -219,8 +219,8 @@
     "question_id": 1529,
     "db_id": "debit_card_specializing",
     "question": "What is the amount spent by customer \"38508\" at the gas stations? How much had the customer spent in January 2012?",
-    "evidence": "January 2012 refers to the Date value = '201201'",
-    "SQL": "SELECT SUM(T1.Price*T1.Amount ) , SUM(IIF(T3.Date = '201201', T1.Price, 0)) FROM transactions_1k AS T1 INNER JOIN gasstations AS T2 ON T1.GasStationID = T2.GasStationID INNER JOIN yearmonth AS T3 ON T1.CustomerID = T3.CustomerID WHERE T1.CustomerID = '38508'",
+    "evidence": "January 2012 refers to the Date value = '201201'; Amount refers to Price * Amount",
+    "SQL": "SELECT SUM(T1.Price*T1.Amount ) , SUM(IIF(T3.Date = '201201', T1.Price*T1.Amount, 0)) FROM transactions_1k AS T1 INNER JOIN gasstations AS T2 ON T1.GasStationID = T2.GasStationID INNER JOIN yearmonth AS T3 ON T1.CustomerID = T3.CustomerID WHERE T1.CustomerID = '38508'",
     "difficulty": "moderate"
   },
   {

@@ -1,12 +1,12 @@
 import sys
 from pathlib import Path
-from import_to_couchbase import import_json_to_couchbase
+from import_to_couchbase import import_json_to_couchbase, load_couchbase_config_from_iq
 
 def batch_import_json_files(
     json_directory,
-    cluster_url="couchbase://127.0.0.1",
-    username="Administrator",
-    password="password",
+    cluster_url=None,
+    username=None,
+    password=None,
     scope_name="bird",
     use_separate_collections=True,
     ram_quota_mb=600,
@@ -25,6 +25,10 @@ def batch_import_json_files(
         ram_quota_mb: RAM quota for bucket creation (default 600 MB)
         skip_existing: If True, skip files that have already been imported
     """
+    cfg = load_couchbase_config_from_iq()
+    cluster_url = cluster_url or cfg["cluster_url"]
+    username = username or cfg["username"]
+    password = password or cfg["password"]
     
     json_dir = Path(json_directory)
     
@@ -101,12 +105,14 @@ def batch_import_json_files(
     return fail_count == 0
 
 def main():
-    CLUSTER_URL = "couchbase://127.0.0.1"
-    USERNAME = "Administrator"
-    PASSWORD = "password"
+    cfg = load_couchbase_config_from_iq()
+
+    CLUSTER_URL = cfg["cluster_url"]
+    USERNAME = cfg["username"]
+    PASSWORD = cfg["password"]
 
     #add path to the folder where you have stored the json files (after converting from sqlite) that you want to import to couchbase
-    JSON_DIRECTORY=""
+    JSON_DIRECTORY="Scripts/sqlLiteToJson/json_outputs"
 
     SCOPE_NAME = "bird"
     USE_SEPARATE_COLLECTIONS = True  # Create a collection per table

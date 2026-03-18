@@ -14,6 +14,7 @@ import time
 import csv
 import re
 from datetime import datetime
+from couchbase_endpoint_utils import resolve_query_endpoint_from_config
 
 SCRIPT_DIR = Path(__file__).parent
 CONFIG_FILE = SCRIPT_DIR.parent / "IQ_config.json"
@@ -194,7 +195,7 @@ def process_all_queries():
     couchbase_config = config.get("couchbase", {})
     couchbase_user = couchbase_config.get("username")
     couchbase_pass = couchbase_config.get("password")
-    query_endpoint = couchbase_config.get("query_endpoint")
+    query_endpoint = resolve_query_endpoint_from_config(couchbase_config, couchbase_user, couchbase_pass)
     
     if not all([couchbase_user, couchbase_pass, query_endpoint]):
         log_print("Error: Missing required Couchbase configuration")

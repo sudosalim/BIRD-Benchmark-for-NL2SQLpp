@@ -11,6 +11,10 @@ import requests
 from pathlib import Path
 from datetime import timedelta
 import time
+from urllib.parse import urlparse
+
+SCRIPT_ROOT = Path(__file__).resolve().parents[2]
+IQ_CONFIG_FILE = SCRIPT_ROOT / "IQ_config.json"
 
 try:
     from couchbase.cluster import Cluster
@@ -18,32 +22,116 @@ try:
     from couchbase.options import ClusterOptions
     from couchbase.exceptions import CouchbaseException
     from couchbase.management.buckets import CreateBucketSettings, BucketType
-    from couchbase.management.collections import CollectionSpec, ScopeSpec
+    from couchbase.management.collections import CollectionSpec
 except ImportError:
     print("Error: Couchbase Python SDK not installed.")
     print("Install it with: pip install couchbase")
     sys.exit(1)
 
-def exec_sql(sql_query: str, cluster_url: str, username: str, password: str) -> bool:
+
+def load_couchbase_config_from_iq():
+    """Load Couchbase host/user/password from IQ_config.json."""
+    defaults = {
+        "cluster_url": "127.0.0.1",
+        "username": "Administrator",
+        "password": "password"
+    }
+
+    try:
+        if IQ_CONFIG_FILE.exists():
+            with open(IQ_CONFIG_FILE, "r") as f:
+                cfg = json.load(f)
+            cb_cfg = cfg.get("couchbase", {})
+            defaults["cluster_url"] = (
+                cb_cfg.get("host")
+                or cb_cfg.get("connection_string")
+                or defaults["cluster_url"]
+            )
+            defaults["username"] = cb_cfg.get("username", defaults["username"])
+            defaults["password"] = cb_cfg.get("password", defaults["password"])
+    except Exception as e:
+        print(f"Warning: Could not read {IQ_CONFIG_FILE}: {e}")
+
+    return defaults
+
+def _extract_host_and_port(cluster_url: str):
+    """Extract host and optional port from user input.
+
+    Accepts values like:
+      - 127.0.0.1
+      - 127.0.0.1:12000
+      - couchbase://127.0.0.1:12000
+      - http://127.0.0.1:9000
+    """
+    raw = cluster_url.strip()
+    if "://" not in raw:
+        raw = f"couchbase://{raw}"
+    parsed = urlparse(raw)
+    return parsed.hostname, parsed.port
+
+
+def _discover_services(host: str, username: str, password: str, mgmt_ports=None):
+    """Discover service ports from nodeServices on common mgmt ports."""
+    if mgmt_ports is None:
+        mgmt_ports = [9000, 8091]
+
+    for mgmt_port in mgmt_ports:
+        endpoint = f"http://{host}:{mgmt_port}/pools/default/nodeServices"
+        try:
+            response = requests.get(endpoint, auth=(username, password), timeout=3)
+            response.raise_for_status()
+            payload = response.json()
+            nodes = payload.get("nodesExt", [])
+            if not nodes:
+                continue
+            node = next((n for n in nodes if n.get("thisNode")), nodes[0])
+            services = node.get("services", {})
+            if services:
+                return services, mgmt_port
+        except requests.exceptions.RequestException:
+            continue
+    return {}, None
+
+
+def resolve_cluster_endpoints(cluster_url: str, username: str, password: str):
+    """Resolve SDK bootstrap URL and Query endpoint from input host/URL."""
+    host, input_port = _extract_host_and_port(cluster_url)
+    if not host:
+        raise ValueError(f"Unable to parse host from '{cluster_url}'")
+
+    mgmt_ports = []
+    if input_port:
+        mgmt_ports.append(input_port)
+    for p in (9000, 8091):
+        if p not in mgmt_ports:
+            mgmt_ports.append(p)
+
+    services, _ = _discover_services(host, username, password, mgmt_ports)
+
+    mgmt_port_set = set(mgmt_ports)
+    input_is_mgmt_port = input_port in mgmt_port_set
+
+    kv_port = services.get("kv") or (input_port if input_port and not input_is_mgmt_port else None) or 11210
+    n1ql_port = services.get("n1ql") or 8093
+
+    sdk_cluster_url = f"couchbase://{host}:{kv_port}"
+    query_endpoint = f"http://{host}:{n1ql_port}/query/service"
+    return sdk_cluster_url, query_endpoint
+
+
+def exec_sql(sql_query: str, query_endpoint: str, username: str, password: str) -> bool:
     """
     Execute SQL++ statement on Couchbase Query Service
     
     Args:
         sql_query: SQL++ query to execute
-        cluster_url: Couchbase cluster URL
+        query_endpoint: Query service endpoint URL
         username: Couchbase username
         password: Couchbase password
         
     Returns:
         True if successful, False otherwise
     """
-    # Determine query endpoint from cluster URL
-    if cluster_url.startswith("couchbase://"):
-        host = cluster_url.replace("couchbase://", "")
-        query_endpoint = f"http://{host}:8093/query/service"
-    else:
-        query_endpoint = f"{cluster_url}:8093/query/service"
-    
     payload = {"statement": sql_query}
     headers = {"Content-Type": "application/json"}
     
@@ -102,7 +190,7 @@ def create_scope_if_not_exists(
     scope_name: str,
     username: str,
     password: str,
-    cluster_url: str
+    query_endpoint: str
 ):
     if scope_name == "_default":
         print("Using default scope, no need to create.")
@@ -121,15 +209,14 @@ def create_scope_if_not_exists(
         print(f"Creating scope {scope_name}...")
         create_scope_sqlpp=f"CREATE SCOPE `{bucket_name}`.`{scope_name}` IF NOT EXISTS"
 
-        if exec_sql(create_scope_sqlpp, cluster_url, username, password):
+        if exec_sql(create_scope_sqlpp, query_endpoint, username, password):
             print(f"  ✓ Scope '{scope_name}' created successfully")
             time.sleep(1)  # Wait for scope to be ready
             return True
         else:
             # Fallback: try using SDK
             try:
-                scope_spec = ScopeSpec(scope_name)
-                collection_manager.create_scope(scope_spec)
+                coll_mgr.create_scope(scope_name)
                 print(f"  ✓ Scope '{scope_name}' created successfully (via SDK)")
                 time.sleep(1)
                 return True
@@ -154,7 +241,7 @@ def create_collection_if_not_exists(
     collection_name: str,
     username: str,
     password: str,
-    cluster_url: str
+    query_endpoint: str
 ):
     """
     Create a collection if it doesn't exist
@@ -166,7 +253,7 @@ def create_collection_if_not_exists(
         collection_name: Collection name to create
         username: Couchbase username
         password: Couchbase password
-        cluster_url: Cluster URL
+        query_endpoint: Query service endpoint URL
         
     Returns:
         True if collection exists or was created, False otherwise
@@ -180,7 +267,7 @@ def create_collection_if_not_exists(
         
         create_collection_sql = f'CREATE COLLECTION `{bucket_name}`.`{scope_name}`.`{collection_name}` IF NOT EXISTS'
         
-        if exec_sql(create_collection_sql, cluster_url, username, password):
+        if exec_sql(create_collection_sql, query_endpoint, username, password):
             print(f"  ✓ Collection '{collection_name}' ready in scope '{scope_name}'")
             time.sleep(0.5)  # Brief delay for collection to be ready
             return True
@@ -222,9 +309,9 @@ def create_collection_if_not_exists(
 
 def import_json_to_couchbase(
     json_file_path,
-    cluster_url="couchbase://127.0.0.1",
-    username="Administrator",
-    password="password",
+    cluster_url=None,
+    username=None,
+    password=None,
     bucket_name=None,
     scope_name="bird",
     use_separate_collections=True,
@@ -235,7 +322,7 @@ def import_json_to_couchbase(
     
     Args:
         json_file_path: Path to the JSON file
-        cluster_url: Couchbase cluster connection string
+        cluster_url: Couchbase host or URL (e.g. 127.0.0.1 or couchbase://127.0.0.1:12000)
         username: Couchbase username
         password: Couchbase password
         bucket_name: Target bucket name (defaults to filename without extension)
@@ -243,6 +330,11 @@ def import_json_to_couchbase(
         use_separate_collections: If True, create a collection per table. If False, use _default collection
         ram_quota_mb: RAM quota for bucket creation (default 256 MB)
     """
+
+    cfg = load_couchbase_config_from_iq()
+    cluster_url = cluster_url or cfg["cluster_url"]
+    username = username or cfg["username"]
+    password = password or cfg["password"]
 
     json_path=Path(json_file_path)
 
@@ -276,13 +368,17 @@ def import_json_to_couchbase(
     # Connect to Couchbase
     print(f"Connecting to Couchbase at {cluster_url}...")
     try:
+        sdk_cluster_url, query_endpoint = resolve_cluster_endpoints(cluster_url, username, password)
+        print(f"Resolved SDK endpoint: {sdk_cluster_url}")
+        print(f"Resolved Query endpoint: {query_endpoint}")
+
         auth = PasswordAuthenticator(username, password)
         print("SS: Auth object: ",auth)
         options = ClusterOptions(auth)
         print("SS: Options object: ",options)
         options.apply_profile("wan_development")  # Use for localhost
         print("SS: Options object after apply_profile: ",options)
-        cluster = Cluster(cluster_url, options)
+        cluster = Cluster(sdk_cluster_url, options)
         print("SS: Cluster object: ",cluster)
         # Wait until cluster is ready
         cluster.wait_until_ready(timedelta(seconds=10))
@@ -298,7 +394,7 @@ def import_json_to_couchbase(
         # Create scope if it doesn't exist
         if scope_name != "_default":
             print(f"Setting up scope '{scope_name}'...")
-            if not create_scope_if_not_exists(cluster, bucket_name, scope_name, username, password, cluster_url):
+            if not create_scope_if_not_exists(cluster, bucket_name, scope_name, username, password, query_endpoint):
                 print(f"Failed to create/access scope '{scope_name}'")
                 return False
             print()
@@ -345,7 +441,7 @@ def import_json_to_couchbase(
                 print(f"  Setting up collection '{collection_name}'...")
                 if not create_collection_if_not_exists(
                     cluster, bucket_name, scope_name, collection_name,
-                    username, password, cluster_url
+                    username, password, query_endpoint
                 ):
                     print(f"  ✗ Failed to create collection '{collection_name}', skipping table")
                     continue
@@ -466,10 +562,11 @@ def import_json_to_couchbase(
 
 
 def main():
+    cfg = load_couchbase_config_from_iq()
 
-    CLUSTER_URL="couchbase://127.0.0.1"
-    USERNAME="Administrator"
-    PASSWORD="password"
+    CLUSTER_URL = cfg["cluster_url"]
+    USERNAME = cfg["username"]
+    PASSWORD = cfg["password"]
 
     JSON_FILE="data.json"  # Path to your JSON file
 

@@ -3,7 +3,7 @@ import json
 # from datasets import load_dataset
 
 with open(
-    "../mini_dev_data/mini_dev_sqlite.json",
+    "/Users/aayush.fabwani/Documents/Projects/Benchmark/Work/mini_dev/mini_dev_data/mini_dev_sqlite.json",
     "r"
 ) as f:
     dataset = json.load(f)
@@ -11,7 +11,7 @@ with open(
 # dataset = load_dataset("birdsql/bird_mini_dev")
 ex = dataset[0]
 
-db_path = f"../mini_dev_data/dev_databases/{ex['db_id']}/{ex['db_id']}.sqlite"
+db_path = f"/Users/aayush.fabwani/Documents/Projects/Benchmark/Work/mini_dev/mini_dev_data/dev_databases/{ex['db_id']}/{ex['db_id']}.sqlite"
 
 conn = sqlite3.connect(db_path)
 cur = conn.cursor()

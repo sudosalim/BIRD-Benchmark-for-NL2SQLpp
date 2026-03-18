@@ -67,10 +67,9 @@ Create an `IQ_config.json` file in the root directory with the following structu
 {
   "_comment": "Couchbase IQ BIRD Evaluation Configuration",
   "couchbase": {
-    "connection_string": "couchbase://localhost",
+    "cb_endpoint": "127.0.0.1:9000",
     "username": "Administrator",
-    "password": "password",
-    "query_endpoint": "http://localhost:8093/query/service"
+    "password": "password"
   },
   "couchbase_iq": {
     "_comment": "Get these credentials from your Capella account",
@@ -88,6 +87,12 @@ Create an `IQ_config.json` file in the root directory with the following structu
   }
 }
 ```
+
+**Management Port Requirement (`cb_endpoint`):**
+- `cb_endpoint` must point to **host:management-port** (not Query port, not KV port).
+- For Couchbase Server app/local install, use management port **8091** (example: `127.0.0.1:8091`).
+- For `cluster_run`, use management port **9000** (example: `127.0.0.1:9000`).
+- Scripts will discover node services from `cb_endpoint` and automatically resolve the correct Query endpoint (`n1ql` port) at runtime.
 
 **Configuration Options:**
 - `max_questions`: Set to a number (e.g., 2) for testing, or `null` to process all questions
@@ -127,6 +132,7 @@ This multi-pass approach improves overall accuracy by giving the model a second 
 - Detailed error handling with visibility into retry logic and ADVISE mechanism
 - Separate tracking of generation statistics (success/failed/skipped) and comparison results (files compared/passed/failed)
 - Final summary combining both passes for complete accuracy metrics
+- **ORDER BY-aware comparison**: automatically detects which gold queries contain `ORDER BY` and enforces strict row-order matching for those queries in both Pass 1 and Pass 2 comparisons
 
 > **Note:** Individual components (`testIQ.py` and `compare_results.py`) are explained in detail in the [Core Scripts](#core-scripts) section below and are available if you need to run them separately for debugging or custom workflows.
 
@@ -198,7 +204,15 @@ For columns unmatched by name similarity, the script uses positional matching, p
 After establishing the column mapping, the test dataframe is transformed to match the gold schema. Test columns are renamed according to the mapping (e.g., `"userId"` → `"user_id"`), unmapped test columns are dropped (extra columns are acceptable and ignored), only gold schema columns are retained, and columns are reordered to match gold column order. This ensures proper value alignment during row comparison.
 
 **Row Comparison:**
-Rows are compared by converting each row to a tuple of values and creating sets of row-tuples for both dataframes. The comparison identifies missing rows (in gold but not in test) and extra rows (in test but not in gold). The validation is strict: test must have EXACTLY the same rows as gold—zero missing rows AND zero extra rows. Even if test contains all gold rows, having additional rows causes failure as it indicates incorrect query logic (wrong WHERE clause, JOIN, or aggregation). A fallback method treats rows as frozensets (order-independent) when tuple comparison fails but row counts match, catching cases where column mapping wasn't perfect but data is present.
+Rows are compared by converting each row to a tuple of values. The comparison mode depends on whether the gold SQL query contains an `ORDER BY` clause:
+
+- **Order-insensitive mode** (default, no `ORDER BY`): Row tuples are collected into sets and compared with set subtraction, so row order is irrelevant. Missing rows (in gold but not in test) and extra rows (in test but not in gold) are both tracked. A fallback method treats rows as frozensets (value-order-independent within each row) when tuple set comparison fails but row counts match, catching cases where column mapping wasn't perfect but data is present.
+
+- **Order-sensitive mode** (`ORDER BY` detected in gold SQL): The ordered list of row tuples must match exactly between gold and test—same rows in the same sequence. This prevents a wrongly ordered result from being marked correct. Row content mismatches (missing or extra rows) still cause failure.
+
+The script pre-loads `mini_dev_sqlite.json` at startup to identify which query IDs have `ORDER BY` in their gold SQL, and applies the appropriate comparison mode automatically for each query.
+
+In both modes the validation is strict on row content: test must have EXACTLY the same rows as gold—zero missing rows AND zero extra rows.
 
 **Success Classification:**
 A comparison succeeds when test has exactly the same rows as gold (no missing, no extra), regardless of column name or order differences handled by mapping. An "exact match" is a success where test also has the same column count as gold (no extra columns). Failure occurs with missing rows, extra rows, or complete column mapping failure. The validation is strict on row content but flexible on schema differences.
@@ -211,6 +225,12 @@ The script generates multiple outputs: console and log file summaries with stati
 This section documents the performance of Couchbase iQ on the BIRD mini_dev dataset using the two-pass pipeline approach.
 
 ### Evaluation Metrics
+
+**ORDER BY Check in Evaluation:**
+- The evaluator inspects each gold SQL query for `ORDER BY`.
+- If `ORDER BY` is present, comparison is **order-sensitive** (row sequence must match exactly).
+- If `ORDER BY` is absent, comparison is **order-insensitive** (set-based row equality).
+- In both cases, row content is strict: no missing rows and no extra rows.
 
 **Pass 1: Initial Generation**
 - Total Questions: 500

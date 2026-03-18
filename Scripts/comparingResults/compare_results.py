@@ -3,10 +3,11 @@ import csv
 import pandas as pd
 from pathlib import Path
 import json
-from collections import defaultdict
+from collections import defaultdict, Counter
 from datetime import datetime, timedelta
 from difflib import SequenceMatcher
 import hashlib
+import re
 
 # Define paths
 
@@ -14,6 +15,7 @@ import hashlib
 SQLPP_RESULTS_DIR = Path(__file__).parent.parent / "couchbase_iq_results" / "baseline11_retry" / "csv_outputs"
 # Specify path for the gold results to compare against
 SQLITE_RESULTS_DIR = Path(__file__).parent / "2sql_query_results"
+QUESTIONS_FILE = Path(__file__).parent.parent / "mini_dev_data" / "mini_dev_sqlite.json"
 LOG_FILE = Path(__file__).parent / "comparison_results.log"
 DETAILED_LOG_DIR = Path(__file__).parent / "detailed_logs"
 
@@ -339,12 +341,54 @@ def dataframe_to_row_set(df):
     return row_set
 
 
-def compare_dataframes(gold_df, test_df, query_num):
+def dataframe_to_row_list(df):
+    """Convert dataframe rows to an ordered list of tuples."""
+    return [tuple(row.values) for _, row in df.iterrows()]
+
+
+def has_order_by_clause(sql_query):
+    """Return True if SQL text contains an ORDER BY clause (case-insensitive)."""
+    if not sql_query or not isinstance(sql_query, str):
+        return False
+    return re.search(r'\border\s+by\b', sql_query, flags=re.IGNORECASE) is not None
+
+
+def load_order_sensitive_query_ids(questions_file):
+    """
+    Load question IDs whose gold SQL contains ORDER BY.
+
+    Returns:
+        set[str]: Query IDs that should be compared with order-sensitive row matching.
+    """
+    order_sensitive_ids = set()
+
+    try:
+        if not questions_file.exists():
+            return order_sensitive_ids
+
+        with open(questions_file, 'r') as f:
+            questions = json.load(f)
+
+        for item in questions:
+            query_id = item.get('question_id')
+            sql_query = item.get('SQL', '')
+
+            if query_id is not None and has_order_by_clause(sql_query):
+                order_sensitive_ids.add(str(query_id))
+
+    except Exception as e:
+        log_print(f"Warning: Failed to load ORDER BY metadata from {questions_file}: {str(e)}")
+
+    return order_sensitive_ids
+
+
+def compare_dataframes(gold_df, test_df, query_num, order_sensitive=False):
     """
     Compare two dataframes with type-aware hybrid column mapping and normalization.
     
     STRICT ROW MATCHING: Test must have EXACTLY the same rows as gold (no extra rows allowed).
     FLEXIBLE COLUMN MATCHING: Test can have more columns than gold (columns are mapped intelligently).
+    ORDER SENSITIVITY: If order_sensitive=True, row order must also match exactly.
     
     Process:
     1. Normalize all values in both dataframes (trim, lowercase, standardize nulls)
@@ -357,7 +401,8 @@ def compare_dataframes(gold_df, test_df, query_num):
     4. Drop extra test columns, keep only gold schema columns
     5. Reorder test columns to match gold column order
     6. Convert each row to comparable tuples
-    7. Check if test has EXACTLY the same rows as gold (no missing, no extra)
+    7. If order_sensitive=False, compare rows as unordered sets (existing behavior)
+    8. If order_sensitive=True, compare rows in exact sequence
     
     Returns:
         - is_success: True if test has exactly the same rows as gold (no extra rows allowed)
@@ -375,7 +420,8 @@ def compare_dataframes(gold_df, test_df, query_num):
         'stage1_matches': 0,
         'stage2_matches': 0,
         'missing_rows': [],
-        'extra_rows': []
+        'extra_rows': [],
+        'order_sensitive': bool(order_sensitive)
     }
     
     # Handle empty dataframes
@@ -433,46 +479,76 @@ def compare_dataframes(gold_df, test_df, query_num):
     gold_subset = gold_normalized[common_columns].copy()
     test_subset = test_renamed[common_columns].copy()
     
-    # Step 6: Convert rows to comparable tuples (each row becomes a hashable record)
-    gold_rows = dataframe_to_row_set(gold_subset)
-    test_rows = dataframe_to_row_set(test_subset)
-    
-    # Step 7: STRICT CHECK - test must have EXACTLY the same rows (no extra rows allowed)
-    # Missing rows: rows in gold but NOT in test (causes failure)
-    missing_rows = gold_rows - test_rows
-    
-    # Extra rows: rows in test but NOT in gold (ALSO causes failure - this is the key difference)
-    extra_rows = test_rows - gold_rows
-    
-    details['missing_rows_count'] = int(len(missing_rows))
-    details['extra_rows_count'] = int(len(extra_rows))
-    
-    # Store sample of missing/extra rows for debugging (limit to 5)
-    if missing_rows:
-        details['missing_rows_sample'] = [convert_to_json_serializable(list(row)) for row in list(missing_rows)[:5]]
-    if extra_rows:
-        details['extra_rows_sample'] = [convert_to_json_serializable(list(row)) for row in list(extra_rows)[:5]]
-    
-    # Success: Test has EXACTLY the same rows as gold (no missing, NO EXTRA)
-    # Extra rows cause failure!
-    is_success = len(missing_rows) == 0 and len(extra_rows) == 0
-    
-    # If not successful and same number of rows, try comparing rows as SETS
-    # (values in any order) to handle column mapping issues
-    if not is_success and len(gold_df) == len(test_df) and len(gold_df) > 0:
-        # Convert each row to a frozenset of values (order-independent)
-        gold_row_sets = set()
-        for _, row in gold_subset.iterrows():
-            gold_row_sets.add(frozenset(row.values))
-        
-        test_row_sets = set()
-        for _, row in test_subset.iterrows():
-            test_row_sets.add(frozenset(row.values))
-        
-        # Check if rows match when treated as sets
-        if gold_row_sets == test_row_sets:
-            is_success = True
-            details['match_method'] = 'row_as_set'  # Rows matched as unordered sets
+    # Step 6-8: Compare rows (order-sensitive for ORDER BY queries; otherwise order-insensitive)
+    if order_sensitive:
+        gold_rows_list = dataframe_to_row_list(gold_subset)
+        test_rows_list = dataframe_to_row_list(test_subset)
+
+        # Use counters for missing/extra diagnostics while preserving multiplicity
+        gold_counter = Counter(gold_rows_list)
+        test_counter = Counter(test_rows_list)
+        missing_counter = gold_counter - test_counter
+        extra_counter = test_counter - gold_counter
+
+        details['missing_rows_count'] = int(sum(missing_counter.values()))
+        details['extra_rows_count'] = int(sum(extra_counter.values()))
+
+        if missing_counter:
+            details['missing_rows_sample'] = [
+                convert_to_json_serializable(list(row))
+                for row in list(missing_counter.elements())[:5]
+            ]
+        if extra_counter:
+            details['extra_rows_sample'] = [
+                convert_to_json_serializable(list(row))
+                for row in list(extra_counter.elements())[:5]
+            ]
+
+        # For ORDER BY queries, sequence must match exactly.
+        is_success = gold_rows_list == test_rows_list
+        details['match_method'] = 'ordered_row_tuple'
+
+        # Helpful debugging: same rows but wrong order.
+        if not is_success and not missing_counter and not extra_counter:
+            details['order_mismatch_only'] = True
+    else:
+        gold_rows = dataframe_to_row_set(gold_subset)
+        test_rows = dataframe_to_row_set(test_subset)
+
+        # Missing rows: rows in gold but NOT in test (causes failure)
+        missing_rows = gold_rows - test_rows
+
+        # Extra rows: rows in test but NOT in gold (ALSO causes failure)
+        extra_rows = test_rows - gold_rows
+
+        details['missing_rows_count'] = int(len(missing_rows))
+        details['extra_rows_count'] = int(len(extra_rows))
+
+        # Store sample of missing/extra rows for debugging (limit to 5)
+        if missing_rows:
+            details['missing_rows_sample'] = [convert_to_json_serializable(list(row)) for row in list(missing_rows)[:5]]
+        if extra_rows:
+            details['extra_rows_sample'] = [convert_to_json_serializable(list(row)) for row in list(extra_rows)[:5]]
+
+        # Success: Test has EXACTLY the same rows as gold (no missing, NO EXTRA)
+        is_success = len(missing_rows) == 0 and len(extra_rows) == 0
+
+        # If not successful and same number of rows, try comparing rows as SETS
+        # (values in any order) to handle column mapping issues
+        if not is_success and len(gold_df) == len(test_df) and len(gold_df) > 0:
+            # Convert each row to a frozenset of values (order-independent)
+            gold_row_sets = set()
+            for _, row in gold_subset.iterrows():
+                gold_row_sets.add(frozenset(row.values))
+
+            test_row_sets = set()
+            for _, row in test_subset.iterrows():
+                test_row_sets.add(frozenset(row.values))
+
+            # Check if rows match when treated as sets
+            if gold_row_sets == test_row_sets:
+                is_success = True
+                details['match_method'] = 'row_as_set'  # Rows matched as unordered sets
     
     # Exact match: same rows AND same columns
     is_exact = is_success and (len(gold_columns) == len(test_columns))
@@ -551,6 +627,9 @@ def main():
     
     # Total questions in the dataset
     TOTAL_QUESTIONS = 500
+
+    # Queries with ORDER BY should use order-sensitive row comparison
+    order_sensitive_query_ids = load_order_sensitive_query_ids(QUESTIONS_FILE)
     
     # Initialize log file
     init_log_file()
@@ -572,6 +651,7 @@ def main():
     log_print(f"Total questions in dataset: {TOTAL_QUESTIONS}")
     log_print(f"Found {len(test_files)} test result files")
     log_print(f"Missing/Failed: {TOTAL_QUESTIONS - len(test_files)}")
+    log_print(f"ORDER BY queries (order-sensitive comparison): {len(order_sensitive_query_ids)}")
     log_print(f"Comparing with gold results from {SQLITE_RESULTS_DIR}")
     log_print("=" * 80)
     
@@ -617,8 +697,14 @@ def main():
             empty_test_queries.append(query_num)
             log_print(f"Note: Test file for query {query_num} is empty")
         
-        # Compare dataframes
-        is_success, is_exact, details = compare_dataframes(gold_df, test_df, query_num)
+        # Compare dataframes (order-sensitive if query SQL contains ORDER BY)
+        is_order_sensitive = query_num in order_sensitive_query_ids
+        is_success, is_exact, details = compare_dataframes(
+            gold_df,
+            test_df,
+            query_num,
+            order_sensitive=is_order_sensitive
+        )
         
         comparisons_made += 1
         

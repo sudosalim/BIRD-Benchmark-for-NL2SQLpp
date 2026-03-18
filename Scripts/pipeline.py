@@ -16,8 +16,9 @@ import requests
 from pathlib import Path
 from datetime import datetime, timedelta
 from typing import List, Dict, Optional, Set, Tuple
-from collections import defaultdict
+from collections import defaultdict, Counter
 from difflib import SequenceMatcher
+from couchbase_endpoint_utils import resolve_query_endpoint_from_config
 
 # ============================================================================
 # CONFIGURABLE PROMPTS - EDIT THESE AS NEEDED
@@ -35,6 +36,7 @@ RETRY_PROMPT = "Generate a syntactically correct query that MUST follow ALL rule
 
 SCRIPT_DIR = Path(__file__).parent
 CONFIG_FILE = SCRIPT_DIR.parent / "IQ_config.json"
+QUESTIONS_FILE = SCRIPT_DIR.parent / "mini_dev_data" / "mini_dev_sqlite.json"
 
 # Specify the path for the file where the json format of the sqlite databases is stored after conversion (used to get the keyspace and field info for the prompt)
 JSON_OUTPUT_DIR = SCRIPT_DIR / "sqlLiteToJson" / "json_outputs"
@@ -43,18 +45,17 @@ JSON_OUTPUT_DIR = SCRIPT_DIR / "sqlLiteToJson" / "json_outputs"
 SQLITE_RESULTS_DIR = SCRIPT_DIR / "comparingResults" / "sql_query_results"
 
 # Specify path where results of the pipeline will be stored (SQL files, CSV outputs, logs)
-INITIAL_RUN_BASELINE = "baseline"
-RETRY_RUN_BASELINE = "baseline_retry"
+INITIAL_RUN_BASELINE = "baseline12"
+RETRY_RUN_BASELINE = "baseline12_retry"
 
 PIPELINE_LOG = SCRIPT_DIR / "pipeline_results.log"
 
 # Default Configuration
 DEFAULT_CONFIG = {
     "couchbase": {
-        "connection_string": "couchbase://localhost",
+        "cb_endpoint": "127.0.0.1:9000",
         "username": "Administrator",
-        "password": "password",
-        "query_endpoint": "http://localhost:8093/query/service"
+        "password": "password"
     },
     "couchbase_iq": {
         "natural_cred": "<capella_username:password>",
@@ -94,14 +95,15 @@ def load_config():
     else:
         return DEFAULT_CONFIG
 
+
 def load_questions(json_path: Path = None) -> List[Dict]:
     """Load questions from JSON file."""
     if json_path is None:
-        json_path = SCRIPT_DIR.parent / "mini_dev_data" / "mini_dev_sqlite.json"
-    
+        json_path = QUESTIONS_FILE
+
     with open(json_path, "r") as f:
         dataset = json.load(f)
-    
+
     questions = []
     for ex in dataset:
         question_entry = {
@@ -112,6 +114,35 @@ def load_questions(json_path: Path = None) -> List[Dict]:
         }
         questions.append(question_entry)
     return questions
+
+
+def has_order_by_clause(sql_query: str) -> bool:
+    """Return True if SQL text contains ORDER BY (case-insensitive)."""
+    if not sql_query or not isinstance(sql_query, str):
+        return False
+    return re.search(r'\border\s+by\b', sql_query, flags=re.IGNORECASE) is not None
+
+
+def load_order_sensitive_query_ids(json_path: Path = None) -> Set[str]:
+    """Load question IDs whose gold SQL contains ORDER BY."""
+    if json_path is None:
+        json_path = QUESTIONS_FILE
+
+    order_sensitive_ids = set()
+
+    try:
+        with open(json_path, "r") as f:
+            dataset = json.load(f)
+
+        for ex in dataset:
+            qid = ex.get('question_id')
+            sql_text = ex.get('SQL', '')
+            if qid is not None and has_order_by_clause(sql_text):
+                order_sensitive_ids.add(str(qid))
+    except Exception as e:
+        log_print(f"Warning: Could not load ORDER BY metadata from {json_path}: {e}")
+
+    return order_sensitive_ids
 
 # ============================================================================
 # COUCHBASE IQ API CLASS (with ADVISE logic)
@@ -701,7 +732,12 @@ def dataframe_to_row_set(df):
         row_set.add(row_tuple)
     return row_set
 
-def compare_dataframes(gold_df, test_df):
+
+def dataframe_to_row_list(df):
+    """Convert dataframe rows to an ordered list of hashable tuples."""
+    return [tuple(row.values) for _, row in df.iterrows()]
+
+def compare_dataframes(gold_df, test_df, order_sensitive=False):
     """Compare two dataframes with type-aware hybrid column mapping."""
     if len(gold_df) == 0 and len(test_df) == 0:
         return True
@@ -743,27 +779,40 @@ def compare_dataframes(gold_df, test_df):
     gold_subset = gold_normalized[common_columns].copy()
     test_subset = test_renamed[common_columns].copy()
     
-    # Compare rows
-    gold_rows = dataframe_to_row_set(gold_subset)
-    test_rows = dataframe_to_row_set(test_subset)
-    
-    missing_rows = gold_rows - test_rows
-    extra_rows = test_rows - gold_rows
-    
-    is_success = len(missing_rows) == 0 and len(extra_rows) == 0
-    
-    # Try row-as-set fallback
-    if not is_success and len(gold_df) == len(test_df) and len(gold_df) > 0:
-        gold_row_sets = set()
-        for _, row in gold_subset.iterrows():
-            gold_row_sets.add(frozenset(row.values))
-        
-        test_row_sets = set()
-        for _, row in test_subset.iterrows():
-            test_row_sets.add(frozenset(row.values))
-        
-        if gold_row_sets == test_row_sets:
-            is_success = True
+    if order_sensitive:
+        gold_rows_list = dataframe_to_row_list(gold_subset)
+        test_rows_list = dataframe_to_row_list(test_subset)
+
+        # Keep multiplicity-aware diagnostics, but final pass requires same sequence.
+        gold_counter = Counter(gold_rows_list)
+        test_counter = Counter(test_rows_list)
+        missing_rows = gold_counter - test_counter
+        extra_rows = test_counter - gold_counter
+
+        # ORDER BY queries must preserve row order exactly.
+        is_success = gold_rows_list == test_rows_list
+    else:
+        # Order-insensitive comparison
+        gold_rows = dataframe_to_row_set(gold_subset)
+        test_rows = dataframe_to_row_set(test_subset)
+
+        missing_rows = gold_rows - test_rows
+        extra_rows = test_rows - gold_rows
+
+        is_success = len(missing_rows) == 0 and len(extra_rows) == 0
+
+        # Try row-as-set fallback
+        if not is_success and len(gold_df) == len(test_df) and len(gold_df) > 0:
+            gold_row_sets = set()
+            for _, row in gold_subset.iterrows():
+                gold_row_sets.add(frozenset(row.values))
+
+            test_row_sets = set()
+            for _, row in test_subset.iterrows():
+                test_row_sets.add(frozenset(row.values))
+
+            if gold_row_sets == test_row_sets:
+                is_success = True
     
     return is_success
 
@@ -789,10 +838,11 @@ def find_matching_sqlite_file(query_num, sqlite_dir):
         return matches[0]
     return None
 
-def run_comparison(csv_output_dir: Path, sqlite_dir: Path) -> Set[int]:
+def run_comparison(csv_output_dir: Path, sqlite_dir: Path, order_sensitive_query_ids: Optional[Set[str]] = None) -> Set[int]:
     """Run comparison and return set of failed query IDs."""
     test_files = sorted(csv_output_dir.glob("*.csv"))
     failed_ids = set()
+    order_sensitive_query_ids = order_sensitive_query_ids or set()
     
     for test_file in test_files:
         query_num = test_file.stem  # Get filename without extension
@@ -809,7 +859,8 @@ def run_comparison(csv_output_dir: Path, sqlite_dir: Path) -> Set[int]:
             failed_ids.add(int(query_num))
             continue
         
-        is_success = compare_dataframes(gold_df, test_df)
+        is_order_sensitive = query_num in order_sensitive_query_ids
+        is_success = compare_dataframes(gold_df, test_df, order_sensitive=is_order_sensitive)
         
         if not is_success:
             failed_ids.add(int(query_num))
@@ -833,11 +884,13 @@ def run_testiq(questions: List[Dict], prompt_template: str, output_baseline: str
     couchbase_config = config.get("couchbase", {})
     couchbase_iq_config = config.get("couchbase_iq", {})
     
-    query_endpoint = couchbase_config.get("query_endpoint", "http://localhost:8093/query/service")
     couchbase_user = couchbase_config.get("username", "Administrator")
     couchbase_pass = couchbase_config.get("password", "password")
+    query_endpoint = resolve_query_endpoint_from_config(couchbase_config, couchbase_user, couchbase_pass)
     natural_cred = couchbase_iq_config.get("natural_cred", "<capella_username:password>")
     natural_orgid = couchbase_iq_config.get("natural_orgid", "<capella_orgid>")
+
+    log_print(f"Using Query endpoint: {query_endpoint}")
     
     couchbase_iq = CouchbaseIqAPI(
         query_endpoint=query_endpoint,
@@ -908,8 +961,10 @@ def main():
     
     # Load all questions
     all_questions = load_questions()
+    order_sensitive_query_ids = load_order_sensitive_query_ids()
     total_questions = len(all_questions)
     log_print(f"\nTotal questions in dataset: {total_questions}")
+    log_print(f"ORDER BY queries (order-sensitive comparison): {len(order_sensitive_query_ids)}")
     
     # ========================================================================
     # STAGE 1: Initial run with INITIAL_PROMPT
@@ -939,7 +994,7 @@ def main():
     log_print("="*80)
     
     log_print("\nRunning comparison on all CSV files in baseline...")
-    failed_ids = run_comparison(initial_csv_dir, SQLITE_RESULTS_DIR)
+    failed_ids = run_comparison(initial_csv_dir, SQLITE_RESULTS_DIR, order_sensitive_query_ids)
     
     # Count how many files were compared
     csv_files_compared = len(list(initial_csv_dir.glob("*.csv")))
@@ -993,7 +1048,7 @@ def main():
     log_print("="*80)
     
     log_print("\nRunning comparison on retry output files...")
-    still_failed_ids = run_comparison(retry_csv_dir, SQLITE_RESULTS_DIR)
+    still_failed_ids = run_comparison(retry_csv_dir, SQLITE_RESULTS_DIR, order_sensitive_query_ids)
     
     # Count how many retry files were compared
     retry_csv_files_compared = len(list(retry_csv_dir.glob("*.csv")))

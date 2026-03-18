@@ -6,6 +6,7 @@ import time
 import csv
 import re
 from datetime import datetime, timedelta
+from couchbase_endpoint_utils import resolve_query_endpoint_from_config
 
 SCRIPT_DIR = Path(__file__).parent
 CONFIG_FILE = SCRIPT_DIR.parent / "IQ_config.json"
@@ -23,10 +24,9 @@ SKIP_LIST = ["1524", "1387", "1148", "880", "896", "937", "723", "751", "766", "
 # Default Configuration (overridden by couchbase_config.json if exists)
 DEFAULT_CONFIG = {
     "couchbase": {
-        "connection_string": "couchbase://localhost",
+        "cb_endpoint": "127.0.0.1:9000",
         "username": "Administrator",
-        "password": "password",
-        "query_endpoint": "http://localhost:8093/query/service"
+        "password": "password"
     },
     "couchbase_iq": {
         "natural_cred": "<capella_username:password>",
@@ -343,7 +343,7 @@ def write_run_header(failed_file: Path):
 
 def loadQuestions():
     with open(
-        "../mini_dev_data/mini_dev_sqlite.json",
+        "/Users/aayush.fabwani/Documents/Projects/Benchmark/Work/mini_dev/mini_dev_data/mini_dev_sqlite.json",
         "r"
     ) as f:
         dataset = json.load(f)
@@ -602,9 +602,9 @@ def main():
     couchbase_iq_config = config.get("couchbase_iq", {})
     eval_config = config.get("evaluation", {})
 
-    query_endpoint = couchbase_config.get("query_endpoint", "http://localhost:8093/query/service")
     couchbase_user = couchbase_config.get("username", "Administrator")
     couchbase_pass = couchbase_config.get("password", "password")
+    query_endpoint = resolve_query_endpoint_from_config(couchbase_config, couchbase_user, couchbase_pass)
     natural_cred = couchbase_iq_config.get("natural_cred", "<capella_username:password>")
     natural_orgid = couchbase_iq_config.get("natural_orgid", "<capella_orgid>")
     max_questions = eval_config.get("max_questions", None)

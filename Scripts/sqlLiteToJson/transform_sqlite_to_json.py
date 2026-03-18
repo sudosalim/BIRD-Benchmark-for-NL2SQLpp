@@ -83,8 +83,10 @@ def export_sqlite_to_json(sqlite_path: str, output_path: str) -> None:
 
 def main():
     # Specify the directory where your SQLite files are located and the output directory for JSON files
-    sqlite_dir=Path("mini_dev/mini_dev_data/dev_databases")
-    output_dir=Path("mini_dev/Scripts/sqlLiteToJson/json_outputs")
+    # sqlite_dir=Path("mini_dev/mini_dev_data/dev_databases")
+    sqlite_dir=Path("minidev/MINIDEV/dev_databases")
+    # output_dir=Path("mini_dev/Scripts/sqlLiteToJson/json_outputs")
+    output_dir=Path("Scripts/sqlLiteToJson/json_outputs")
 
     # Create output directory if it doesn't exist
     output_dir.mkdir(exist_ok=True)

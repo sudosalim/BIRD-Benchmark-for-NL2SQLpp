@@ -14,6 +14,7 @@ import csv
 import re
 from datetime import datetime, timedelta
 import sys
+from couchbase_endpoint_utils import resolve_query_endpoint_from_config
 
 SCRIPT_DIR = Path(__file__).parent
 CONFIG_FILE = SCRIPT_DIR.parent / "IQ_config.json"
@@ -31,10 +32,9 @@ QUESTION_IDS = []
 # Default Configuration (overridden by couchbase_config.json if exists)
 DEFAULT_CONFIG = {
     "couchbase": {
-        "connection_string": "couchbase://localhost",
+        "cb_endpoint": "127.0.0.1:9000",
         "username": "Administrator",
-        "password": "password",
-        "query_endpoint": "http://localhost:8093/query/service"
+        "password": "password"
     },
     "couchbase_iq": {
         "natural_cred": "<capella_username:password>",
@@ -909,9 +909,9 @@ def main():
     couchbase_iq_config = config.get("couchbase_iq", {})
     eval_config = config.get("evaluation", {})
 
-    query_endpoint = couchbase_config.get("query_endpoint", "http://localhost:8093/query/service")
     couchbase_user = couchbase_config.get("username", "Administrator")
     couchbase_pass = couchbase_config.get("password", "password")
+    query_endpoint = resolve_query_endpoint_from_config(couchbase_config, couchbase_user, couchbase_pass)
     natural_cred = couchbase_iq_config.get("natural_cred", "<capella_username:password>")
     natural_orgid = couchbase_iq_config.get("natural_orgid", "<capella_orgid>")
     save_sql = eval_config.get("save_sql", True)

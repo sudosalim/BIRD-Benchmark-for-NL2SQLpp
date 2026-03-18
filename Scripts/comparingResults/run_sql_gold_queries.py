@@ -12,7 +12,7 @@ with open(DATA_DIR / "mini_dev_sqlite.json", 'r') as f:
     questions = json.load(f)
 
 # Create output directory for results
-output_dir = 'sql_query_results'
+output_dir = SCRIPT_DIR/'sql_query_results'
 os.makedirs(output_dir, exist_ok=True)
 
 # Process each question
@@ -22,7 +22,7 @@ for item in questions:
     sql_query = item['SQL']
     
     # Construct database path
-    db_path = DATA_DIR / f'dev_databases/{db_id}/{db_id}.sqlite'
+    db_path = DATA_DIR /f'minidev/MINIDEV/dev_databases/{db_id}/{db_id}.sqlite'
     
     # Check if database exists
     if not os.path.exists(db_path):

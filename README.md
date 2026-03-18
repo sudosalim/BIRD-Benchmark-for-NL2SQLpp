@@ -26,6 +26,8 @@ All natural language questions with evidence statements and gold queries are sto
 
 Download link: [https://drive.google.com/file/d/13VLWIwpw5E3d5DUkMvzw7hvHE67a4XkG/view](https://drive.google.com/file/d/13VLWIwpw5E3d5DUkMvzw7hvHE67a4XkG/view)
 
+After downloading, place the extracted dataset folder inside this repository root so scripts can locate the database files using the expected relative paths.
+
 **Important**: While the dataset download is mandatory for the database files, always use the questions and evidence from our `mini_dev_data/mini_dev_sqlite.json` file in this repository rather than the original dataset files. Our version contains corrections and ensures all contextual information needed by the LLM is properly included in the prompts.
 
 ### Prerequisites

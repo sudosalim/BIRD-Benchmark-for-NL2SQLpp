@@ -14,7 +14,7 @@ import re
 # Specify path for the file where generated results are stored and compared against gold results
 SQLPP_RESULTS_DIR = Path(__file__).parent.parent / "couchbase_iq_results" / "baseline11_retry" / "csv_outputs"
 # Specify path for the gold results to compare against
-SQLITE_RESULTS_DIR = Path(__file__).parent / "2sql_query_results"
+SQLITE_RESULTS_DIR = Path(__file__).parent / "sql_query_results"
 QUESTIONS_FILE = Path(__file__).parent.parent / "mini_dev_data" / "mini_dev_sqlite.json"
 LOG_FILE = Path(__file__).parent / "comparison_results.log"
 DETAILED_LOG_DIR = Path(__file__).parent / "detailed_logs"

@@ -998,12 +998,23 @@ def main():
     
     # Count how many files were compared
     csv_files_compared = len(list(initial_csv_dir.glob("*.csv")))
-    
+
+    # Also include questions that never generated any output in Pass 1
+    generated_ids = {int(f.stem) for f in initial_csv_dir.glob("*.csv")}
+    all_question_ids = {int(q['question_id']) for q in all_questions}
+    no_output_ids = all_question_ids - generated_ids
+    if no_output_ids:
+        log_print(f"\n  Queries with no output generated in Pass 1: {len(no_output_ids)}")
+        log_print(f"  No-output query IDs: {sorted(list(no_output_ids))}")
+    failed_ids = failed_ids | no_output_ids
+
     log_print(f"\nComparison complete:")
     log_print(f"  Files compared: {csv_files_compared}")
-    log_print(f"  Successful queries: {csv_files_compared - len(failed_ids)}")
-    log_print(f"  Failed queries: {len(failed_ids)}")
-    
+    log_print(f"  Successful queries: {csv_files_compared - (len(failed_ids) - len(no_output_ids))}")
+    log_print(f"  Failed queries (wrong result): {len(failed_ids) - len(no_output_ids)}")
+    log_print(f"  Failed queries (no output): {len(no_output_ids)}")
+    log_print(f"  Total going to Pass 2: {len(failed_ids)}")
+
     if not failed_ids:
         log_print("\n" + "="*80)
         log_print("🎉 No failed queries! All tests passed.")
@@ -1014,7 +1025,7 @@ def main():
         log_print(f"\nFINAL SUCCESS RATE: {csv_files_compared}/{csv_files_compared} = {final_success_percentage:.2f}%")
         return
     
-    log_print(f"\nFailed query IDs: {sorted(list(failed_ids))}")
+    log_print(f"\nFailed query IDs (going to Pass 2): {sorted(list(failed_ids))}")
     
     # ========================================================================
     # STAGE 3: Retry failed queries with RETRY_PROMPT
@@ -1066,7 +1077,7 @@ def main():
     log_print("="*80)
     
     # Final result combines: initial successes + queries that succeeded on retry
-    initial_successes = csv_files_compared - len(failed_ids)
+    initial_successes = csv_files_compared - (len(failed_ids) - len(no_output_ids))
     retry_successes = len(failed_ids - still_failed_ids)
     total_successes = initial_successes + retry_successes
     final_success_percentage = (total_successes / total_questions * 100) if total_questions > 0 else 0

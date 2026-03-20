@@ -22,7 +22,7 @@ for item in questions:
     sql_query = item['SQL']
     
     # Construct database path
-    db_path = DATA_DIR /f'minidev/MINIDEV/dev_databases/{db_id}/{db_id}.sqlite'
+    db_path = DATA_DIR.parent /f'minidev/MINIDEV/dev_databases/{db_id}/{db_id}.sqlite'
     
     # Check if database exists
     if not os.path.exists(db_path):

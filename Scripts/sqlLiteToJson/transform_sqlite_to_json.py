@@ -13,14 +13,20 @@ def get_all_tables(conn: sqlite3.Connection) -> List[str]:
     return tables
 
 
+def quote_identifier(identifier: str) -> str:
+    """Safely quote an SQLite identifier (e.g., table/column names)."""
+    return '"' + identifier.replace('"', '""') + '"'
+
+
 def get_table_data(conn: sqlite3.Connection, table_name: str) -> List[Dict[str, Any]]:
     """Extract all data from a specific table."""
     cursor = conn.cursor()
-    cursor.execute(f"SELECT * FROM {table_name}")
-    
+    safe_table_name = quote_identifier(table_name)
+    cursor.execute(f"SELECT * FROM {safe_table_name}")
+
     # Get column names
     column_names = [description[0] for description in cursor.description]
-    
+
     # Fetch all rows and convert to list of dictionaries
     rows = cursor.fetchall()
     table_data = []
@@ -33,28 +39,28 @@ def get_table_data(conn: sqlite3.Connection, table_name: str) -> List[Dict[str, 
             else:
                 row_dict[column_names[i]] = value
         table_data.append(row_dict)
-    
+
     return table_data
 
 
 def export_sqlite_to_json(sqlite_path: str, output_path: str) -> None:
     """
     Export entire SQLite database to JSON format.
-    
+
     Args:
         sqlite_path: Path to the SQLite database file
         output_path: Path where the JSON file will be saved
     """
     print(f"Processing: {sqlite_path}")
-    
+
     try:
         # Connect to the database
         conn = sqlite3.connect(sqlite_path)
-        
+
         # Get all tables
         tables = get_all_tables(conn)
         print(f"  Found {len(tables)} tables")
-        
+
         # Extract data from all tables
         database_data = {}
         for table in tables:
@@ -67,16 +73,16 @@ def export_sqlite_to_json(sqlite_path: str, output_path: str) -> None:
                 database_data[table] = {
                     "error": str(e)
                 }
-        
+
         # Close connection
         conn.close()
-        
+
         # Save to JSON
         with open(output_path, 'w', encoding='utf-8') as f:
             json.dump(database_data, f, indent=2, ensure_ascii=False)
-        
+
         print(f"  ✓ Saved to: {output_path}\n")
-        
+
     except Exception as e:
         print(f"  ✗ Error processing {sqlite_path}: {e}\n")
 
@@ -90,25 +96,25 @@ def main():
 
     # Create output directory if it doesn't exist
     output_dir.mkdir(exist_ok=True)
-    
+
     # Get all .sqlite files
     sqlite_files = list(sqlite_dir.glob("**/*.sqlite"))
-    
+
     if not sqlite_files:
         print(f"No SQLite files found in {sqlite_dir}")
         return
-    
+
     print(f"Found {len(sqlite_files)} SQLite files to process\n")
     print("=" * 60)
-    
+
     # Process each SQLite file
     for sqlite_file in sorted(sqlite_files):
         # Create output filename (same as sqlite file but with .json extension)
         output_file = output_dir / f"{sqlite_file.stem}.json"
-        
+
         # Export to JSON
         export_sqlite_to_json(str(sqlite_file), str(output_file))
-    
+
     print("=" * 60)
     print(f"\n✓ All files processed!")
     print(f"Output directory: {output_dir}")

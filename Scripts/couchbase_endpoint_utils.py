@@ -20,13 +20,22 @@ def extract_host_and_port(connection_value: str):
 
 
 def resolve_query_endpoint_from_config(couchbase_config, username: str, password: str) -> str:
-    """Resolve Query endpoint from `cb_endpoint` (host:management-port)."""
+    """Resolve Query endpoint from `cb_endpoint` (host:management-port).
+
+    A couchbases:// value (Capella) maps straight to the TLS Query port, 18093;
+    its management ports aren't reachable for discovery. Point REQUESTS_CA_BUNDLE
+    at the cluster's root CA if it isn't signed by a CA the system trusts.
+    """
     connection_value = (
         couchbase_config.get("cb_endpoint")
         or couchbase_config.get("host")
         or couchbase_config.get("connection_string")
         or DEFAULT_CB_ENDPOINT
     )
+    if str(connection_value).strip().startswith("couchbases://"):
+        host, _ = extract_host_and_port(connection_value)
+        return couchbase_config.get("query_endpoint") or f"https://{host}:18093/query/service"
+
     host, mgmt_port_from_input = extract_host_and_port(connection_value)
 
     mgmt_ports = []

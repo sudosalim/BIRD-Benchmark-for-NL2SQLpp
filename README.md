@@ -53,7 +53,7 @@ This converts SQLite database files from the BIRD benchmark into JSON format sui
 ```bash
 python Scripts/loadDataToCB/batch_import_to_couchbase.py
 ```
-This batch imports all JSON files into a locally running Couchbase server, creating buckets, scopes, and collections automatically.
+This batch imports all JSON files into a locally running Couchbase server, creating buckets, scopes, and collections automatically. Documents are written in batches of 1000. For a Capella cluster, see **Capella clusters** below.
 
 **Step 3: Generate Gold Standard Results**
 ```bash
@@ -95,6 +95,12 @@ Create an `IQ_config.json` file in the root directory with the following structu
 - For Couchbase Server app/local install, use management port **8091** (example: `127.0.0.1:8091`).
 - For `cluster_run`, use management port **9000** (example: `127.0.0.1:9000`).
 - Scripts will discover node services from `cb_endpoint` and automatically resolve the correct Query endpoint (`n1ql` port) at runtime.
+
+**Capella clusters:**
+- Set `cb_endpoint` to the cluster's connection string, e.g. `couchbases://cb.<id>.cloud.couchbase.com`. Port discovery is skipped and the Query endpoint is `https://<host>:18093/query/service`.
+- Use a database user with read/write access. It can create scopes and collections, but not buckets: create one bucket per database (named after its `db_id`) in Capella before running the loader.
+- If the cluster's certificate isn't signed by a CA your system trusts, download the cluster's root CA from Capella, set `"cert_path": "<path to the .pem>"` under `couchbase` for the loader, and export `REQUESTS_CA_BUNDLE=<path to the .pem>` for the other scripts.
+- Allow your IP address on the cluster.
 
 **Configuration Options:**
 - `max_questions`: Set to a number (e.g., 2) for testing, or `null` to process all questions

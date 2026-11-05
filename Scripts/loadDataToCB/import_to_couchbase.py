@@ -30,11 +30,12 @@ except ImportError:
 
 
 def load_couchbase_config_from_iq():
-    """Load Couchbase host/user/password from IQ_config.json."""
+    """Load Couchbase host/user/password (and optional cert_path) from IQ_config.json."""
     defaults = {
         "cluster_url": "127.0.0.1",
         "username": "Administrator",
-        "password": "password"
+        "password": "password",
+        "cert_path": None
     }
 
     try:
@@ -43,12 +44,14 @@ def load_couchbase_config_from_iq():
                 cfg = json.load(f)
             cb_cfg = cfg.get("couchbase", {})
             defaults["cluster_url"] = (
-                cb_cfg.get("host")
+                cb_cfg.get("cb_endpoint")
+                or cb_cfg.get("host")
                 or cb_cfg.get("connection_string")
                 or defaults["cluster_url"]
             )
             defaults["username"] = cb_cfg.get("username", defaults["username"])
             defaults["password"] = cb_cfg.get("password", defaults["password"])
+            defaults["cert_path"] = cb_cfg.get("cert_path", defaults["cert_path"])
     except Exception as e:
         print(f"Warning: Could not read {IQ_CONFIG_FILE}: {e}")
 
@@ -93,11 +96,23 @@ def _discover_services(host: str, username: str, password: str, mgmt_ports=None)
     return {}, None
 
 
+def is_tls_connection(cluster_url: str) -> bool:
+    """True for couchbases:// connection strings, e.g. a Capella cluster."""
+    return cluster_url.strip().startswith("couchbases://")
+
+
 def resolve_cluster_endpoints(cluster_url: str, username: str, password: str):
-    """Resolve SDK bootstrap URL and Query endpoint from input host/URL."""
+    """Resolve SDK bootstrap URL and Query endpoint from input host/URL.
+
+    A couchbases:// connection string (Capella) is used as given: its management
+    ports aren't reachable, and the Query service listens on 18093 over TLS.
+    """
     host, input_port = _extract_host_and_port(cluster_url)
     if not host:
         raise ValueError(f"Unable to parse host from '{cluster_url}'")
+
+    if is_tls_connection(cluster_url):
+        return cluster_url.strip(), f"https://{host}:18093/query/service"
 
     mgmt_ports = []
     if input_port:
@@ -119,22 +134,23 @@ def resolve_cluster_endpoints(cluster_url: str, username: str, password: str):
     return sdk_cluster_url, query_endpoint
 
 
-def exec_sql(sql_query: str, query_endpoint: str, username: str, password: str) -> bool:
+def exec_sql(sql_query: str, query_endpoint: str, username: str, password: str, cert_path=None) -> bool:
     """
     Execute SQL++ statement on Couchbase Query Service
-    
+
     Args:
         sql_query: SQL++ query to execute
         query_endpoint: Query service endpoint URL
         username: Couchbase username
         password: Couchbase password
-        
+        cert_path: CA certificate to verify an https endpoint with (None: system CAs)
+
     Returns:
         True if successful, False otherwise
     """
     payload = {"statement": sql_query}
     headers = {"Content-Type": "application/json"}
-    
+
     response = None
     try:
         response = requests.post(
@@ -142,7 +158,8 @@ def exec_sql(sql_query: str, query_endpoint: str, username: str, password: str) 
             json=payload,
             headers=headers,
             auth=(username, password),
-            timeout=30
+            timeout=30,
+            verify=cert_path or True
         )
         response.raise_for_status()
         return True
@@ -190,7 +207,8 @@ def create_scope_if_not_exists(
     scope_name: str,
     username: str,
     password: str,
-    query_endpoint: str
+    query_endpoint: str,
+    cert_path=None
 ):
     if scope_name == "_default":
         print("Using default scope, no need to create.")
@@ -209,7 +227,7 @@ def create_scope_if_not_exists(
         print(f"Creating scope {scope_name}...")
         create_scope_sqlpp=f"CREATE SCOPE `{bucket_name}`.`{scope_name}` IF NOT EXISTS"
 
-        if exec_sql(create_scope_sqlpp, query_endpoint, username, password):
+        if exec_sql(create_scope_sqlpp, query_endpoint, username, password, cert_path):
             print(f"  ✓ Scope '{scope_name}' created successfully")
             time.sleep(1)  # Wait for scope to be ready
             return True
@@ -241,7 +259,8 @@ def create_collection_if_not_exists(
     collection_name: str,
     username: str,
     password: str,
-    query_endpoint: str
+    query_endpoint: str,
+    cert_path=None
 ):
     """
     Create a collection if it doesn't exist
@@ -267,7 +286,7 @@ def create_collection_if_not_exists(
         
         create_collection_sql = f'CREATE COLLECTION `{bucket_name}`.`{scope_name}`.`{collection_name}` IF NOT EXISTS'
         
-        if exec_sql(create_collection_sql, query_endpoint, username, password):
+        if exec_sql(create_collection_sql, query_endpoint, username, password, cert_path):
             print(f"  ✓ Collection '{collection_name}' ready in scope '{scope_name}'")
             time.sleep(0.5)  # Brief delay for collection to be ready
             return True
@@ -307,6 +326,51 @@ def create_collection_if_not_exists(
         return False
 
 
+UPSERT_BATCH_SIZE = 1000
+
+
+def upsert_in_batches(collection, keyed_docs, total: int, indent: str = ""):
+    """
+    Upsert (key, doc) pairs UPSERT_BATCH_SIZE at a time with upsert_multi, so a
+    remote cluster (e.g. Capella) costs one round trip per batch, not per document.
+    A key that repeats within a batch keeps its last document, as sequential
+    upserts would.
+
+    Returns:
+        (success_count, error_count)
+    """
+    success_count = 0
+    error_count = 0
+    done = 0
+    batch = {}
+
+    def flush():
+        nonlocal success_count, error_count
+        if not batch:
+            return
+        try:
+            result = collection.upsert_multi(batch)
+            failed = result.exceptions or {}
+        except CouchbaseException as e:
+            failed = {key: e for key in batch}
+        for key, e in list(failed.items()):
+            error_count += 1
+            if error_count <= 5:  # Only print first 5 errors
+                print(f"{indent}Error inserting document {key}: {e}")
+        success_count += len(batch) - len(failed)
+        batch.clear()
+
+    for key, doc in keyed_docs:
+        batch[key] = doc
+        done += 1
+        if len(batch) >= UPSERT_BATCH_SIZE:
+            flush()
+            # Progress indicator
+            print(f"{indent}Progress: {done}/{total} documents...")
+    flush()
+    return success_count, error_count
+
+
 def import_json_to_couchbase(
     json_file_path,
     cluster_url=None,
@@ -315,26 +379,33 @@ def import_json_to_couchbase(
     bucket_name=None,
     scope_name="bird",
     use_separate_collections=True,
-    ram_quota_mb=600
+    ram_quota_mb=600,
+    cert_path=None
 ):
     """
     Import a JSON file into Couchbase
-    
+
     Args:
         json_file_path: Path to the JSON file
-        cluster_url: Couchbase host or URL (e.g. 127.0.0.1 or couchbase://127.0.0.1:12000)
+        cluster_url: Couchbase host or URL (e.g. 127.0.0.1, couchbase://127.0.0.1:12000,
+            or couchbases://cb.<id>.cloud.couchbase.com for Capella)
         username: Couchbase username
         password: Couchbase password
         bucket_name: Target bucket name (defaults to filename without extension)
         scope_name: Target scope name (defaults to spider2)
         use_separate_collections: If True, create a collection per table. If False, use _default collection
         ram_quota_mb: RAM quota for bucket creation (default 256 MB)
+        cert_path: CA certificate for TLS connections (e.g. the cluster's root CA from Capella)
+
+    On Capella (couchbases://) the bucket must already exist: database users
+    can't create buckets, so create it in the Capella UI or API first.
     """
 
     cfg = load_couchbase_config_from_iq()
     cluster_url = cluster_url or cfg["cluster_url"]
     username = username or cfg["username"]
     password = password or cfg["password"]
+    cert_path = cert_path or cfg["cert_path"]
 
     json_path=Path(json_file_path)
 
@@ -372,7 +443,10 @@ def import_json_to_couchbase(
         print(f"Resolved SDK endpoint: {sdk_cluster_url}")
         print(f"Resolved Query endpoint: {query_endpoint}")
 
-        auth = PasswordAuthenticator(username, password)
+        if cert_path:
+            auth = PasswordAuthenticator(username, password, cert_path=str(Path(cert_path).resolve()))
+        else:
+            auth = PasswordAuthenticator(username, password)
         print("SS: Auth object: ",auth)
         options = ClusterOptions(auth)
         print("SS: Options object: ",options)
@@ -381,20 +455,25 @@ def import_json_to_couchbase(
         cluster = Cluster(sdk_cluster_url, options)
         print("SS: Cluster object: ",cluster)
         # Wait until cluster is ready
-        cluster.wait_until_ready(timedelta(seconds=10))
-        
+        cluster.wait_until_ready(timedelta(seconds=30))
+
         print(f"✓ Connected to Couchbase cluster\n")
-        
-        # Create bucket if it doesn't exist
-        print(f"Setting up bucket '{bucket_name}'...")
-        if not create_bucket_if_not_exists(cluster, bucket_name, ram_quota_mb):
-            print(f"Failed to create/access bucket '{bucket_name}'")
-            return False
+
+        if is_tls_connection(cluster_url):
+            # Capella: database users can't manage buckets, so it must exist already
+            print(f"Using existing bucket '{bucket_name}' (create it in Capella first)")
+            cluster.bucket(bucket_name)
+        else:
+            # Create bucket if it doesn't exist
+            print(f"Setting up bucket '{bucket_name}'...")
+            if not create_bucket_if_not_exists(cluster, bucket_name, ram_quota_mb):
+                print(f"Failed to create/access bucket '{bucket_name}'")
+                return False
 
         # Create scope if it doesn't exist
         if scope_name != "_default":
             print(f"Setting up scope '{scope_name}'...")
-            if not create_scope_if_not_exists(cluster, bucket_name, scope_name, username, password, query_endpoint):
+            if not create_scope_if_not_exists(cluster, bucket_name, scope_name, username, password, query_endpoint, cert_path):
                 print(f"Failed to create/access scope '{scope_name}'")
                 return False
             print()
@@ -441,7 +520,7 @@ def import_json_to_couchbase(
                 print(f"  Setting up collection '{collection_name}'...")
                 if not create_collection_if_not_exists(
                     cluster, bucket_name, scope_name, collection_name,
-                    username, password, query_endpoint
+                    username, password, query_endpoint, cert_path
                 ):
                     print(f"  ✗ Failed to create collection '{collection_name}', skipping table")
                     continue
@@ -468,13 +547,10 @@ def import_json_to_couchbase(
                 traceback.print_exc()
                 continue
             
-            success_count = 0
-            error_count = 0
-            
             print(f"  Importing to collection '{collection_name}'...")
-            
-            for idx, row in enumerate(rows, 1):
-                try:
+
+            def keyed_rows():
+                for idx, row in enumerate(rows, 1):
                     # Generate key: tablename_id or tablename_idx
                     # Try to use an 'id' field if available, otherwise use index
                     if 'id' in row:
@@ -484,27 +560,16 @@ def import_json_to_couchbase(
                     else:
                         # Use index as fallback
                         key = f"{table_name}_{idx}"
-                    
+
                     # Add metadata
-                    doc = {
+                    yield key, {
                         **row,
                         '_table': table_name,
                         '_source': json_path.name
                     }
-                    
-                    # Upsert document
-                    collection.upsert(key, doc)
-                    success_count += 1
-                    
-                    # Progress indicator
-                    if idx % 1000 == 0:
-                        print(f"    Progress: {idx}/{row_count} documents...")
-                        
-                except CouchbaseException as e:
-                    error_count += 1
-                    if error_count <= 5:  # Only print first 5 errors
-                        print(f"    Error inserting document {key}: {e}")
-            
+
+            success_count, error_count = upsert_in_batches(collection, keyed_rows(), row_count, "    ")
+
             print(f"  ✓ Completed: {success_count} successful, {error_count} errors\n")
             total_docs += success_count
                 
@@ -523,33 +588,20 @@ def import_json_to_couchbase(
             print(f"  ✗ Error accessing collection: {e}")
             return False
         
-        success_count = 0
-        error_count = 0
-        
-        for idx, doc in enumerate(data, 1):
-            try:
+        def keyed_docs():
+            for idx, doc in enumerate(data, 1):
                 # Generate key
                 if 'id' in doc:
                     key = f"doc_{doc['id']}"
                 else:
                     key = f"doc_{idx}"
-                
+
                 # Add metadata
                 doc['_source'] = json_path.name
-                
-                # Upsert document
-                collection.upsert(key, doc)
-                success_count += 1
-                
-                # Progress indicator
-                if idx % 1000 == 0:
-                    print(f"  Progress: {idx}/{len(data)} documents...")
-                    
-            except CouchbaseException as e:
-                error_count += 1
-                if error_count <= 5:
-                    print(f"  Error inserting document {key}: {e}")
-        
+                yield key, doc
+
+        success_count, error_count = upsert_in_batches(collection, keyed_docs(), len(data), "  ")
+
         print(f"✓ Completed: {success_count} successful, {error_count} errors")
         total_docs = success_count
     
